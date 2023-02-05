@@ -1,4 +1,4 @@
-package com.estarly.petadoptionapp
+package com.estarly.petadoptionapp.ui
 
 import android.content.res.Configuration
 import android.os.Bundle
