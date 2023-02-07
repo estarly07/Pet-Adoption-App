@@ -20,15 +20,15 @@ class HomeViewModel @Inject constructor(
     private  val _promotion = MutableLiveData<PromotionModel?>()
     val promotion : LiveData<PromotionModel?> = _promotion
 
-    fun getData(){
+    fun onCreate(){
         viewModelScope.launch{
             _showProgressPromotion.value = true
             val responsePromotion = getPromotionUseCase()
             _showProgressPromotion.value = false
             when(responsePromotion){
-                is BaseResultUseCase.Error -> TODO()
-                BaseResultUseCase.NoInternetConnection -> TODO()
-                BaseResultUseCase.NullOrEmptyData -> TODO()
+                is BaseResultUseCase.Error -> {}
+                BaseResultUseCase.NoInternetConnection -> {}
+                BaseResultUseCase.NullOrEmptyData -> {}
                 is BaseResultUseCase.Success -> _promotion.value = responsePromotion.data
             }
         }

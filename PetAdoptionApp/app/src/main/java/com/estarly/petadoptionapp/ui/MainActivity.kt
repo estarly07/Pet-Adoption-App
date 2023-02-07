@@ -17,7 +17,7 @@ class MainActivity : ComponentActivity() {
     @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        homeViewModel.getData()
+        homeViewModel.onCreate()
         setContent {
             Scaffold {
                 HomeScreen(homeViewModel)
