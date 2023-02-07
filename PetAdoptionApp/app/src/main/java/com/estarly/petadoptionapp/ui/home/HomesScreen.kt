@@ -10,12 +10,13 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -25,7 +26,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
-import com.bumptech.glide.integration.compose.GlideImage
 import com.estarly.petadoptionapp.R
 import com.estarly.petadoptionapp.ui.composables.CustomCard
 import com.estarly.petadoptionapp.ui.composables.CustomSpaceHeight
@@ -37,9 +37,10 @@ import com.estarly.petadoptionapp.ui.model.TagModel
 import com.estarly.petadoptionapp.ui.theme.*
 import java.util.*
 
-@Preview(showSystemUi = true)
 @Composable
-fun HomeScreen() {
+fun HomeScreen(homeViewModel: HomeViewModel) {
+    val showProgressPromotion: Boolean by homeViewModel.showProgressPromotion.observeAsState(initial = true)
+    val promotion: PromotionModel? by homeViewModel.promotion.observeAsState(initial = null)
     Column(
         Modifier
             .verticalScroll(rememberScrollState())
@@ -59,15 +60,7 @@ fun HomeScreen() {
             )
         )
         CustomSpaceHeight(height = 25.dp)
-        PromotionCard(
-            PromotionModel(
-                1,
-                "Combo Offer Discount",
-                "30",
-                "https://www.1800whiskers.com/wp-content/uploads/2022/05/web-hero-pets-primary.png",
-                "COMBO20"
-            )
-        )
+        PromotionCard(promotion, showProgressPromotion)
         CustomSpaceHeight(height = 25.dp)
         TitleAndViewAll()
         CustomSpaceHeight(height = 20.dp)
@@ -76,17 +69,17 @@ fun HomeScreen() {
                 BreedModel(
                     breedName = "American Curl",
                     amount = 120,
-                    image ="https://www.wikichat.fr/wp-content/uploads/sites/2/AMERICAN_CURL1.png"
+                    image = "https://www.wikichat.fr/wp-content/uploads/sites/2/AMERICAN_CURL1.png"
                 ),
                 BreedModel(
                     breedName = "British Shorthair",
                     amount = 20,
-                    image ="https://i.pinimg.com/originals/66/1a/13/661a136baa0e6631652ab6ae04a69bdf.png"
+                    image = "https://i.pinimg.com/originals/66/1a/13/661a136baa0e6631652ab6ae04a69bdf.png"
                 ),
                 BreedModel(
                     breedName = "English Cocker",
                     amount = 10,
-                    image ="https://static.wixstatic.com/media/d8fd22_470f60f993a74654ab21d9b8a3f3be5f~mv2.png/v1/fill/w_535,h_573,al_c/d8fd22_470f60f993a74654ab21d9b8a3f3be5f~mv2.png"
+                    image = "https://static.wixstatic.com/media/d8fd22_470f60f993a74654ab21d9b8a3f3be5f~mv2.png/v1/fill/w_535,h_573,al_c/d8fd22_470f60f993a74654ab21d9b8a3f3be5f~mv2.png"
                 ),
             )
         )
@@ -96,7 +89,7 @@ fun HomeScreen() {
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
-fun Pets(listBreeds : List<BreedModel>) {
+fun Pets(listBreeds: List<BreedModel>) {
     CustomStaggeredVerticalGrid(
         numColumns = 2,
     ) {
@@ -161,46 +154,70 @@ fun TitleAndViewAll() {
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
-fun PromotionCard(promotion: PromotionModel) {
-    with(promotion) {
+fun PromotionCard(promotion: PromotionModel?, showProgressPromotion: Boolean) {
+    if (showProgressPromotion) {
+        CircularProgressIndicator()
+    } else if (!showProgressPromotion && promotion == null) {
+        Box() { }
+    } else {
         CustomCard {
-            Row(modifier = Modifier.padding(20.dp)) {
-                Column(modifier = Modifier.weight(1f)) {
-                    Text(
-                        text = title,
-                        fontWeight = FontWeight.Bold,
-                        color = TitleColor,
-                        fontSize = 20.sp
-                    )
-                    Text(
-                        text = "Upto $percentage% off",
-                        color = Purple,
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Bold
-                    )
+            with(promotion!!) {
+                Row(modifier = Modifier.padding(20.dp)) {
+                    Column(modifier = Modifier.weight(1f)) {
+                        Text(
+                            text = title,
+                            fontWeight = FontWeight.Bold,
+                            color = TitleColor,
+                            fontSize = 20.sp
+                        )
+                        Text(
+                            text = "Upto $percentage% off",
+                            color = Purple,
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.Bold
+                        )
 
-                    Text(buildAnnotatedString {
-                        withStyle(style = SpanStyle(color = TextColor, fontSize = 15.sp,fontWeight = FontWeight.Bold)) {
-                            append("Use code ")
-                        }
-                        withStyle(style = SpanStyle(color = Purple, fontSize = 15.sp,fontWeight = FontWeight.Bold)) {
-                            append(code.uppercase(Locale.getDefault()))
-                        }
-                        withStyle(style = SpanStyle(color = TextColor, fontSize = 15.sp,fontWeight = FontWeight.Bold)) {
-                            append(" and grab offer")
-                        }
-                    })
+                        Text(buildAnnotatedString {
+                            withStyle(
+                                style = SpanStyle(
+                                    color = TextColor,
+                                    fontSize = 15.sp,
+                                    fontWeight = FontWeight.Bold
+                                )
+                            ) {
+                                append("Use code ")
+                            }
+                            withStyle(
+                                style = SpanStyle(
+                                    color = Purple,
+                                    fontSize = 15.sp,
+                                    fontWeight = FontWeight.Bold
+                                )
+                            ) {
+                                append(code.uppercase(Locale.getDefault()))
+                            }
+                            withStyle(
+                                style = SpanStyle(
+                                    color = TextColor,
+                                    fontSize = 15.sp,
+                                    fontWeight = FontWeight.Bold
+                                )
+                            ) {
+                                append(" and grab offer")
+                            }
+                        })
+                    }
+                    Image(
+                        painter = painterResource(id = R.drawable.ic_launcher_background),
+                        contentDescription = "image promotion",
+                        modifier = Modifier
+                            .weight(1.5f)
+                            .align(Alignment.Bottom)
+                            .fillMaxWidth()
+                            .height(150.dp)
+                            .padding(start = 10.dp)
+                    )
                 }
-                Image(
-                    painter = painterResource(id = R.drawable.ic_launcher_background),
-                    contentDescription = "image promotion",
-                    modifier = Modifier
-                        .weight(1.5f)
-                        .align(Alignment.Bottom)
-                        .fillMaxWidth()
-                        .height(150.dp)
-                        .padding(start = 10.dp)
-                )
             }
         }
     }
