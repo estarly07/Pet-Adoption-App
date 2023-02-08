@@ -2,7 +2,7 @@ package com.estarly.petadoptionapp.domain.promotion
 
 import com.estarly.petadoptionapp.base.BaseResultRepository
 import com.estarly.petadoptionapp.base.BaseResultUseCase
-import com.estarly.petadoptionapp.data.PromotionRepository
+import com.estarly.petadoptionapp.data.repositories.PromotionRepository
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.coVerify

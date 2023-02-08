@@ -1,5 +1,6 @@
 package com.estarly.petadoptionapp.ui.home
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -15,6 +16,7 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
   private val getPromotionUseCase: GetPromotionUseCase
 ): ViewModel() {
+    private val TAG ="HomeViewModel"
     private val _showProgressPromotion = MutableLiveData<Boolean>()
     val showProgressPromotion : LiveData<Boolean> = _showProgressPromotion
     private  val _promotion = MutableLiveData<PromotionModel?>()
@@ -22,9 +24,10 @@ class HomeViewModel @Inject constructor(
 
     fun onCreate(){
         viewModelScope.launch{
-            _showProgressPromotion.value = true
-            val responsePromotion = getPromotionUseCase()
-            _showProgressPromotion.value = false
+            _showProgressPromotion.value = true// show progress promotion
+            val responsePromotion = getPromotionUseCase()// get promotion
+            Log.i(TAG,responsePromotion.toString())
+            _showProgressPromotion.value = false// gone progress promotion
             when(responsePromotion){
                 is BaseResultUseCase.Error -> {}
                 BaseResultUseCase.NoInternetConnection -> {}
