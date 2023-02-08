@@ -9,4 +9,4 @@ val Shapes = Shapes(
     medium = RoundedCornerShape(4.dp),
     large = RoundedCornerShape(0.dp)
 )
-val MarginHorizontalScreen = 20.dp
+val MarginHorizontalScreen = 25.dp

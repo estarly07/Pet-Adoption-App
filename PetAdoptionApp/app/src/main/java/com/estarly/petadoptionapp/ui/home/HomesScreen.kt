@@ -9,6 +9,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.sharp.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.*
@@ -53,7 +54,7 @@ fun HomeScreen(homeViewModel: HomeViewModel) {
         Header()
         CustomSpaceHeight(height = 25.dp)
         Search()
-        CustomSpaceHeight(height = 25.dp)
+        CustomSpaceHeight(height = 28.dp)
         Tags(
             listOf(
                 TagModel(id = 0, nameTag = "All"),
@@ -62,11 +63,11 @@ fun HomeScreen(homeViewModel: HomeViewModel) {
                 TagModel(id = 3, nameTag = "Birds"),
             )
         )
-        CustomSpaceHeight(height = 25.dp)
-        PromotionCard(promotion, showProgressPromotion)
-        CustomSpaceHeight(height = 25.dp)
-        TitleAndViewAll()
         CustomSpaceHeight(height = 20.dp)
+        PromotionCard(promotion, showProgressPromotion)
+        CustomSpaceHeight(height = 20.dp)
+        TitleAndViewAll()
+        CustomSpaceHeight(height = 17.dp)
         Pets(breeds)
 
     }
@@ -97,17 +98,18 @@ fun Pets(breeds: List<BreedModel>?) {
                             Text(
                                 text = breedName,
                                 color = TitleColor,
-                                fontSize = 15.sp,
-                                fontWeight = FontWeight.Bold,
+                                fontSize = 13.sp,
+                                fontWeight = FontWeight.ExtraBold,
                                 modifier = Modifier.align(Alignment.Start)
                             )
                             Text(
                                 text = "$amount available",
                                 color = TextColor,
                                 fontWeight = FontWeight.Bold,
-                                fontSize = 15.sp,
+                                fontSize = 13.sp,
                                 modifier = Modifier.align(Alignment.Start)
                             )
+                            CustomSpaceHeight(height = 5.dp)
                             GlideImage(
                                 model = image,
                                 contentDescription = "image pet",
@@ -132,10 +134,10 @@ fun TitleAndViewAll() {
         Text(
             text = "Top Breeds",
             color = TitleColor,
-            fontSize = 20.sp,
-            fontWeight = FontWeight.ExtraBold
+            fontSize = 18.sp,
+            fontWeight = FontWeight.Bold
         )
-        Text(text = "View all", color = TextColor, fontSize = 15.sp)
+        Text(text = "View all", color = TextColor, fontSize = 13.sp,fontWeight = FontWeight.Bold)
     }
 }
 
@@ -149,26 +151,27 @@ fun PromotionCard(promotion: PromotionModel?, showProgressPromotion: Boolean) {
     } else {
         CustomCard {
             with(promotion!!) {
-                Row(modifier = Modifier.padding(20.dp)) {
+                Row(modifier = Modifier.padding(20.dp), verticalAlignment = Alignment.CenterVertically) {
                     Column(modifier = Modifier.weight(1f)) {
                         Text(
                             text = title,
                             fontWeight = FontWeight.Bold,
                             color = TitleColor,
-                            fontSize = 20.sp
+                            fontSize = 17.sp
                         )
+                        CustomSpaceHeight(height = 5.dp)
                         Text(
                             text = "Upto $percentage% off",
                             color = Purple,
-                            fontSize = 18.sp,
-                            fontWeight = FontWeight.Bold
+                            fontSize = 15.sp,
+                            fontWeight = FontWeight.ExtraBold
                         )
-
+                        CustomSpaceHeight(height = 5.dp)
                         Text(buildAnnotatedString {
                             withStyle(
                                 style = SpanStyle(
                                     color = TextColor,
-                                    fontSize = 15.sp,
+                                    fontSize = 12.sp,
                                     fontWeight = FontWeight.Bold
                                 )
                             ) {
@@ -177,7 +180,7 @@ fun PromotionCard(promotion: PromotionModel?, showProgressPromotion: Boolean) {
                             withStyle(
                                 style = SpanStyle(
                                     color = Purple,
-                                    fontSize = 15.sp,
+                                    fontSize = 12.sp,
                                     fontWeight = FontWeight.Bold
                                 )
                             ) {
@@ -186,7 +189,7 @@ fun PromotionCard(promotion: PromotionModel?, showProgressPromotion: Boolean) {
                             withStyle(
                                 style = SpanStyle(
                                     color = TextColor,
-                                    fontSize = 15.sp,
+                                    fontSize = 12.sp,
                                     fontWeight = FontWeight.Bold
                                 )
                             ) {
@@ -201,7 +204,7 @@ fun PromotionCard(promotion: PromotionModel?, showProgressPromotion: Boolean) {
                             .weight(1.5f)
                             .align(Alignment.Bottom)
                             .fillMaxWidth()
-                            .height(150.dp)
+                            .height(120.dp)
                             .padding(start = 10.dp),
                         contentScale = ContentScale.FillBounds
                     )
@@ -245,7 +248,8 @@ fun ItemTag(
             Text(
                 nameTag,
                 color = if (isSelect) colorSelect else colorUnSelect,
-                fontWeight = if (isSelect) FontWeight.Bold else null
+                fontWeight = FontWeight.ExtraBold,
+                fontSize = 15.sp
             )
             if (isSelect) {
                 Box(
@@ -268,7 +272,7 @@ fun Search() {
             modifier = Modifier.weight(1f),
             leadingIcon = {
                 Icon(
-                    imageVector = Icons.Filled.Search,
+                    imageVector = Icons.Sharp.Search,
                     contentDescription = "Icon search",
                     tint = TextColor
 
@@ -312,13 +316,14 @@ fun Header() {
             Text(
                 text = "Hi Bunny!",
                 fontSize = 25.sp,
-                fontWeight = FontWeight.ExtraBold,
+                fontWeight = FontWeight.Bold,
                 color = TitleColor
             )
             Text(
                 text = "Are you looking for pets?",
                 fontSize = 15.sp,
-                color = TextColor
+                color = TextColor,
+                fontWeight = FontWeight.Bold,
             )
         }
         Spacer(modifier = Modifier.width(15.dp))
