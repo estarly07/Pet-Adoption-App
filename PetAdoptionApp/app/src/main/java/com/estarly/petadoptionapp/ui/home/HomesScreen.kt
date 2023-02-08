@@ -1,6 +1,5 @@
 package com.estarly.petadoptionapp.ui.home
 
-import android.icu.number.Scale
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
@@ -24,7 +23,6 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
@@ -44,6 +42,7 @@ import java.util.*
 fun HomeScreen(homeViewModel: HomeViewModel) {
     val showProgressPromotion: Boolean by homeViewModel.showProgressPromotion.observeAsState(initial = true)
     val promotion: PromotionModel? by homeViewModel.promotion.observeAsState(initial = null)
+    val breeds: List<BreedModel>? by homeViewModel.breeds.observeAsState(initial = null)
     Column(
         Modifier
             .verticalScroll(rememberScrollState())
@@ -67,70 +66,54 @@ fun HomeScreen(homeViewModel: HomeViewModel) {
         CustomSpaceHeight(height = 25.dp)
         TitleAndViewAll()
         CustomSpaceHeight(height = 20.dp)
-        Pets(
-            listOf(
-                BreedModel(
-                    breedName = "American Curl",
-                    amount = 120,
-                    image = "https://www.wikichat.fr/wp-content/uploads/sites/2/AMERICAN_CURL1.png"
-                ),
-                BreedModel(
-                    breedName = "British Shorthair",
-                    amount = 20,
-                    image = "https://i.pinimg.com/originals/66/1a/13/661a136baa0e6631652ab6ae04a69bdf.png"
-                ),
-                BreedModel(
-                    breedName = "English Cocker",
-                    amount = 10,
-                    image = "https://static.wixstatic.com/media/d8fd22_470f60f993a74654ab21d9b8a3f3be5f~mv2.png/v1/fill/w_535,h_573,al_c/d8fd22_470f60f993a74654ab21d9b8a3f3be5f~mv2.png"
-                ),
-            )
-        )
+        Pets(breeds)
 
     }
 }
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
-fun Pets(listBreeds: List<BreedModel>) {
-    CustomStaggeredVerticalGrid(
-        numColumns = 2,
-    ) {
-        listBreeds.forEachIndexed { i, breed ->
-            with(breed) {
-                CustomCard(
-                    Modifier.padding(
-                        start = if (i % 2 != 0) 10.dp else 0.dp,
-                        end = if (i % 2 == 0) 10.dp else 0.dp,
-                        bottom = 20.dp
-                    )
-                ) {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(15.dp),
-                        horizontalAlignment = Alignment.CenterHorizontally
+fun Pets(breeds: List<BreedModel>?) {
+    breeds?.let { listBreeds ->
+        CustomStaggeredVerticalGrid(
+            numColumns = 2,
+        ) {
+            listBreeds.forEachIndexed { i, breed ->
+                with(breed) {
+                    CustomCard(
+                        Modifier.padding(
+                            start = if (i % 2 != 0) 10.dp else 0.dp,
+                            end = if (i % 2 == 0) 10.dp else 0.dp,
+                            bottom = 20.dp
+                        )
                     ) {
-                        Text(
-                            text = breedName,
-                            color = TitleColor,
-                            fontSize = 15.sp,
-                            fontWeight = FontWeight.Bold,
-                            modifier = Modifier.align(Alignment.Start)
-                        )
-                        Text(
-                            text = "$amount available",
-                            color = TextColor,
-                            fontWeight = FontWeight.Bold,
-                            fontSize = 15.sp,
-                            modifier = Modifier.align(Alignment.Start)
-                        )
-                        Image(
-                            painter = painterResource(id = R.drawable.ic_launcher_background),
-                            contentDescription = "image pet",
-                            modifier = Modifier.fillMaxWidth()
-                        )
+                        Column(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(15.dp),
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            Text(
+                                text = breedName,
+                                color = TitleColor,
+                                fontSize = 15.sp,
+                                fontWeight = FontWeight.Bold,
+                                modifier = Modifier.align(Alignment.Start)
+                            )
+                            Text(
+                                text = "$amount available",
+                                color = TextColor,
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 15.sp,
+                                modifier = Modifier.align(Alignment.Start)
+                            )
+                            GlideImage(
+                                model = image,
+                                contentDescription = "image pet",
+                                modifier = Modifier.fillMaxWidth()
+                            )
 
+                        }
                     }
                 }
             }
@@ -320,6 +303,7 @@ fun Search() {
     }
 }
 
+@OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun Header() {
     Row {
@@ -337,12 +321,13 @@ fun Header() {
             )
         }
         Spacer(modifier = Modifier.width(15.dp))
-        Image(
-            painter = painterResource(id = R.drawable.ic_launcher_background),
+        GlideImage(
+            model = "https://images.unsplash.com/photo-1618641986557-1ecd230959aa?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NXx8cHJvZmlsZXxlbnwwfHwwfHw%3D&w=1000&q=80",
             contentDescription = "user image",
             modifier = Modifier
                 .size(50.dp)
-                .clip(RoundedCornerShape(15.dp))
+                .clip(RoundedCornerShape(15.dp)),
+            contentScale = ContentScale.Crop
         )
     }
 }
