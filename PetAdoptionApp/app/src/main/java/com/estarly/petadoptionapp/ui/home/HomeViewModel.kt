@@ -21,8 +21,8 @@ class HomeViewModel @Inject constructor(
 ): ViewModel() {
     private val TAG ="HomeViewModel"
 
-    private val _breeds = MutableLiveData<List<BreedModel>>()
-    val breeds : LiveData<List<BreedModel>> = _breeds
+    private val _breeds = MutableLiveData<List<BreedModel>?>()
+    val breeds : LiveData<List<BreedModel>?> = _breeds
     private val _showProgressPromotion = MutableLiveData<Boolean>()
     val showProgressPromotion : LiveData<Boolean> = _showProgressPromotion
     private  val _promotion = MutableLiveData<PromotionModel?>()
@@ -40,9 +40,9 @@ class HomeViewModel @Inject constructor(
         val response = getBreedsUseCase()
         //TODO gone progress
         when(response){
-            is BaseResultUseCase.Error -> TODO()
-            BaseResultUseCase.NoInternetConnection -> TODO()
-            BaseResultUseCase.NullOrEmptyData -> TODO()
+            is BaseResultUseCase.Error -> {}
+            BaseResultUseCase.NoInternetConnection -> {}
+            BaseResultUseCase.NullOrEmptyData -> {}
             is BaseResultUseCase.Success -> _breeds.value = response.data
         }
     }
