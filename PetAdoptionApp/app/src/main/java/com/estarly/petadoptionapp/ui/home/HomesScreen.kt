@@ -1,5 +1,6 @@
 package com.estarly.petadoptionapp.ui.home
 
+import android.util.Log
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
@@ -8,7 +9,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.sharp.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
@@ -28,7 +28,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
-import com.bumptech.glide.request.RequestOptions
 import com.estarly.petadoptionapp.R
 import com.estarly.petadoptionapp.ui.composables.CustomCard
 import com.estarly.petadoptionapp.ui.composables.CustomSpaceHeight
@@ -45,6 +44,8 @@ fun HomeScreen(homeViewModel: HomeViewModel) {
     val showProgressPromotion: Boolean by homeViewModel.showProgressPromotion.observeAsState(initial = true)
     val promotion: PromotionModel? by homeViewModel.promotion.observeAsState(initial = null)
     val breeds: List<BreedModel>? by homeViewModel.breeds.observeAsState(initial = null)
+    val search: String by homeViewModel.search.observeAsState(initial = "")
+    val isSearching : Boolean by homeViewModel.isSearching.observeAsState(initial = true)
     Column(
         Modifier
             .verticalScroll(rememberScrollState())
@@ -53,21 +54,23 @@ fun HomeScreen(homeViewModel: HomeViewModel) {
         CustomSpaceHeight(height = 25.dp)
         Header()
         CustomSpaceHeight(height = 25.dp)
-        Search()
+        Search(search){ homeViewModel.searchBread(it) }
         CustomSpaceHeight(height = 28.dp)
-        Tags(
-            listOf(
-                TagModel(id = 0, nameTag = "All"),
-                TagModel(id = 1, nameTag = "Cats"),
-                TagModel(id = 2, nameTag = "Dogs"),
-                TagModel(id = 3, nameTag = "Birds"),
+        if(isSearching) {
+            Tags(
+                listOf(
+                    TagModel(id = 0, nameTag = "All"),
+                    TagModel(id = 1, nameTag = "Cats"),
+                    TagModel(id = 2, nameTag = "Dogs"),
+                    TagModel(id = 3, nameTag = "Birds"),
+                )
             )
-        )
-        CustomSpaceHeight(height = 20.dp)
-        PromotionCard(promotion, showProgressPromotion)
-        CustomSpaceHeight(height = 20.dp)
-        TitleAndViewAll()
-        CustomSpaceHeight(height = 17.dp)
+            CustomSpaceHeight(height = 20.dp)
+            PromotionCard(promotion, showProgressPromotion)
+            CustomSpaceHeight(height = 20.dp)
+            TitleAndViewAll()
+            CustomSpaceHeight(height = 17.dp)
+        }
         Pets(breeds)
 
     }
@@ -264,11 +267,11 @@ fun ItemTag(
 }
 
 @Composable
-fun Search() {
+fun Search(search: String, onTextChanged : (String)->Unit) {
     Row {
         CustomTextField(
-            value = "",
-            onTextChanged = {},
+            value = search,
+            onTextChanged = onTextChanged,
             modifier = Modifier.weight(1f),
             leadingIcon = {
                 Icon(

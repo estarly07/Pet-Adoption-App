@@ -6,7 +6,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.estarly.petadoptionapp.base.BaseResultUseCase
-import com.estarly.petadoptionapp.domain.GetBreedsUseCase
+import com.estarly.petadoptionapp.domain.breeds.GetBreedsUseCase
+import com.estarly.petadoptionapp.domain.breeds.SearchBreedsUseCase
 import com.estarly.petadoptionapp.domain.promotion.GetPromotionUseCase
 import com.estarly.petadoptionapp.ui.model.BreedModel
 import com.estarly.petadoptionapp.ui.model.PromotionModel
@@ -17,11 +18,17 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
   private val getPromotionUseCase: GetPromotionUseCase,
-  private val getBreedsUseCase   : GetBreedsUseCase
+  private val getBreedsUseCase   : GetBreedsUseCase,
+  private val searchBreedsUseCase: SearchBreedsUseCase
 ): ViewModel() {
     private val TAG ="HomeViewModel"
 
+    private var _isSearching= MutableLiveData<Boolean>()//show/fade multiple components to show only the list of breeds
+    val isSearching : LiveData<Boolean> = _isSearching//show/fade multiple components to show only the list of breeds
+    private val _search = MutableLiveData<String>()
+    val search : LiveData<String> = _search
     private val _breeds = MutableLiveData<List<BreedModel>?>()
+    private var breedsSaveInfo : List<BreedModel>? = mutableListOf()
     val breeds : LiveData<List<BreedModel>?> = _breeds
     private val _showProgressPromotion = MutableLiveData<Boolean>()
     val showProgressPromotion : LiveData<Boolean> = _showProgressPromotion
@@ -43,7 +50,10 @@ class HomeViewModel @Inject constructor(
             is BaseResultUseCase.Error -> {}
             BaseResultUseCase.NoInternetConnection -> {}
             BaseResultUseCase.NullOrEmptyData -> {}
-            is BaseResultUseCase.Success -> _breeds.value = response.data
+            is BaseResultUseCase.Success -> {
+                _breeds.value  = response.data
+                breedsSaveInfo = response.data
+            }
         }
     }
 
@@ -58,5 +68,10 @@ class HomeViewModel @Inject constructor(
             BaseResultUseCase.NullOrEmptyData -> {}
             is BaseResultUseCase.Success -> _promotion.value = responsePromotion.data
         }
+    }
+    fun searchBread(word : String){
+        _isSearching.value = word.isEmpty()//TODO change for sqlite
+        _search.value = word
+        _breeds.value = searchBreedsUseCase(breedsSaveInfo,word)
     }
 }

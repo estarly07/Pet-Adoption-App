@@ -3,11 +3,10 @@ package com.estarly.petadoptionapp.ui.home
 import android.util.Log
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.estarly.petadoptionapp.base.BaseResultUseCase
-import com.estarly.petadoptionapp.domain.GetBreedsUseCase
+import com.estarly.petadoptionapp.domain.breeds.GetBreedsUseCase
 import com.estarly.petadoptionapp.domain.promotion.GetPromotionUseCase
 import com.estarly.petadoptionapp.ui.model.PromotionModel
 import io.mockk.*
-import io.mockk.impl.annotations.MockK
 import io.mockk.impl.annotations.RelaxedMockK
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi

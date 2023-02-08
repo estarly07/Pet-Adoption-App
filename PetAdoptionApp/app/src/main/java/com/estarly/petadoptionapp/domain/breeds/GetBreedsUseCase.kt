@@ -1,4 +1,4 @@
-package com.estarly.petadoptionapp.domain
+package com.estarly.petadoptionapp.domain.breeds
 
 import com.estarly.petadoptionapp.base.BaseResultRepository
 import com.estarly.petadoptionapp.base.BaseResultUseCase

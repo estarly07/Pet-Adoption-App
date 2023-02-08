@@ -3,6 +3,7 @@ package com.estarly.petadoptionapp.domain
 import com.estarly.petadoptionapp.base.BaseResultRepository
 import com.estarly.petadoptionapp.base.BaseResultUseCase
 import com.estarly.petadoptionapp.data.repositories.BreedRepository
+import com.estarly.petadoptionapp.domain.breeds.GetBreedsUseCase
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.coVerify

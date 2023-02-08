@@ -31,9 +31,7 @@ fun CustomTextField(
 ) {
     TextField(
         value = value,
-        onValueChange = {
-
-        },
+        onValueChange = onTextChanged,
         modifier = modifier
             .clip(RoundedCornerShape(15.dp)).size(50.dp),
         leadingIcon = leadingIcon,
