@@ -1,3 +1,10 @@
 package com.estarly.petadoptionapp.data.api.response
 
-data class BreedResponse (val breedName : String, val amount : Int, val image : String )
+import androidx.annotation.Keep
+import com.google.gson.annotations.SerializedName
+@Keep
+data class BreedResponse (
+    @SerializedName("breedName") val breedName : String,
+    @SerializedName("amount")    val amount    : Int,
+    @SerializedName("image")     val image     : String
+)
