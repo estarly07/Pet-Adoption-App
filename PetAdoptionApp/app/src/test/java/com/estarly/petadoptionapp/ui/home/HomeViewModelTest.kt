@@ -4,7 +4,9 @@ import android.util.Log
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.estarly.petadoptionapp.base.BaseResultUseCase
 import com.estarly.petadoptionapp.domain.breeds.GetBreedsUseCase
+import com.estarly.petadoptionapp.domain.breeds.SearchBreedsUseCase
 import com.estarly.petadoptionapp.domain.promotion.GetPromotionUseCase
+import com.estarly.petadoptionapp.ui.model.BreedModel
 import com.estarly.petadoptionapp.ui.model.PromotionModel
 import io.mockk.*
 import io.mockk.impl.annotations.RelaxedMockK
@@ -24,6 +26,8 @@ internal class HomeViewModelTest{
     private lateinit var getPromotionUseCase : GetPromotionUseCase
     @RelaxedMockK
     private lateinit var getBreedsUseCase: GetBreedsUseCase
+    @RelaxedMockK
+    private lateinit var searchBreedsUseCase: SearchBreedsUseCase
     private lateinit var homeViewModel: HomeViewModel
 
     @get:Rule
@@ -32,7 +36,7 @@ internal class HomeViewModelTest{
     @Before
     fun onBefore(){
         MockKAnnotations.init(this)
-        homeViewModel = HomeViewModel(getPromotionUseCase,getBreedsUseCase)
+        homeViewModel = HomeViewModel(getPromotionUseCase,getBreedsUseCase,searchBreedsUseCase)
         Dispatchers.setMain(Dispatchers.Unconfined)
     }
     @After

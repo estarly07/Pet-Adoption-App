@@ -27,7 +27,7 @@ class HomeViewModel @Inject constructor(
     val isSearching : LiveData<Boolean> = _isSearching//show/fade multiple components to show only the list of breeds
     private val _search = MutableLiveData<String>()
     val search : LiveData<String> = _search
-    private val _breeds = MutableLiveData<List<BreedModel>?>()
+    val _breeds = MutableLiveData<List<BreedModel>?>()
     private var breedsSaveInfo : List<BreedModel>? = mutableListOf()
     val breeds : LiveData<List<BreedModel>?> = _breeds
     private val _showProgressPromotion = MutableLiveData<Boolean>()
