@@ -23,6 +23,8 @@ class HomeViewModel @Inject constructor(
 ): ViewModel() {
     private val TAG ="HomeViewModel"
 
+    private var _showDialogFilter = MutableLiveData<Boolean>()
+    val showDialogFilter: LiveData<Boolean> = _showDialogFilter
     private var _isSearching= MutableLiveData<Boolean>()//show/fade multiple components to show only the list of breeds
     val isSearching : LiveData<Boolean> = _isSearching//show/fade multiple components to show only the list of breeds
     private val _search = MutableLiveData<String>()
@@ -74,4 +76,6 @@ class HomeViewModel @Inject constructor(
         _search.value = word
         _breeds.value = searchBreedsUseCase(breedsSaveInfo,word)
     }
+
+    fun showDialogFilter(show: Boolean = true) { _showDialogFilter.value = show }
 }

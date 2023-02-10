@@ -1,6 +1,7 @@
 package com.estarly.petadoptionapp.ui.home
 
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
@@ -19,6 +20,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -33,6 +35,7 @@ import com.estarly.petadoptionapp.ui.composables.CustomCard
 import com.estarly.petadoptionapp.ui.composables.CustomSpaceHeight
 import com.estarly.petadoptionapp.ui.composables.CustomStaggeredVerticalGrid
 import com.estarly.petadoptionapp.ui.composables.CustomTextField
+import com.estarly.petadoptionapp.ui.dialog.filter.CustomDialogFilter
 import com.estarly.petadoptionapp.ui.model.BreedModel
 import com.estarly.petadoptionapp.ui.model.PromotionModel
 import com.estarly.petadoptionapp.ui.model.TagModel
@@ -46,6 +49,7 @@ fun HomeScreen(homeViewModel: HomeViewModel) {
     val breeds: List<BreedModel>? by homeViewModel.breeds.observeAsState(initial = null)
     val search: String by homeViewModel.search.observeAsState(initial = "")
     val isSearching : Boolean by homeViewModel.isSearching.observeAsState(initial = true)
+    val showDialogFilter : Boolean by homeViewModel.showDialogFilter.observeAsState(initial = false)
     Column(
         Modifier
             .verticalScroll(rememberScrollState())
@@ -54,7 +58,7 @@ fun HomeScreen(homeViewModel: HomeViewModel) {
         CustomSpaceHeight(height = 25.dp)
         Header()
         CustomSpaceHeight(height = 25.dp)
-        Search(search){ homeViewModel.searchBread(it) }
+        Search(search, onClickFilter = {homeViewModel.showDialogFilter()}){ homeViewModel.searchBread(it) }
         CustomSpaceHeight(height = 28.dp)
         if(isSearching) {
             Tags(
@@ -72,7 +76,15 @@ fun HomeScreen(homeViewModel: HomeViewModel) {
             CustomSpaceHeight(height = 17.dp)
         }
         Pets(breeds)
-
+        //Dialogs
+        val c =LocalContext.current
+        CustomDialogFilter(
+            items = listOf("Nombre", "Cantidad"),
+            show = showDialogFilter,
+            onDismiss = { homeViewModel.showDialogFilter(false) },
+            onApply = {attribute, category ->
+                Toast.makeText(c,"$attribute $category", Toast.LENGTH_SHORT).show()
+            })
     }
 }
 
@@ -267,7 +279,7 @@ fun ItemTag(
 }
 
 @Composable
-fun Search(search: String, onTextChanged : (String)->Unit) {
+fun Search(search: String,onClickFilter : ()->Unit, onTextChanged : (String)->Unit) {
     Row {
         CustomTextField(
             value = search,
@@ -298,14 +310,15 @@ fun Search(search: String, onTextChanged : (String)->Unit) {
                         )
                     )
                 )
-                .clickable {
-
-                },
+                .clickable { onClickFilter() },
         ) {
             Icon(
-                painter = painterResource(id = R.drawable.ic_launcher_foreground),
+                painter = painterResource(id = R.drawable.ic_filter),
                 contentDescription = "button filter",
-                tint = Color.White
+                tint = Color.White,
+                modifier = Modifier
+                    .align(Alignment.Center)
+                    .size(20.dp)
             )
         }
     }
