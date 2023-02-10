@@ -3,6 +3,7 @@ package com.estarly.petadoptionapp.ui.home
 import android.util.Log
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.estarly.petadoptionapp.base.BaseResultUseCase
+import com.estarly.petadoptionapp.domain.breeds.FilterBreedsUseCase
 import com.estarly.petadoptionapp.domain.breeds.GetBreedsUseCase
 import com.estarly.petadoptionapp.domain.breeds.SearchBreedsUseCase
 import com.estarly.petadoptionapp.domain.promotion.GetPromotionUseCase
@@ -28,6 +29,8 @@ internal class HomeViewModelTest{
     private lateinit var getBreedsUseCase: GetBreedsUseCase
     @RelaxedMockK
     private lateinit var searchBreedsUseCase: SearchBreedsUseCase
+    @RelaxedMockK
+    private lateinit var filterBreedsUseCase: FilterBreedsUseCase
     private lateinit var homeViewModel: HomeViewModel
 
     @get:Rule
@@ -36,7 +39,7 @@ internal class HomeViewModelTest{
     @Before
     fun onBefore(){
         MockKAnnotations.init(this)
-        homeViewModel = HomeViewModel(getPromotionUseCase,getBreedsUseCase,searchBreedsUseCase)
+        homeViewModel = HomeViewModel(getPromotionUseCase,getBreedsUseCase,searchBreedsUseCase,filterBreedsUseCase)
         Dispatchers.setMain(Dispatchers.Unconfined)
     }
     @After
@@ -74,4 +77,9 @@ internal class HomeViewModelTest{
         assert(homeViewModel.breeds.value == null){"El caso de uso no devolvio null"}
     }
 
+    @Test
+    fun `When the list is null and is filtered by name or quantity, it must return an empty list`(){
+        homeViewModel.filter("Nombre","")
+        assert(homeViewModel.breeds.value!!.isEmpty())
+    }
 }

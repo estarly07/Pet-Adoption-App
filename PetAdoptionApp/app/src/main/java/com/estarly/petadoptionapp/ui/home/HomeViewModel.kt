@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.estarly.petadoptionapp.base.BaseResultUseCase
+import com.estarly.petadoptionapp.domain.breeds.FilterBreedsUseCase
 import com.estarly.petadoptionapp.domain.breeds.GetBreedsUseCase
 import com.estarly.petadoptionapp.domain.breeds.SearchBreedsUseCase
 import com.estarly.petadoptionapp.domain.promotion.GetPromotionUseCase
@@ -19,7 +20,8 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
   private val getPromotionUseCase: GetPromotionUseCase,
   private val getBreedsUseCase   : GetBreedsUseCase,
-  private val searchBreedsUseCase: SearchBreedsUseCase
+  private val searchBreedsUseCase: SearchBreedsUseCase,
+  private val filterBreedsUseCase: FilterBreedsUseCase
 ): ViewModel() {
     private val TAG ="HomeViewModel"
 
@@ -78,4 +80,8 @@ class HomeViewModel @Inject constructor(
     }
 
     fun showDialogFilter(show: Boolean = true) { _showDialogFilter.value = show }
+
+    fun filter(attribute: String, category: String) {
+        _breeds.value = filterBreedsUseCase(attribute,category,breedsSaveInfo ?: listOf())
+    }
 }

@@ -77,13 +77,12 @@ fun HomeScreen(homeViewModel: HomeViewModel) {
         }
         Pets(breeds)
         //Dialogs
-        val c =LocalContext.current
         CustomDialogFilter(
             items = listOf("Nombre", "Cantidad"),
             show = showDialogFilter,
             onDismiss = { homeViewModel.showDialogFilter(false) },
             onApply = {attribute, category ->
-                Toast.makeText(c,"$attribute $category", Toast.LENGTH_SHORT).show()
+                homeViewModel.filter(attribute,category)
             })
     }
 }
