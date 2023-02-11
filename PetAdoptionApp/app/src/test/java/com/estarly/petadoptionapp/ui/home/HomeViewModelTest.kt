@@ -6,8 +6,10 @@ import com.estarly.petadoptionapp.base.BaseResultUseCase
 import com.estarly.petadoptionapp.domain.breeds.FilterBreedsUseCase
 import com.estarly.petadoptionapp.domain.breeds.GetBreedsUseCase
 import com.estarly.petadoptionapp.domain.breeds.SearchBreedsUseCase
+import com.estarly.petadoptionapp.domain.categories.GetCategoriesUseCase
 import com.estarly.petadoptionapp.domain.promotion.GetPromotionUseCase
 import com.estarly.petadoptionapp.ui.model.BreedModel
+import com.estarly.petadoptionapp.ui.model.CategoryModel
 import com.estarly.petadoptionapp.ui.model.PromotionModel
 import io.mockk.*
 import io.mockk.impl.annotations.RelaxedMockK
@@ -31,6 +33,8 @@ internal class HomeViewModelTest{
     private lateinit var searchBreedsUseCase: SearchBreedsUseCase
     @RelaxedMockK
     private lateinit var filterBreedsUseCase: FilterBreedsUseCase
+    @RelaxedMockK
+    private lateinit var getCategoriesUseCase: GetCategoriesUseCase
     private lateinit var homeViewModel: HomeViewModel
 
     @get:Rule
@@ -39,7 +43,13 @@ internal class HomeViewModelTest{
     @Before
     fun onBefore(){
         MockKAnnotations.init(this)
-        homeViewModel = HomeViewModel(getPromotionUseCase,getBreedsUseCase,searchBreedsUseCase,filterBreedsUseCase)
+        homeViewModel = HomeViewModel(
+            getPromotionUseCase,
+            getBreedsUseCase,
+            searchBreedsUseCase,
+            filterBreedsUseCase,
+            getCategoriesUseCase
+        )
         Dispatchers.setMain(Dispatchers.Unconfined)
     }
     @After
@@ -81,5 +91,29 @@ internal class HomeViewModelTest{
     fun `When the list is null and is filtered by name or quantity, it must return an empty list`(){
         homeViewModel.filter("Nombre",null)
         assert(homeViewModel.breeds.value!!.isEmpty())
+    }
+
+    @Test
+    fun `When getCategoriesUseCase is called it returns a list the tag selected by default must be the category named All`() = runTest{
+        mockkStatic(Log::class)
+        coEvery { Log.i(any(),any()) } returns 0
+        coEvery { getCategoriesUseCase() } returns BaseResultUseCase.Success(
+            listOf(
+                CategoryModel(0,"d"),
+                CategoryModel(1,"s"),
+                CategoryModel(-1,"All"),
+                CategoryModel(3,"a"),
+            )
+        )
+        homeViewModel.onCreate()
+        assert(homeViewModel.idSelectTag.value == -1)
+    }
+    @Test
+    fun `When getCategoriesUseCase is called it returns null the tag selected by default must be null`() = runTest{
+        mockkStatic(Log::class)
+        coEvery { Log.i(any(),any()) } returns 0
+        coEvery { getCategoriesUseCase() } returns BaseResultUseCase.NullOrEmptyData
+        homeViewModel.onCreate()
+        assert(homeViewModel.idSelectTag.value == null)
     }
 }

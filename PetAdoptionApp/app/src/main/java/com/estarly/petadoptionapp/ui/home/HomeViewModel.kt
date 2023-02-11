@@ -58,12 +58,14 @@ class HomeViewModel @Inject constructor(
     private suspend fun getCategories() {
         val response = getCategoriesUseCase()
         when(response){
-            is BaseResultUseCase.Error -> response.exception.printStackTrace()
-            BaseResultUseCase.NoInternetConnection -> TODO()
-            BaseResultUseCase.NullOrEmptyData -> TODO()
+            is BaseResultUseCase.Error -> {}
+            BaseResultUseCase.NoInternetConnection -> {}
+            BaseResultUseCase.NullOrEmptyData -> {}
             is BaseResultUseCase.Success -> {
                 _tags.value = response.data
-                changeSelectTag(_tags.value!!.first().id)
+                _tags.value!!.find { it.id == -1 }?.let {
+                    changeSelectTag(it.id)
+                }
             }
         }
     }

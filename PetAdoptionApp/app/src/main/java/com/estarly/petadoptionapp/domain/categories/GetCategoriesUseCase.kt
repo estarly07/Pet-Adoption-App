@@ -14,7 +14,7 @@ class GetCategoriesUseCase @Inject constructor(private val categoriesRepository 
             val response = categoriesRepository.getCategories()
             when(response){
                 is BaseResultRepository.Error -> BaseResultUseCase.Error(response.exception)
-                BaseResultRepository.NullOrEmptyData -> TODO()
+                BaseResultRepository.NullOrEmptyData -> BaseResultUseCase.NullOrEmptyData
                 is BaseResultRepository.Success -> BaseResultUseCase.Success(response.data)
             }
         }catch (e:Exception){
