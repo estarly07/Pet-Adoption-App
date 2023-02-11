@@ -1,7 +1,5 @@
 package com.estarly.petadoptionapp.ui.home
 
-import android.util.Log
-import android.widget.Toast
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
@@ -20,7 +18,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -38,7 +35,7 @@ import com.estarly.petadoptionapp.ui.composables.CustomTextField
 import com.estarly.petadoptionapp.ui.dialog.filter.CustomDialogFilter
 import com.estarly.petadoptionapp.ui.model.BreedModel
 import com.estarly.petadoptionapp.ui.model.PromotionModel
-import com.estarly.petadoptionapp.ui.model.TagModel
+import com.estarly.petadoptionapp.ui.model.CategoryModel
 import com.estarly.petadoptionapp.ui.theme.*
 import java.util.*
 
@@ -50,6 +47,8 @@ fun HomeScreen(homeViewModel: HomeViewModel) {
     val search: String by homeViewModel.search.observeAsState(initial = "")
     val isSearching : Boolean by homeViewModel.isSearching.observeAsState(initial = true)
     val showDialogFilter : Boolean by homeViewModel.showDialogFilter.observeAsState(initial = false)
+    val idSelectTag : Int by homeViewModel.idSelectTag.observeAsState(initial = 0)
+    val tags : List<CategoryModel> by homeViewModel.tags.observeAsState(initial = listOf())
     Column(
         Modifier
             .verticalScroll(rememberScrollState())
@@ -61,14 +60,7 @@ fun HomeScreen(homeViewModel: HomeViewModel) {
         Search(search, onClickFilter = {homeViewModel.showDialogFilter()}){ homeViewModel.searchBread(it) }
         CustomSpaceHeight(height = 28.dp)
         if(isSearching) {
-            Tags(
-                listOf(
-                    TagModel(id = 0, nameTag = "All"),
-                    TagModel(id = 1, nameTag = "Cats"),
-                    TagModel(id = 2, nameTag = "Dogs"),
-                    TagModel(id = 3, nameTag = "Birds"),
-                )
-            )
+            Tags(tags,idSelectTag){id-> homeViewModel.changeSelectTag(id)}
             CustomSpaceHeight(height = 20.dp)
             PromotionCard(promotion, showProgressPromotion)
             CustomSpaceHeight(height = 20.dp)
@@ -79,11 +71,12 @@ fun HomeScreen(homeViewModel: HomeViewModel) {
         //Dialogs
         CustomDialogFilter(
             items = listOf("Nombre", "Cantidad"),
+            categories = tags,
             show = showDialogFilter,
-            onDismiss = { homeViewModel.showDialogFilter(false) },
-            onApply = {attribute, category ->
-                homeViewModel.filter(attribute,category)
-            })
+            onDismiss = { homeViewModel.showDialogFilter(false) }
+        ) { attribute, idCategory ->
+            homeViewModel.filter(attribute, idCategory)
+        }
     }
 }
 
@@ -229,7 +222,7 @@ fun PromotionCard(promotion: PromotionModel?, showProgressPromotion: Boolean) {
 }
 
 @Composable
-fun Tags(listTags: List<TagModel>) {
+fun Tags(listTags: List<CategoryModel>, idSelectTag : Int, onCheckTag : (Int)->Unit) {
     LazyRow(content = {
         items(listTags, key = { it.id }) {
             ItemTag(
@@ -237,9 +230,9 @@ fun Tags(listTags: List<TagModel>) {
                 colorSelect = TitleColor,
                 colorUnSelect = TextColor,
                 modifier = Modifier.padding(end = 35.dp),
-                isSelect = it.id == 0
-            ) {
-
+                isSelect = it.id == idSelectTag
+            ) {tag->
+                onCheckTag(tag.id)
             }
         }
     })
@@ -247,12 +240,12 @@ fun Tags(listTags: List<TagModel>) {
 
 @Composable
 fun ItemTag(
-    tag: TagModel,
+    tag: CategoryModel,
     colorSelect: Color,
     colorUnSelect: Color,
     modifier: Modifier,
     isSelect: Boolean,
-    onTap: (TagModel) -> Unit
+    onTap: (CategoryModel) -> Unit
 ) {
     with(tag) {
         Column(

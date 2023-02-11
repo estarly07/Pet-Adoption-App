@@ -6,11 +6,33 @@ import javax.inject.Singleton
 
 @Singleton
 class FilterBreedsUseCase @Inject constructor(){
-    operator fun invoke(attribute:String,category : String, list : List<BreedModel>) : List<BreedModel>{
+    operator fun invoke(attribute:String?, idCategory : Int?, list : List<BreedModel>) : List<BreedModel>{
+        idCategory?.let {
+            if(idCategory == -1){
+                return  list
+            }
+        }
         return when(attribute){
-            "Nombre"->  list.sortedBy {it.breedName}
-            "Cantidad"-> list.sortedByDescending {it.amount}
-            else -> list
+            "Nombre"-> {
+                val newList =  list.sortedBy { it.breedName }
+                idCategory?.let { id->
+                   return newList.filter { it.idCategory == id }
+                }
+                newList
+            }
+            "Cantidad"-> {
+               val newList = list.sortedByDescending {it.amount}
+                idCategory?.let {
+                    return newList.filter {item-> item.idCategory == it  }
+                }
+                newList
+            }
+            else -> {
+                idCategory?.let { id->
+                  return  list.filter { it.idCategory == id }
+                }
+                list
+            }
         }
     }
 }

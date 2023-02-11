@@ -1,16 +1,10 @@
 package com.estarly.petadoptionapp.ui.dialog.filter
 
-import android.widget.GridLayout
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -29,18 +23,20 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import com.estarly.petadoptionapp.ui.composables.CustomSpaceHeight
+import com.estarly.petadoptionapp.ui.model.CategoryModel
 import com.estarly.petadoptionapp.ui.theme.*
 
 @Composable
 fun CustomDialogFilter(
     items: List<String>,
+    categories: List<CategoryModel>,
     show: Boolean,
     onDismiss: () -> Unit,
-    onApply: (attribute : String, category : String) -> Unit,
+    onApply: (attribute : String, idCategory : Int) -> Unit,
 ) {
     if (show) {
         var selectItem by rememberSaveable { mutableStateOf("") }
-        var selectTag by rememberSaveable { mutableStateOf("")}
+        var selectTag by rememberSaveable { mutableStateOf<Int?>(null)}
         Dialog(
             onDismissRequest = { onDismiss() },
         ) {
@@ -55,7 +51,7 @@ fun CustomDialogFilter(
                 CustomSpaceHeight(height = 10.dp)
                 Options(items, selectItem) { item -> selectItem = item }
                 CustomSpaceHeight(height = 10.dp)
-                Tags(listOf("All", "Cats", "Dogs", "Birds"), selectTag) {selectTag = it}
+                Tags(categories, selectTag) {selectTag = it}
                 CustomSpaceHeight(height = 15.dp)
                 Divider(
                     color = TextColor,
@@ -64,8 +60,11 @@ fun CustomDialogFilter(
                         .padding(horizontal = 5.dp)
                 )
                 Actions(Modifier.align(Alignment.End)) {
+                    if(selectItem.isEmpty() && selectTag == null){
+                        return@Actions
+                    }
                     onDismiss()
-                    onApply(selectItem,selectTag)
+                    onApply(selectItem,selectTag!!)
                 }
 
             }
@@ -74,7 +73,7 @@ fun CustomDialogFilter(
 }
 
 @Composable
-fun Tags(list: List<String>, selectItem: String, onClickTag: (String) -> Unit) {
+fun Tags(list: List<CategoryModel>, idSelectCategory: Int?, onClickTag: (Int) -> Unit) {
     LazyRow(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
         itemsIndexed(list) { index, it ->
             OutlinedButton(
@@ -84,17 +83,17 @@ fun Tags(list: List<String>, selectItem: String, onClickTag: (String) -> Unit) {
                     end = if (index == list.size - 1) MarginHorizontalScreen else 0.dp,
                 ),
                 colors = ButtonDefaults.buttonColors(
-                    backgroundColor = if (selectItem == it) Pink else Color.Transparent
+                    backgroundColor = if (idSelectCategory == it.id) Pink else Color.Transparent
                 ),
                 border = BorderStroke(2.dp, Pink),
-                onClick = { onClickTag(it) }
+                onClick = { onClickTag(it.id) }
             ) {
                 Text(
-                    text = it,
+                    text = it.nameTag,
                     fontSize = 13.sp,
-                    color = if (selectItem == it) Color.White else TextColor,
-                    modifier = Modifier.padding(vertical =  if(selectItem == it) 3.dp else 0.dp),
-                    fontWeight = if (selectItem == it) FontWeight.Bold else null
+                    color = if (idSelectCategory == it.id) Color.White else TextColor,
+                    modifier = Modifier.padding(vertical =  if(idSelectCategory == it.id) 3.dp else 0.dp),
+                    fontWeight = if (idSelectCategory == it.id) FontWeight.Bold else null
                 )
             }
         }

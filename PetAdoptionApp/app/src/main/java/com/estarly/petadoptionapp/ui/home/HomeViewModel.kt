@@ -9,22 +9,30 @@ import com.estarly.petadoptionapp.base.BaseResultUseCase
 import com.estarly.petadoptionapp.domain.breeds.FilterBreedsUseCase
 import com.estarly.petadoptionapp.domain.breeds.GetBreedsUseCase
 import com.estarly.petadoptionapp.domain.breeds.SearchBreedsUseCase
+import com.estarly.petadoptionapp.domain.categories.GetCategoriesUseCase
 import com.estarly.petadoptionapp.domain.promotion.GetPromotionUseCase
 import com.estarly.petadoptionapp.ui.model.BreedModel
 import com.estarly.petadoptionapp.ui.model.PromotionModel
+import com.estarly.petadoptionapp.ui.model.CategoryModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
   private val getPromotionUseCase: GetPromotionUseCase,
   private val getBreedsUseCase   : GetBreedsUseCase,
   private val searchBreedsUseCase: SearchBreedsUseCase,
-  private val filterBreedsUseCase: FilterBreedsUseCase
+  private val filterBreedsUseCase: FilterBreedsUseCase,
+  private val getCategoriesUseCase: GetCategoriesUseCase
 ): ViewModel() {
     private val TAG ="HomeViewModel"
 
+    private var _tags = MutableLiveData<List<CategoryModel>>()
+    val tags: LiveData<List<CategoryModel>> = _tags
+    private var _idSelectTag = MutableLiveData<Int>()
+    val idSelectTag: LiveData<Int> = _idSelectTag
     private var _showDialogFilter = MutableLiveData<Boolean>()
     val showDialogFilter: LiveData<Boolean> = _showDialogFilter
     private var _isSearching= MutableLiveData<Boolean>()//show/fade multiple components to show only the list of breeds
@@ -43,6 +51,20 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch{
             getPromotion()
             getBreeds()
+            getCategories()
+        }
+    }
+
+    private suspend fun getCategories() {
+        val response = getCategoriesUseCase()
+        when(response){
+            is BaseResultUseCase.Error -> response.exception.printStackTrace()
+            BaseResultUseCase.NoInternetConnection -> TODO()
+            BaseResultUseCase.NullOrEmptyData -> TODO()
+            is BaseResultUseCase.Success -> {
+                _tags.value = response.data
+                changeSelectTag(_tags.value!!.first().id)
+            }
         }
     }
 
@@ -81,7 +103,13 @@ class HomeViewModel @Inject constructor(
 
     fun showDialogFilter(show: Boolean = true) { _showDialogFilter.value = show }
 
-    fun filter(attribute: String, category: String) {
-        _breeds.value = filterBreedsUseCase(attribute,category,breedsSaveInfo ?: listOf())
+    fun filter(attribute: String? = null, idCategory: Int? = null) {
+        _idSelectTag.value = idCategory ?: _idSelectTag.value
+        _breeds.value = filterBreedsUseCase(attribute,idCategory,breedsSaveInfo ?: listOf())
+    }
+
+    fun changeSelectTag(id: Int) {
+        _idSelectTag.value = id
+        filter(idCategory = id)
     }
 }

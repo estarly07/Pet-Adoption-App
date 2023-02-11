@@ -79,7 +79,7 @@ internal class HomeViewModelTest{
 
     @Test
     fun `When the list is null and is filtered by name or quantity, it must return an empty list`(){
-        homeViewModel.filter("Nombre","")
+        homeViewModel.filter("Nombre",null)
         assert(homeViewModel.breeds.value!!.isEmpty())
     }
 }

@@ -4,7 +4,8 @@ import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
 @Keep
 data class BreedResponse (
-    @SerializedName("breedName") val breedName : String,
-    @SerializedName("amount")    val amount    : Int,
-    @SerializedName("image")     val image     : String
+    @SerializedName("breedName") val breedName  : String,
+    @SerializedName("amount")    val amount     : Int,
+    @SerializedName("image")     val image      : String,
+    @SerializedName("idCategory")     val idCategory : Int,
 )

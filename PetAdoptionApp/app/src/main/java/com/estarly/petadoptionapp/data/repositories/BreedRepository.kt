@@ -23,7 +23,8 @@ class BreedRepository @Inject constructor(private val breedClient : BreedClient)
     }
 }
 private fun BreedResponse.toData() : BreedModel = BreedModel(
-    image     = this.image,
-    breedName = this.breedName,
-    amount    = this.amount
+    image      = this.image,
+    breedName  = this.breedName,
+    amount     = this.amount,
+    idCategory = this.idCategory
 )
