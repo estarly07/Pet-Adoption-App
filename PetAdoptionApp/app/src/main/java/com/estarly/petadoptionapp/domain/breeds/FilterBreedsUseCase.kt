@@ -21,7 +21,7 @@ class FilterBreedsUseCase @Inject constructor(){
                 newList
             }
             "Cantidad"-> {
-               val newList = list.sortedByDescending {it.amount}
+               val newList = list.sortedByDescending {it.amount }
                 idCategory?.let {
                     return newList.filter {item-> item.idCategory == it  }
                 }

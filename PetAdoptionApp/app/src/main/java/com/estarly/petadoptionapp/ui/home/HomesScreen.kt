@@ -25,6 +25,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.estarly.petadoptionapp.R
@@ -36,11 +37,12 @@ import com.estarly.petadoptionapp.ui.dialog.filter.CustomDialogFilter
 import com.estarly.petadoptionapp.ui.model.BreedModel
 import com.estarly.petadoptionapp.ui.model.PromotionModel
 import com.estarly.petadoptionapp.ui.model.CategoryModel
+import com.estarly.petadoptionapp.ui.model.Route
 import com.estarly.petadoptionapp.ui.theme.*
 import java.util.*
 
 @Composable
-fun HomeScreen(homeViewModel: HomeViewModel) {
+fun HomeScreen(homeViewModel: HomeViewModel, navigationController: NavHostController) {
     val showProgressPromotion: Boolean by homeViewModel.showProgressPromotion.observeAsState(initial = true)
     val promotion: PromotionModel? by homeViewModel.promotion.observeAsState(initial = null)
     val breeds: List<BreedModel>? by homeViewModel.breeds.observeAsState(initial = null)
@@ -67,7 +69,9 @@ fun HomeScreen(homeViewModel: HomeViewModel) {
             TitleAndViewAll()
             CustomSpaceHeight(height = 17.dp)
         }
-        Pets(breeds)
+        Pets(breeds){ breed->
+            navigationController.navigate(Route.ScreenBreed.createRoute(breed.idBreed))
+        }
         //Dialogs
         CustomDialogFilter(
             items = listOf("Nombre", "Cantidad"),
@@ -82,7 +86,7 @@ fun HomeScreen(homeViewModel: HomeViewModel) {
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
-fun Pets(breeds: List<BreedModel>?) {
+fun Pets(breeds: List<BreedModel>?, onClick: (BreedModel)->Unit) {
     breeds?.let { listBreeds ->
         CustomStaggeredVerticalGrid(
             numColumns = 2,
@@ -94,7 +98,9 @@ fun Pets(breeds: List<BreedModel>?) {
                             start = if (i % 2 != 0) 10.dp else 0.dp,
                             end = if (i % 2 == 0) 10.dp else 0.dp,
                             bottom = 20.dp
-                        )
+                        ).clickable {
+                            onClick(breed)
+                        }
                     ) {
                         Column(
                             modifier = Modifier
