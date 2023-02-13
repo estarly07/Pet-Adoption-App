@@ -12,6 +12,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.estarly.petadoptionapp.ui.breed.BreedScreen
+import com.estarly.petadoptionapp.ui.breed.BreedViewModel
 import com.estarly.petadoptionapp.ui.home.HomeScreen
 import com.estarly.petadoptionapp.ui.home.HomeViewModel
 import com.estarly.petadoptionapp.ui.model.Route
@@ -19,7 +20,8 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-    private val homeViewModel : HomeViewModel by viewModels()
+    private val homeViewModel  : HomeViewModel  by viewModels()
+    private val breedViewModel : BreedViewModel by viewModels()
 
     @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,12 +37,17 @@ class MainActivity : ComponentActivity() {
                     composable(Route.ScreenHome.route) { HomeScreen(homeViewModel, navigationController) }
                     composable(
                         Route.ScreenBreed.route,
-                        arguments = listOf(navArgument("idBreed") { type = NavType.IntType })
+                        arguments = listOf(
+                            navArgument(Route.ScreenBreed.argumentIdBreed)   { type = NavType.IntType },
+                            navArgument(Route.ScreenBreed.argumentBreedName) { type = NavType.StringType },
+                            navArgument(Route.ScreenBreed.argumentImage)     { type = NavType.StringType },
+                        )
                     )
                     { backStackEntry ->
-                        backStackEntry.arguments?.getInt("idBreed")?.let {idBreed->
-                            BreedScreen(idBreed)
-                        }
+                        val idBreed   = backStackEntry.arguments?.getInt(Route.ScreenBreed.argumentIdBreed)!!
+                        val breedName = backStackEntry.arguments?.getString(Route.ScreenBreed.argumentBreedName)!!
+                        val image     = backStackEntry.arguments?.getString(Route.ScreenBreed.argumentImage)!!
+                        BreedScreen(idBreed =  idBreed, nameBreed = breedName, image = image,breedViewModel)
                     }
                 }
             }

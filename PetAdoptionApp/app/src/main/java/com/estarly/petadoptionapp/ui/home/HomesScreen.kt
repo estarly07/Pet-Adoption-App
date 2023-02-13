@@ -70,7 +70,7 @@ fun HomeScreen(homeViewModel: HomeViewModel, navigationController: NavHostContro
             CustomSpaceHeight(height = 17.dp)
         }
         Pets(breeds){ breed->
-            navigationController.navigate(Route.ScreenBreed.createRoute(breed.idBreed))
+            navigationController.navigate(Route.ScreenBreed.createRoute(breed.idBreed,breed.breedName,breed.image))
         }
         //Dialogs
         CustomDialogFilter(
