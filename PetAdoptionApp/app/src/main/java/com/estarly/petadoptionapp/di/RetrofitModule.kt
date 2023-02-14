@@ -1,9 +1,11 @@
 package com.estarly.petadoptionapp.di
 
+import com.estarly.petadoptionapp.data.api.interceptors.HeaderInterceptor
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
@@ -17,6 +19,10 @@ class RetrofitModule {
         return Retrofit.Builder()
             .baseUrl("https://pet-adoption-app-96c45-default-rtdb.firebaseio.com/")
             .addConverterFactory(GsonConverterFactory.create())
+            .client(getClient())
             .build()
+    }
+    private fun getClient() : OkHttpClient{
+        return  OkHttpClient.Builder().addInterceptor(HeaderInterceptor()).build()
     }
 }

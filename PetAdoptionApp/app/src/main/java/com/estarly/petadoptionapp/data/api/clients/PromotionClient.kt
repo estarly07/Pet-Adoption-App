@@ -6,7 +6,6 @@ import retrofit2.http.GET
 import retrofit2.http.Headers
 
 interface PromotionClient {
-    @Headers("Content-Type: application/json")
     @GET("promotion.json")
     suspend fun getPromotion() : PromotionResponse?
 

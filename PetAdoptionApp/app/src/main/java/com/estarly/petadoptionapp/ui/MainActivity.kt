@@ -47,6 +47,7 @@ class MainActivity : ComponentActivity() {
                         val idBreed   = backStackEntry.arguments?.getInt(Route.ScreenBreed.argumentIdBreed)!!
                         val breedName = backStackEntry.arguments?.getString(Route.ScreenBreed.argumentBreedName)!!
                         val image     = backStackEntry.arguments?.getString(Route.ScreenBreed.argumentImage)!!
+                        breedViewModel.getPets(idBreed)
                         BreedScreen(idBreed =  idBreed, nameBreed = breedName, image = image,breedViewModel)
                     }
                 }
