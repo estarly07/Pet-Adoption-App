@@ -11,4 +11,8 @@ sealed class Route(val route : String){
         const val argumentImage     = "image"
         fun createRoute(idBreed : Int, breedName : String, image:String) = "screenBreed/$idBreed/$breedName/${URLEncoder.encode(image, StandardCharsets.UTF_8.toString())}"
     }
+    object ScreenPet : Route("screenPet/{breedName}"){
+        const val argumentBreedName = "breedName"
+        fun createRoute(breedName : String) = "screenPet/$breedName"
+    }
 }

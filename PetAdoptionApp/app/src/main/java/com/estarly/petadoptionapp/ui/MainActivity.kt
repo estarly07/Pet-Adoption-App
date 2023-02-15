@@ -2,6 +2,7 @@ package com.estarly.petadoptionapp.ui
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -15,13 +16,17 @@ import com.estarly.petadoptionapp.ui.breed.BreedScreen
 import com.estarly.petadoptionapp.ui.breed.BreedViewModel
 import com.estarly.petadoptionapp.ui.home.HomeScreen
 import com.estarly.petadoptionapp.ui.home.HomeViewModel
+import com.estarly.petadoptionapp.ui.model.PetModel
 import com.estarly.petadoptionapp.ui.model.Route
+import com.estarly.petadoptionapp.ui.pet.PetScreen
+import com.estarly.petadoptionapp.ui.pet.PetViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     private val homeViewModel  : HomeViewModel  by viewModels()
     private val breedViewModel : BreedViewModel by viewModels()
+    private val petViewModel   : PetViewModel   by viewModels()
 
     @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,11 +49,18 @@ class MainActivity : ComponentActivity() {
                         )
                     )
                     { backStackEntry ->
+                        Log.i("HOLDA","HOLA")
                         val idBreed   = backStackEntry.arguments?.getInt(Route.ScreenBreed.argumentIdBreed)!!
                         val breedName = backStackEntry.arguments?.getString(Route.ScreenBreed.argumentBreedName)!!
                         val image     = backStackEntry.arguments?.getString(Route.ScreenBreed.argumentImage)!!
                         breedViewModel.getPets(idBreed)
-                        BreedScreen(idBreed =  idBreed, nameBreed = breedName, image = image,breedViewModel)
+                        BreedScreen(idBreed =  idBreed, nameBreed = breedName, image = image,breedViewModel,navigationController)
+                    }
+                    composable(Route.ScreenPet.route){backStackEntry ->
+                        navigationController.previousBackStackEntry?.arguments?.let {
+                            val breedName = backStackEntry.arguments?.getString(Route.ScreenPet.argumentBreedName)!!
+                            PetScreen(it.getSerializable("pet") as PetModel, breedName, petViewModel)
+                        }
                     }
                 }
             }

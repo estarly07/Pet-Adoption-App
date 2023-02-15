@@ -13,12 +13,15 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.estarly.petadoptionapp.R
 import com.estarly.petadoptionapp.ui.composables.CustomCard
 import com.estarly.petadoptionapp.ui.composables.CustomHeaderWithImageAndInfo
 import com.estarly.petadoptionapp.ui.composables.CustomSpaceHeight
+import com.estarly.petadoptionapp.ui.composables.CustomTextWithIcon
+import com.estarly.petadoptionapp.ui.model.Route
 import com.estarly.petadoptionapp.ui.theme.MarginHorizontalScreen
 import com.estarly.petadoptionapp.ui.theme.TextColor
 import com.estarly.petadoptionapp.ui.theme.TitleColor
@@ -29,7 +32,8 @@ fun BreedScreen(
     idBreed: Int,
     nameBreed: String,
     image: String,
-    breedViewModel: BreedViewModel
+    breedViewModel: BreedViewModel,
+    navController: NavController
 ) {
     val pets by breedViewModel.pets.observeAsState(initial = listOf())
     Column(
@@ -57,7 +61,10 @@ fun BreedScreen(
                 CustomCard(
                     Modifier
                         .height(200.dp)
-                        .clickable {}
+                        .clickable {
+                            navController.currentBackStackEntry?.arguments?.putSerializable("pet", pet)
+                            navController.navigate(Route.ScreenPet.createRoute(breedName = nameBreed))
+                        }
                 ) {
                     Column(
                         modifier = Modifier
@@ -72,22 +79,11 @@ fun BreedScreen(
                             fontWeight = FontWeight.ExtraBold,
                             modifier = Modifier.align(Alignment.Start)
                         )
-                        Row(Modifier.align(Alignment.Start)) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.ic_pet),
-                                contentDescription = "icon pet",
-                                modifier = Modifier
-                                    .size(20.dp)
-                                    .padding(end = 5.dp),
-                                tint = TextColor
-                            )
-                            Text(
-                                text = pet.sex,
-                                color = TextColor,
-                                fontWeight = FontWeight.Bold,
-                                fontSize = 15.sp,
-                            )
-                        }
+                        CustomTextWithIcon(
+                            modifier = Modifier.align(Alignment.Start),
+                            text = pet.sex,
+                            icon = R.drawable.ic_pet
+                        )
                         CustomSpaceHeight(height = 5.dp)
                         GlideImage(
                             model = pet.image,

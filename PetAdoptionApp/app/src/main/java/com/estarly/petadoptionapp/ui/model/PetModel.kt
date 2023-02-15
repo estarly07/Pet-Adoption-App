@@ -1,5 +1,7 @@
 package com.estarly.petadoptionapp.ui.model
 
+import java.io.Serializable
+
 data class PetModel(
     val idPet   : Int,
     val namePet : String,
@@ -10,4 +12,4 @@ data class PetModel(
     val sex     : String,
     val amount  : Double,
     val adopted : Boolean
-)
+) : Serializable

@@ -41,7 +41,7 @@ fun Info(title: String, subtitle: String) {
             Text(
                 text = title,
                 color = TitleColor,
-                fontSize = 20.sp,
+                fontSize = 22.sp,
                 fontWeight = FontWeight.ExtraBold,
                 modifier = Modifier.align(Alignment.Start)
             )
