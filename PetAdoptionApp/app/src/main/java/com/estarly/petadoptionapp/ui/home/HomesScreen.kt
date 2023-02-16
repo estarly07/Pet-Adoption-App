@@ -15,7 +15,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -29,15 +28,12 @@ import androidx.navigation.NavHostController
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.estarly.petadoptionapp.R
-import com.estarly.petadoptionapp.ui.composables.CustomCard
-import com.estarly.petadoptionapp.ui.composables.CustomSpaceHeight
-import com.estarly.petadoptionapp.ui.composables.CustomStaggeredVerticalGrid
-import com.estarly.petadoptionapp.ui.composables.CustomTextField
+import com.estarly.petadoptionapp.ui.composables.*
 import com.estarly.petadoptionapp.ui.dialog.filter.CustomDialogFilter
 import com.estarly.petadoptionapp.ui.model.BreedModel
 import com.estarly.petadoptionapp.ui.model.PromotionModel
 import com.estarly.petadoptionapp.ui.model.CategoryModel
-import com.estarly.petadoptionapp.ui.model.Route
+import com.estarly.petadoptionapp.ui.navigator.Route
 import com.estarly.petadoptionapp.ui.theme.*
 import java.util.*
 
@@ -94,13 +90,15 @@ fun Pets(breeds: List<BreedModel>?, onClick: (BreedModel)->Unit) {
             listBreeds.forEachIndexed { i, breed ->
                 with(breed) {
                     CustomCard(
-                        Modifier.padding(
-                            start = if (i % 2 != 0) 10.dp else 0.dp,
-                            end = if (i % 2 == 0) 10.dp else 0.dp,
-                            bottom = 20.dp
-                        ).clickable {
-                            onClick(breed)
-                        }
+                        Modifier
+                            .padding(
+                                start = if (i % 2 != 0) 10.dp else 0.dp,
+                                end = if (i % 2 == 0) 10.dp else 0.dp,
+                                bottom = 20.dp
+                            )
+                            .clickable {
+                                onClick(breed)
+                            }
                     ) {
                         Column(
                             modifier = Modifier
@@ -110,14 +108,14 @@ fun Pets(breeds: List<BreedModel>?, onClick: (BreedModel)->Unit) {
                         ) {
                             Text(
                                 text = breedName,
-                                color = TitleColor,
+                                color = MaterialTheme.colors.onPrimary,
                                 fontSize = 13.sp,
                                 fontWeight = FontWeight.ExtraBold,
                                 modifier = Modifier.align(Alignment.Start)
                             )
                             Text(
                                 text = "$amount available",
-                                color = TextColor,
+                                color = MaterialTheme.colors.onSecondary,
                                 fontWeight = FontWeight.Bold,
                                 fontSize = 13.sp,
                                 modifier = Modifier.align(Alignment.Start)
@@ -146,11 +144,11 @@ fun TitleAndViewAll() {
     ) {
         Text(
             text = "Top Breeds",
-            color = TitleColor,
+            color = MaterialTheme.colors.onPrimary,
             fontSize = 18.sp,
             fontWeight = FontWeight.Bold
         )
-        Text(text = "View all", color = TextColor, fontSize = 13.sp,fontWeight = FontWeight.Bold)
+        Text(text = "View all", color = MaterialTheme.colors.onSecondary, fontSize = 13.sp,fontWeight = FontWeight.Bold)
     }
 }
 
@@ -169,13 +167,13 @@ fun PromotionCard(promotion: PromotionModel?, showProgressPromotion: Boolean) {
                         Text(
                             text = title,
                             fontWeight = FontWeight.Bold,
-                            color = TitleColor,
+                            color = MaterialTheme.colors.onPrimary,
                             fontSize = 17.sp
                         )
                         CustomSpaceHeight(height = 5.dp)
                         Text(
                             text = "Upto $percentage% off",
-                            color = Purple,
+                            color = MaterialTheme.colors.primary,
                             fontSize = 15.sp,
                             fontWeight = FontWeight.ExtraBold
                         )
@@ -183,7 +181,7 @@ fun PromotionCard(promotion: PromotionModel?, showProgressPromotion: Boolean) {
                         Text(buildAnnotatedString {
                             withStyle(
                                 style = SpanStyle(
-                                    color = TextColor,
+                                    color = MaterialTheme.colors.onSecondary,
                                     fontSize = 12.sp,
                                     fontWeight = FontWeight.Bold
                                 )
@@ -192,7 +190,7 @@ fun PromotionCard(promotion: PromotionModel?, showProgressPromotion: Boolean) {
                             }
                             withStyle(
                                 style = SpanStyle(
-                                    color = Purple,
+                                    color = MaterialTheme.colors.primary,
                                     fontSize = 12.sp,
                                     fontWeight = FontWeight.Bold
                                 )
@@ -201,7 +199,7 @@ fun PromotionCard(promotion: PromotionModel?, showProgressPromotion: Boolean) {
                             }
                             withStyle(
                                 style = SpanStyle(
-                                    color = TextColor,
+                                    color = MaterialTheme.colors.onSecondary,
                                     fontSize = 12.sp,
                                     fontWeight = FontWeight.Bold
                                 )
@@ -233,8 +231,8 @@ fun Tags(listTags: List<CategoryModel>, idSelectTag : Int, onCheckTag : (Int)->U
         items(listTags, key = { it.id }) {
             ItemTag(
                 tag = it,
-                colorSelect = TitleColor,
-                colorUnSelect = TextColor,
+                colorSelect = MaterialTheme.colors.onPrimary,
+                colorUnSelect = MaterialTheme.colors.onSecondary,
                 modifier = Modifier.padding(end = 35.dp),
                 isSelect = it.id == idSelectTag
             ) {tag->
@@ -287,37 +285,29 @@ fun Search(search: String,onClickFilter : ()->Unit, onTextChanged : (String)->Un
                 Icon(
                     imageVector = Icons.Sharp.Search,
                     contentDescription = "Icon search",
-                    tint = TextColor
+                    tint = MaterialTheme.colors.onSecondary
 
                 )
             },
-            textColor = TextColor,
-            backgroundColor = CardBackground,
+            textColor = MaterialTheme.colors.onSecondary,
+            backgroundColor = MaterialTheme.colors.secondary,
             placerHolder = "Search"
         )
         Spacer(modifier = Modifier.width(10.dp))
-        Box(
-            modifier = Modifier
-                .size(50.dp)
-                .clip(RoundedCornerShape(15.dp))
-                .background(
-                    brush = Brush.verticalGradient(
-                        colors = listOf(
-                            Pink,
-                            Purple
-                        )
-                    )
+        CustomButton(
+            modifier = Modifier.size(50.dp),
+            composable = {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_filter),
+                    contentDescription = "button filter",
+                    tint = Color.White,
+                    modifier = Modifier
+                        .align(Alignment.Center)
+                        .size(20.dp)
                 )
-                .clickable { onClickFilter() },
+            }
         ) {
-            Icon(
-                painter = painterResource(id = R.drawable.ic_filter),
-                contentDescription = "button filter",
-                tint = Color.White,
-                modifier = Modifier
-                    .align(Alignment.Center)
-                    .size(20.dp)
-            )
+            onClickFilter()
         }
     }
 }
@@ -331,12 +321,12 @@ fun Header() {
                 text = "Hi Bunny!",
                 fontSize = 25.sp,
                 fontWeight = FontWeight.Bold,
-                color = TitleColor
+                color = MaterialTheme.colors.onPrimary
             )
             Text(
                 text = "Are you looking for pets?",
                 fontSize = 15.sp,
-                color = TextColor,
+                color = MaterialTheme.colors.onSecondary,
                 fontWeight = FontWeight.Bold,
             )
         }

@@ -1,10 +1,7 @@
 package com.estarly.petadoptionapp.ui.composables
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.FloatingActionButton
-import androidx.compose.material.FloatingActionButtonDefaults
-import androidx.compose.material.Icon
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.sharp.ArrowBack
 import androidx.compose.material.icons.sharp.Menu
@@ -18,10 +15,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
-import com.estarly.petadoptionapp.ui.theme.CardBackground
-import com.estarly.petadoptionapp.ui.theme.TextColor
-import com.estarly.petadoptionapp.ui.theme.TitleColor
-
 
 @Composable
 fun CustomHeaderWithImageAndInfo(image : String, title : String, subtitle: String, space : Dp){
@@ -40,14 +33,14 @@ fun Info(title: String, subtitle: String) {
         Column {
             Text(
                 text = title,
-                color = TitleColor,
+                color = MaterialTheme.colors.onPrimary,
                 fontSize = 22.sp,
                 fontWeight = FontWeight.ExtraBold,
                 modifier = Modifier.align(Alignment.Start)
             )
             Text(
                 text = subtitle,
-                color = TextColor,
+                color = MaterialTheme.colors.onSecondary,
                 fontWeight = FontWeight.Bold,
                 fontSize = 17.sp,
                 modifier = Modifier.align(Alignment.Start)
@@ -55,7 +48,7 @@ fun Info(title: String, subtitle: String) {
         }
         FloatingActionButton(
             onClick = {  },
-            backgroundColor = CardBackground,
+            backgroundColor = MaterialTheme.colors.secondary,
             elevation = FloatingActionButtonDefaults.elevation(0.dp)
         ) {
             Icon(imageVector = Icons.Sharp.Star, contentDescription = "icon like")

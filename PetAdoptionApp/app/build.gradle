@@ -6,12 +6,12 @@ plugins {
 }
 
 android {
-    compileSdk 32
+    compileSdk 33
 
     defaultConfig {
         applicationId "com.estarly.petadoptionapp"
         minSdk 21
-        targetSdk 32
+        targetSdk 33
         versionCode 1
         versionName "1.0"
 
@@ -20,7 +20,20 @@ android {
             useSupportLibrary true
         }
     }
-
+    signingConfigs {
+        release {
+            keyAlias 'PetAdoption'
+            keyPassword '123456789'
+            storePassword '123456789'
+            storeFile file("C:\\Users\\Usuario\\Documents\\Learning\\Kotlin\\key-pet_adoption.jks")
+        }
+        debug {
+            keyAlias 'PetAdoption'
+            keyPassword '123456789'
+            storePassword '123456789'
+            storeFile file("C:\\Users\\Usuario\\Documents\\Learning\\Kotlin\\key-pet_adoption.jks")
+        }
+    }
     buildTypes {
         release {
             minifyEnabled false
@@ -66,6 +79,7 @@ dependencies {
     //CORRUTINAS
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4'
 
+    implementation "com.google.accompanist:accompanist-systemuicontroller:0.27.0"
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation "androidx.compose.ui:ui:$compose_version"
     implementation "androidx.compose.material:material:$compose_version"

@@ -4,6 +4,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.*
@@ -19,9 +20,6 @@ import com.estarly.petadoptionapp.R
 import com.estarly.petadoptionapp.ui.composables.*
 import com.estarly.petadoptionapp.ui.model.PetModel
 import com.estarly.petadoptionapp.ui.theme.MarginHorizontalScreen
-import com.estarly.petadoptionapp.ui.theme.Purple
-import com.estarly.petadoptionapp.ui.theme.TextColor
-import com.estarly.petadoptionapp.ui.theme.TitleColor
 import com.estarly.petadoptionapp.utils.format
 import com.estarly.petadoptionapp.utils.toYear
 
@@ -107,7 +105,7 @@ fun Info(months: Int, address: String, sex: String, breedName: String) {
         ) {
             Text(
                 text = "${months.toYear()} years old",
-                color = TextColor,
+                color = MaterialTheme.colors.onSecondary,
                 fontSize = 15.sp,
                 maxLines = 7,
             )
@@ -144,21 +142,21 @@ fun About(about: String, showMoreAbout: Boolean, onClickMore: () -> Unit) {
     Column {
         Text(
             text = "About",
-            color = TitleColor,
+            color = MaterialTheme.colors.onPrimary,
             fontSize = 17.sp,
             fontWeight = FontWeight.ExtraBold,
         )
         CustomSpaceHeight(height = 5.dp)
         Text(
             text = about,
-            color = TextColor,
+            color = MaterialTheme.colors.onSecondary,
             fontSize = 15.sp,
             maxLines = if(!showMoreAbout) 7 else Int.MAX_VALUE,
             overflow = if(!showMoreAbout) TextOverflow.Ellipsis else TextOverflow.Visible,
         )
         Text(
             text = if(!showMoreAbout)"+More" else "-less",
-            color = Purple,
+            color = MaterialTheme.colors.primary,
             fontSize = 15.sp,
             modifier = Modifier.clickable { onClickMore() }
         )

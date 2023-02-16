@@ -9,7 +9,6 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -21,10 +20,8 @@ import com.estarly.petadoptionapp.ui.composables.CustomCard
 import com.estarly.petadoptionapp.ui.composables.CustomHeaderWithImageAndInfo
 import com.estarly.petadoptionapp.ui.composables.CustomSpaceHeight
 import com.estarly.petadoptionapp.ui.composables.CustomTextWithIcon
-import com.estarly.petadoptionapp.ui.model.Route
+import com.estarly.petadoptionapp.ui.navigator.Route
 import com.estarly.petadoptionapp.ui.theme.MarginHorizontalScreen
-import com.estarly.petadoptionapp.ui.theme.TextColor
-import com.estarly.petadoptionapp.ui.theme.TitleColor
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
@@ -74,7 +71,7 @@ fun BreedScreen(
                     ) {
                         Text(
                             text = pet.namePet,
-                            color = TitleColor,
+                            color = MaterialTheme.colors.onPrimary,
                             fontSize = 17.sp,
                             fontWeight = FontWeight.ExtraBold,
                             modifier = Modifier.align(Alignment.Start)

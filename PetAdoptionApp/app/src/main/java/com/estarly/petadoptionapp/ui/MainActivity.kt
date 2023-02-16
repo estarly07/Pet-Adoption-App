@@ -2,24 +2,15 @@ package com.estarly.petadoptionapp.ui
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.material.Scaffold
-import androidx.navigation.NavType
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
-import com.estarly.petadoptionapp.ui.breed.BreedScreen
 import com.estarly.petadoptionapp.ui.breed.BreedViewModel
-import com.estarly.petadoptionapp.ui.home.HomeScreen
 import com.estarly.petadoptionapp.ui.home.HomeViewModel
-import com.estarly.petadoptionapp.ui.model.PetModel
-import com.estarly.petadoptionapp.ui.model.Route
-import com.estarly.petadoptionapp.ui.pet.PetScreen
+import com.estarly.petadoptionapp.ui.navigator.AppNavigation
 import com.estarly.petadoptionapp.ui.pet.PetViewModel
+import com.estarly.petadoptionapp.ui.theme.PetAdoptionAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -33,35 +24,9 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         homeViewModel.onCreate()
         setContent {
-            val navigationController = rememberNavController()
-            Scaffold {
-                NavHost(
-                    navController = navigationController,
-                    startDestination = Route.ScreenHome.route
-                ) {
-                    composable(Route.ScreenHome.route) { HomeScreen(homeViewModel, navigationController) }
-                    composable(
-                        Route.ScreenBreed.route,
-                        arguments = listOf(
-                            navArgument(Route.ScreenBreed.argumentIdBreed)   { type = NavType.IntType },
-                            navArgument(Route.ScreenBreed.argumentBreedName) { type = NavType.StringType },
-                            navArgument(Route.ScreenBreed.argumentImage)     { type = NavType.StringType },
-                        )
-                    )
-                    { backStackEntry ->
-                        Log.i("HOLDA","HOLA")
-                        val idBreed   = backStackEntry.arguments?.getInt(Route.ScreenBreed.argumentIdBreed)!!
-                        val breedName = backStackEntry.arguments?.getString(Route.ScreenBreed.argumentBreedName)!!
-                        val image     = backStackEntry.arguments?.getString(Route.ScreenBreed.argumentImage)!!
-                        breedViewModel.getPets(idBreed)
-                        BreedScreen(idBreed =  idBreed, nameBreed = breedName, image = image,breedViewModel,navigationController)
-                    }
-                    composable(Route.ScreenPet.route){backStackEntry ->
-                        navigationController.previousBackStackEntry?.arguments?.let {
-                            val breedName = backStackEntry.arguments?.getString(Route.ScreenPet.argumentBreedName)!!
-                            PetScreen(it.getSerializable("pet") as PetModel, breedName, petViewModel)
-                        }
-                    }
+            PetAdoptionAppTheme(false) {
+                Scaffold {
+                 AppNavigation(homeViewModel,breedViewModel,petViewModel)
                 }
             }
         }
