@@ -15,6 +15,7 @@ import com.estarly.petadoptionapp.ui.model.BreedModel
 import com.estarly.petadoptionapp.ui.model.PromotionModel
 import com.estarly.petadoptionapp.ui.model.CategoryModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -29,6 +30,10 @@ class HomeViewModel @Inject constructor(
 ): ViewModel() {
     private val TAG ="HomeViewModel"
 
+    private var _showProgressBreeds = MutableLiveData<Boolean>()
+    val showProgressBreeds : LiveData<Boolean> = _showProgressBreeds
+    private var _showProgressCategories = MutableLiveData<Boolean>()
+    val showProgressCategories : LiveData<Boolean> = _showProgressCategories
     private var _tags = MutableLiveData<List<CategoryModel>>()
     val tags: LiveData<List<CategoryModel>> = _tags
     private var _idSelectTag = MutableLiveData<Int>()
@@ -49,14 +54,16 @@ class HomeViewModel @Inject constructor(
 
     fun onCreate(){
         viewModelScope.launch{
-            getPromotion()
-            getBreeds()
-            getCategories()
+            getCategories()//Get the categories of each type of breed
+            getPromotion()//Get active promotion
+            getBreeds()//Get all breeds
         }
     }
 
     private suspend fun getCategories() {
-        val response = getCategoriesUseCase()
+        _showProgressCategories.value = true// show shimmer of categories
+        val response = getCategoriesUseCase()//Get the categories
+        _showProgressCategories.value = false// gone shimmer of categories
         when(response){
             is BaseResultUseCase.Error -> {}
             BaseResultUseCase.NoInternetConnection -> {}
@@ -71,9 +78,9 @@ class HomeViewModel @Inject constructor(
     }
 
     private suspend fun getBreeds() {
-        //TODO Show progress
-        val response = getBreedsUseCase()
-        //TODO gone progress
+        _showProgressBreeds.value = true// show shimmer of breeds
+        val response = getBreedsUseCase()//Get all breeds
+        _showProgressBreeds.value = false// gone shimmer of breeds
         when(response){
             is BaseResultUseCase.Error -> {}
             BaseResultUseCase.NoInternetConnection -> {}
@@ -86,10 +93,10 @@ class HomeViewModel @Inject constructor(
     }
 
     private suspend fun getPromotion() {
-        _showProgressPromotion.value = true// show progress promotion
+        _showProgressPromotion.value = true// show shimmer promotion
         val responsePromotion = getPromotionUseCase()// get promotion
         Log.i(TAG,responsePromotion.toString())
-        _showProgressPromotion.value = false// gone progress promotion
+        _showProgressPromotion.value = false// gone shimmer promotion
         when(responsePromotion){
             is BaseResultUseCase.Error -> {}
             BaseResultUseCase.NoInternetConnection -> {}

@@ -1,5 +1,7 @@
 package com.estarly.petadoptionapp.ui.home
 
+import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
@@ -37,52 +39,87 @@ import com.estarly.petadoptionapp.ui.navigator.Route
 import com.estarly.petadoptionapp.ui.theme.*
 import java.util.*
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun HomeScreen(homeViewModel: HomeViewModel, navigationController: NavHostController) {
     val showProgressPromotion: Boolean by homeViewModel.showProgressPromotion.observeAsState(initial = true)
+    val showProgressBreeds: Boolean by homeViewModel.showProgressBreeds.observeAsState(initial = true)
+    val showProgressTags: Boolean by homeViewModel.showProgressCategories.observeAsState(initial = true)
     val promotion: PromotionModel? by homeViewModel.promotion.observeAsState(initial = null)
     val breeds: List<BreedModel>? by homeViewModel.breeds.observeAsState(initial = null)
     val search: String by homeViewModel.search.observeAsState(initial = "")
-    val isSearching : Boolean by homeViewModel.isSearching.observeAsState(initial = true)
-    val showDialogFilter : Boolean by homeViewModel.showDialogFilter.observeAsState(initial = false)
-    val idSelectTag : Int by homeViewModel.idSelectTag.observeAsState(initial = 0)
-    val tags : List<CategoryModel> by homeViewModel.tags.observeAsState(initial = listOf())
-    Column(
-        Modifier
-            .verticalScroll(rememberScrollState())
-            .padding(horizontal = MarginHorizontalScreen)
-    ) {
-        CustomSpaceHeight(height = 25.dp)
-        Header()
-        CustomSpaceHeight(height = 25.dp)
-        Search(search, onClickFilter = {homeViewModel.showDialogFilter()}){ homeViewModel.searchBread(it) }
-        CustomSpaceHeight(height = 28.dp)
-        if(isSearching) {
-            Tags(tags,idSelectTag){id-> homeViewModel.changeSelectTag(id)}
-            CustomSpaceHeight(height = 20.dp)
-            PromotionCard(promotion, showProgressPromotion)
-            CustomSpaceHeight(height = 20.dp)
-            TitleAndViewAll()
-            CustomSpaceHeight(height = 17.dp)
-        }
-        Pets(breeds){ breed->
-            navigationController.navigate(Route.ScreenBreed.createRoute(breed.idBreed,breed.breedName,breed.image))
-        }
-        //Dialogs
-        CustomDialogFilter(
-            items = listOf("Nombre", "Cantidad"),
-            categories = tags,
-            show = showDialogFilter,
-            onDismiss = { homeViewModel.showDialogFilter(false) }
-        ) { attribute, idCategory ->
-            homeViewModel.filter(attribute, idCategory)
+    val isSearching: Boolean by homeViewModel.isSearching.observeAsState(initial = true)
+    val idSelectTag: Int by homeViewModel.idSelectTag.observeAsState(initial = 0)
+    val tags: List<CategoryModel> by homeViewModel.tags.observeAsState(initial = listOf())
+    val showDialogFilter: Boolean by homeViewModel.showDialogFilter.observeAsState(initial = false)
+    Scaffold{
+        Column(
+            Modifier
+                .verticalScroll(rememberScrollState())
+                .padding(horizontal = MarginHorizontalScreen)
+        ) {
+            CustomSpaceHeight(height = 25.dp)
+            Header()
+            CustomSpaceHeight(height = 25.dp)
+            Search(
+                search,
+                onClickFilter = { homeViewModel.showDialogFilter() }) { homeViewModel.searchBread(it) }
+            CustomSpaceHeight(height = 28.dp)
+            if (isSearching) {
+                Tags(
+                    tags,
+                    idSelectTag,
+                    wait = showProgressTags
+                ) { id -> homeViewModel.changeSelectTag(id) }
+                CustomSpaceHeight(height = 20.dp)
+                PromotionCard(promotion, showProgressPromotion)
+                CustomSpaceHeight(height = 20.dp)
+                TitleAndViewAll()
+                CustomSpaceHeight(height = 17.dp)
+            }
+            Pets(breeds, wait = showProgressBreeds) { breed ->
+                navigationController.navigate(
+                    Route.ScreenBreed.createRoute(
+                        breed.idBreed,
+                        breed.breedName,
+                        breed.image
+                    )
+                )
+            }
+            //Dialogs
+            CustomDialogFilter(
+                items = listOf("Nombre", "Cantidad"),
+                categories = tags,
+                show = showDialogFilter,
+                onDismiss = { homeViewModel.showDialogFilter(false) }
+            ) { attribute, idCategory ->
+                homeViewModel.filter(attribute, idCategory)
+            }
         }
     }
 }
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
-fun Pets(breeds: List<BreedModel>?, onClick: (BreedModel)->Unit) {
+fun Pets(breeds: List<BreedModel>?, wait: Boolean, onClick: (BreedModel) -> Unit) {
+    if (wait) {
+        CustomStaggeredVerticalGrid(
+            numColumns = 2,
+        ) {
+            listOf(170, 240, 200, 150, 200).forEachIndexed { i, size ->
+                CustomCard(
+                    modifier = Modifier.padding(
+                        start = if (i % 2 != 0) 10.dp else 0.dp,
+                        end = if (i % 2 == 0) 10.dp else 0.dp,
+                        bottom = 20.dp
+                    ),
+                    wait = wait,
+                    height = size.dp
+                ) {}
+            }
+        }
+        return
+    }
     breeds?.let { listBreeds ->
         CustomStaggeredVerticalGrid(
             numColumns = 2,
@@ -98,37 +135,38 @@ fun Pets(breeds: List<BreedModel>?, onClick: (BreedModel)->Unit) {
                             )
                             .clickable {
                                 onClick(breed)
-                            }
-                    ) {
-                        Column(
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .padding(15.dp),
-                            horizontalAlignment = Alignment.CenterHorizontally
-                        ) {
-                            Text(
-                                text = breedName,
-                                color = MaterialTheme.colors.onPrimary,
-                                fontSize = 13.sp,
-                                fontWeight = FontWeight.ExtraBold,
-                                modifier = Modifier.align(Alignment.Start)
-                            )
-                            Text(
-                                text = "$amount available",
-                                color = MaterialTheme.colors.onSecondary,
-                                fontWeight = FontWeight.Bold,
-                                fontSize = 13.sp,
-                                modifier = Modifier.align(Alignment.Start)
-                            )
-                            CustomSpaceHeight(height = 5.dp)
-                            GlideImage(
-                                model = image,
-                                contentDescription = "image pet",
-                                modifier = Modifier.fillMaxWidth()
-                            )
+                            },
+                        content = {
+                            Column(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .padding(15.dp),
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                Text(
+                                    text = breedName,
+                                    color = MaterialTheme.colors.onPrimary,
+                                    fontSize = 13.sp,
+                                    fontWeight = FontWeight.ExtraBold,
+                                    modifier = Modifier.align(Alignment.Start)
+                                )
+                                Text(
+                                    text = "$amount available",
+                                    color = MaterialTheme.colors.onSecondary,
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 13.sp,
+                                    modifier = Modifier.align(Alignment.Start)
+                                )
+                                CustomSpaceHeight(height = 5.dp)
+                                GlideImage(
+                                    model = image,
+                                    contentDescription = "image pet",
+                                    modifier = Modifier.fillMaxWidth()
+                                )
 
-                        }
-                    }
+                            }
+                        },
+                    )
                 }
             }
         }
@@ -148,21 +186,26 @@ fun TitleAndViewAll() {
             fontSize = 18.sp,
             fontWeight = FontWeight.Bold
         )
-        Text(text = "View all", color = MaterialTheme.colors.onSecondary, fontSize = 13.sp,fontWeight = FontWeight.Bold)
+        Text(
+            text = "View all",
+            color = MaterialTheme.colors.onSecondary,
+            fontSize = 13.sp,
+            fontWeight = FontWeight.Bold
+        )
     }
 }
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun PromotionCard(promotion: PromotionModel?, showProgressPromotion: Boolean) {
-    if (showProgressPromotion) {
-        CircularProgressIndicator()
-    } else if (!showProgressPromotion && promotion == null) {
-        Box() { }
-    } else {
-        CustomCard {
-            with(promotion!!) {
-                Row(modifier = Modifier.padding(20.dp), verticalAlignment = Alignment.CenterVertically) {
+    Log.i("PromotionCard", "${!showProgressPromotion} && ${promotion == null}")
+    CustomCard(wait = showProgressPromotion, height = 140.dp) {
+        promotion?.let {
+            with(promotion) {
+                Row(
+                    modifier = Modifier.padding(20.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
                     Column(modifier = Modifier.weight(1f)) {
                         Text(
                             text = title,
@@ -226,20 +269,39 @@ fun PromotionCard(promotion: PromotionModel?, showProgressPromotion: Boolean) {
 }
 
 @Composable
-fun Tags(listTags: List<CategoryModel>, idSelectTag : Int, onCheckTag : (Int)->Unit) {
-    LazyRow(content = {
-        items(listTags, key = { it.id }) {
-            ItemTag(
-                tag = it,
-                colorSelect = MaterialTheme.colors.onPrimary,
-                colorUnSelect = MaterialTheme.colors.onSecondary,
-                modifier = Modifier.padding(end = 35.dp),
-                isSelect = it.id == idSelectTag
-            ) {tag->
-                onCheckTag(tag.id)
+fun Tags(
+    listTags: List<CategoryModel>,
+    idSelectTag: Int,
+    wait: Boolean,
+    onCheckTag: (Int) -> Unit
+) {
+    if (wait) {
+        LazyRow {
+            items(4) {
+                CustomShimmerRectangleWait(
+                    modifier = Modifier
+                        .padding(end = 35.dp)
+                        .clip(RoundedCornerShape(25.dp))
+                        .height(15.dp)
+                        .width(40.dp)
+                )
             }
         }
-    })
+    } else {
+        LazyRow(content = {
+            items(listTags, key = { it.id }) {
+                ItemTag(
+                    tag = it,
+                    colorSelect = MaterialTheme.colors.onPrimary,
+                    colorUnSelect = MaterialTheme.colors.onSecondary,
+                    modifier = Modifier.padding(end = 35.dp),
+                    isSelect = it.id == idSelectTag,
+                ) { tag ->
+                    onCheckTag(tag.id)
+                }
+            }
+        })
+    }
 }
 
 @Composable
@@ -275,7 +337,7 @@ fun ItemTag(
 }
 
 @Composable
-fun Search(search: String,onClickFilter : ()->Unit, onTextChanged : (String)->Unit) {
+fun Search(search: String, onClickFilter: () -> Unit, onTextChanged: (String) -> Unit) {
     Row {
         CustomTextField(
             value = search,

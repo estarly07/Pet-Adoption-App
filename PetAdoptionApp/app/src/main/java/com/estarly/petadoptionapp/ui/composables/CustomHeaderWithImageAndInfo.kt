@@ -9,12 +9,18 @@ import androidx.compose.material.icons.sharp.Star
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawWithCache
+import androidx.compose.ui.graphics.BlendMode
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
+import com.estarly.petadoptionapp.R
 
 @Composable
 fun CustomHeaderWithImageAndInfo(image : String, title : String, subtitle: String, space : Dp){
@@ -25,6 +31,12 @@ fun CustomHeaderWithImageAndInfo(image : String, title : String, subtitle: Strin
 
 @Composable
 fun Info(title: String, subtitle: String) {
+    val brush = Brush.verticalGradient(
+        colors = listOf(
+            MaterialTheme.colors.primary,
+            MaterialTheme.colors.primaryVariant
+        )
+    )
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -51,7 +63,21 @@ fun Info(title: String, subtitle: String) {
             backgroundColor = MaterialTheme.colors.secondary,
             elevation = FloatingActionButtonDefaults.elevation(0.dp)
         ) {
-            Icon(imageVector = Icons.Sharp.Star, contentDescription = "icon like")
+            Icon(
+                painter = painterResource(id = R.drawable.ic_love),
+                contentDescription = "icon like",
+                modifier = Modifier
+                    .size(30.dp)
+                    .graphicsLayer(alpha = 0.99f)
+                    .drawWithCache {
+                        onDrawWithContent {
+                            drawContent()
+                            drawRect(
+                                brush= brush,
+                                blendMode = BlendMode.SrcAtop)
+                        }
+                    },
+            )
         }
     }
 }
@@ -60,7 +86,7 @@ fun Info(title: String, subtitle: String) {
 @Composable
 fun Header(image: String) {
     Row(modifier = Modifier.fillMaxWidth()) {
-        Icon(imageVector = Icons.Sharp.ArrowBack, contentDescription ="icon back" )
+        Icon(painter = painterResource(id = R.drawable.ic_arrow_left), contentDescription ="icon back" )
         GlideImage(
             model = image,
             contentDescription = "image",
@@ -68,6 +94,6 @@ fun Header(image: String) {
                 .weight(1f)
                 .height(300.dp)
         )
-        Icon(imageVector = Icons.Sharp.Menu, contentDescription ="icon menu" )
+        Icon(painter = painterResource(id = R.drawable.ic_more), contentDescription ="icon menu" )
     }
 }
