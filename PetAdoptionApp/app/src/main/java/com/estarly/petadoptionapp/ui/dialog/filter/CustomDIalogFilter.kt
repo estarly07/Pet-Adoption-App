@@ -22,6 +22,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import com.estarly.petadoptionapp.ui.CustomFadeIn
+import com.estarly.petadoptionapp.ui.CustomSlideLeft
+import com.estarly.petadoptionapp.ui.CustomSlideRight
+import com.estarly.petadoptionapp.ui.CustomSlideUp
 import com.estarly.petadoptionapp.ui.composables.CustomSpaceHeight
 import com.estarly.petadoptionapp.ui.model.CategoryModel
 import com.estarly.petadoptionapp.ui.theme.*
@@ -32,7 +36,7 @@ fun CustomDialogFilter(
     categories: List<CategoryModel>,
     show: Boolean,
     onDismiss: () -> Unit,
-    onApply: (attribute : String, idCategory : Int) -> Unit,
+    onApply: (attribute : String, idCategory : Int?) -> Unit,
 ) {
     if (show) {
         var selectItem by rememberSaveable { mutableStateOf("") }
@@ -64,7 +68,7 @@ fun CustomDialogFilter(
                         return@Actions
                     }
                     onDismiss()
-                    onApply(selectItem,selectTag!!)
+                    onApply(selectItem,selectTag)
                 }
 
             }
@@ -76,25 +80,29 @@ fun CustomDialogFilter(
 fun Tags(list: List<CategoryModel>, idSelectCategory: Int?, onClickTag: (Int) -> Unit) {
     LazyRow(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
         itemsIndexed(list) { index, it ->
-            OutlinedButton(
-                shape = RoundedCornerShape(15.dp),
-                modifier = Modifier.padding(
-                    start = if (index == 0) MarginHorizontalScreen else 0.dp,
-                    end = if (index == list.size - 1) MarginHorizontalScreen else 0.dp,
-                ),
-                colors = ButtonDefaults.buttonColors(
-                    backgroundColor = if (idSelectCategory == it.id) MaterialTheme.colors.primaryVariant else Color.Transparent
-                ),
-                border = BorderStroke(2.dp, MaterialTheme.colors.primaryVariant),
-                onClick = { onClickTag(it.id) }
+            CustomSlideUp(
+                300 + (25*index)
             ) {
-                Text(
-                    text = it.nameTag,
-                    fontSize = 13.sp,
-                    color = if (idSelectCategory == it.id) Color.White else MaterialTheme.colors.onSecondary,
-                    modifier = Modifier.padding(vertical =  if(idSelectCategory == it.id) 3.dp else 0.dp),
-                    fontWeight = if (idSelectCategory == it.id) FontWeight.Bold else null
-                )
+                OutlinedButton(
+                    shape = RoundedCornerShape(15.dp),
+                    modifier = Modifier.padding(
+                        start = if (index == 0) MarginHorizontalScreen else 0.dp,
+                        end = if (index == list.size - 1) MarginHorizontalScreen else 0.dp,
+                    ),
+                    colors = ButtonDefaults.buttonColors(
+                        backgroundColor = if (idSelectCategory == it.id) MaterialTheme.colors.primaryVariant else Color.Transparent
+                    ),
+                    border = BorderStroke(2.dp, MaterialTheme.colors.primaryVariant),
+                    onClick = { onClickTag(it.id) }
+                ) {
+                    Text(
+                        text = it.nameTag,
+                        fontSize = 13.sp,
+                        color = if (idSelectCategory == it.id) Color.White else MaterialTheme.colors.onSecondary,
+                        modifier = Modifier.padding(vertical = if (idSelectCategory == it.id) 3.dp else 0.dp),
+                        fontWeight = if (idSelectCategory == it.id) FontWeight.Bold else null
+                    )
+                }
             }
         }
     }
@@ -114,27 +122,29 @@ fun Options(
     selectItem: String,
     onCheck: (String) -> Unit
 ) {
-    items.forEachIndexed { _, item ->
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = MarginHorizontalScreen),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            RadioButton(
-                selected = selectItem == item,
-                onClick = { onCheck(item) },
-                colors = RadioButtonDefaults.colors(
-                    selectedColor = MaterialTheme.colors.primaryVariant,
-                    unselectedColor = MaterialTheme.colors.onSecondary
+    items.forEachIndexed { i, item ->
+        CustomFadeIn(duration = 500, delay = 150 + (30 * i)){
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = MarginHorizontalScreen),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                RadioButton(
+                    selected = selectItem == item,
+                    onClick = { onCheck(item) },
+                    colors = RadioButtonDefaults.colors(
+                        selectedColor = MaterialTheme.colors.primaryVariant,
+                        unselectedColor = MaterialTheme.colors.onSecondary
+                    )
                 )
-            )
-            Text(
-                text = item,
-                fontSize = if (selectItem == item) 17.sp else 15.sp,
-                color = MaterialTheme.colors.onSecondary,
-                fontWeight = if (selectItem == item) FontWeight.Bold else null
-            )
+                Text(
+                    text = item,
+                    fontSize = if (selectItem == item) 17.sp else 15.sp,
+                    color = MaterialTheme.colors.onSecondary,
+                    fontWeight = if (selectItem == item) FontWeight.Bold else null
+                )
+            }
         }
     }
 }
@@ -148,10 +158,14 @@ fun HeaderDialog(onClose: () -> Unit) {
             .padding(horizontal = MarginHorizontalScreen),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(text = "Filtro de búsqueda", fontWeight = FontWeight.Bold, fontSize = 20.sp)
-        Icon(
-            imageVector = Icons.Sharp.Close,
-            contentDescription = "icon close",
-            modifier = Modifier.clickable { onClose() })
+        CustomSlideRight(100){
+            Text(text = "Filtro de búsqueda", fontWeight = FontWeight.Bold, fontSize = 20.sp)
+        }
+        CustomSlideLeft(150){
+            Icon(
+                imageVector = Icons.Sharp.Close,
+                contentDescription = "icon close",
+                modifier = Modifier.clickable { onClose() })
+        }
     }
 }

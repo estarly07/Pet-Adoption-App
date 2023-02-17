@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.dp
 fun CustomTextField(
     value : String,
     onTextChanged : (String) -> Unit,
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     leadingIcon : @Composable (()->Unit)?,
     placerHolder : String,
     textColor: Color,

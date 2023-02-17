@@ -3,6 +3,12 @@ package com.estarly.petadoptionapp.ui.breed
 import android.annotation.SuppressLint
 import android.util.Log
 import androidx.activity.compose.BackHandler
+import androidx.compose.animation.*
+import androidx.compose.animation.core.FastOutLinearInEasing
+import androidx.compose.animation.core.MutableTransitionState
+import androidx.compose.animation.core.TweenSpec
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.*
@@ -12,6 +18,7 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -31,7 +38,7 @@ import com.estarly.petadoptionapp.ui.navigator.Route
 import com.estarly.petadoptionapp.ui.theme.MarginHorizontalScreen
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
-@OptIn(ExperimentalGlideComposeApi::class)
+@OptIn(ExperimentalGlideComposeApi::class, ExperimentalFoundationApi::class)
 @Composable
 fun BreedScreen(
     idBreed: Int,
@@ -69,7 +76,9 @@ fun BreedScreen(
                             title = nameBreed,
                             subtitle = "${pets.size} pets",
                             space = 5.dp
-                        )
+                        ){
+                            navController.popBackStack()
+                        }
                         CustomSpaceHeight(height = 15.dp)
                     }
                 }
@@ -82,10 +91,11 @@ fun BreedScreen(
                     }
                 } else {
 
-                    items(pets) { pet ->
+                    items(pets, key = {it.idPet}) { pet ->
                         CustomCard(
                             Modifier
                                 .height(200.dp)
+                                .animateItemPlacement()
                                 .clickable {
                                     navController.currentBackStackEntry?.arguments?.putSerializable(
                                         "pet",

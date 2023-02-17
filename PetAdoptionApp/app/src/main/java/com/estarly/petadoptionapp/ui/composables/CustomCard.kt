@@ -10,6 +10,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.estarly.petadoptionapp.ui.CustomFadeIn
+import com.estarly.petadoptionapp.ui.CustomSlideLeft
 
 @Composable
 fun CustomCard(
@@ -26,13 +28,15 @@ fun CustomCard(
                 .height(height)
         )
     }else {
-        Card(
-            elevation = 0.dp,
-            backgroundColor = MaterialTheme.colors.secondary,
-            modifier = modifier
-                .fillMaxWidth()
-                .clip(RoundedCornerShape(25.dp)),
-            content = content
-        )
+        CustomFadeIn(duration = 500, delay = 200){
+            Card(
+                elevation = 0.dp,
+                backgroundColor = MaterialTheme.colors.secondary,
+                modifier = modifier
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(25.dp)),
+                content = content
+            )
+        }
     }
 }

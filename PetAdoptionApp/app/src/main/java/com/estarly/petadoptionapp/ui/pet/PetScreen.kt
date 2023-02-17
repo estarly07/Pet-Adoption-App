@@ -1,10 +1,12 @@
 package com.estarly.petadoptionapp.ui.pet
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.*
@@ -16,51 +18,66 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.estarly.petadoptionapp.R
+import com.estarly.petadoptionapp.ui.CustomScaleIn
+import com.estarly.petadoptionapp.ui.CustomSlideUp
 import com.estarly.petadoptionapp.ui.composables.*
 import com.estarly.petadoptionapp.ui.model.PetModel
 import com.estarly.petadoptionapp.ui.theme.MarginHorizontalScreen
 import com.estarly.petadoptionapp.utils.format
 import com.estarly.petadoptionapp.utils.toYear
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun PetScreen(pet: PetModel, breedName: String, petViewModel: PetViewModel) {
+fun PetScreen(
+    pet: PetModel,
+    breedName: String,
+    petViewModel: PetViewModel,
+    navigationController: NavHostController
+) {
     val showMoreAbout by petViewModel.showMoreAbout.observeAsState(initial = false)
-    with(pet) {
-        Column(
-            Modifier.padding(
-                start  = MarginHorizontalScreen,
-                end    = MarginHorizontalScreen,
-                bottom =  MarginHorizontalScreen,
-            )
-        ) {
+    Scaffold {
+        with(pet) {
             Column(
-                modifier = Modifier
-                    .weight(1f)
-                    .verticalScroll(rememberScrollState())
-            ) {
-                CustomSpaceHeight(height = 25.dp)
-                CustomHeaderWithImageAndInfo(
-                    image = image,
-                    title = namePet,
-                    subtitle = breedName,
-                    space = 15.dp
+                Modifier.padding(
+                    start  = MarginHorizontalScreen,
+                    end    = MarginHorizontalScreen,
+                    bottom =  MarginHorizontalScreen,
                 )
-                CustomSpaceHeight(height = 25.dp)
-                About(about,showMoreAbout){ petViewModel.showMoreAbout()}
-                CustomSpaceHeight(height = 20.dp)
-                Info(months,address,sex,breedName)
-                CustomSpaceHeight(height = 25.dp)
+            ) {
+                Column(
+                    modifier = Modifier
+                        .weight(1f)
+                        .verticalScroll(rememberScrollState())
+                ) {
+                    CustomSpaceHeight(height = 25.dp)
+                    CustomHeaderWithImageAndInfo(
+                        image = image,
+                        title = namePet,
+                        subtitle = breedName,
+                        space = 15.dp
+                    ){
+                        navigationController.popBackStack()
+                    }
+                    CustomSpaceHeight(height = 25.dp)
+                    About(about,showMoreAbout){ petViewModel.showMoreAbout()}
+                    CustomSpaceHeight(height = 20.dp)
+                    Info(months,address,sex,breedName)
+                    CustomSpaceHeight(height = 25.dp)
 
+                }
+                CustomSlideUp(
+                    delay = 150
+                ){ AdoptButton(amount) }
             }
-            AdoptButton(amount)
         }
     }
 }
 
 @Composable
 fun AdoptButton(amount: Double) {
-    Row() {
+    Row {
         CustomButton(
             modifier = Modifier.height(50.dp),
             composable = {
@@ -103,18 +120,26 @@ fun Info(months: Int, address: String, sex: String, breedName: String) {
                 .fillMaxWidth()
                 .weight(1f)
         ) {
-            Text(
-                text = "${months.toYear()} years old",
-                color = MaterialTheme.colors.onSecondary,
-                fontSize = 15.sp,
-                maxLines = 7,
-            )
+            CustomScaleIn(
+                delay = 150
+            ){
+                Text(
+                    text = "${months.toYear()} years old",
+                    color = MaterialTheme.colors.onSecondary,
+                    fontSize = 15.sp,
+                    maxLines = 7,
+                )
+            }
             CustomSpaceHeight(height = 5.dp)
-            CustomTextWithIcon(
-                text = sex,
-                icon = R.drawable.ic_gender,
-                bold = false
-            )
+            CustomScaleIn(
+                delay = 250
+            ){
+                CustomTextWithIcon(
+                    text = sex,
+                    icon = R.drawable.ic_gender,
+                    bold = false
+                )
+            }
         }
         CustomSpaceWidth(width = 35.dp)
         Column(
@@ -122,17 +147,25 @@ fun Info(months: Int, address: String, sex: String, breedName: String) {
                 .fillMaxWidth()
                 .weight(1f)
         ) {
-            CustomTextWithIcon(
-                text = address,
-                icon = R.drawable.ic_location,
-                bold = false
-            )
+            CustomScaleIn(
+                delay = 200
+            ){
+                CustomTextWithIcon(
+                    text = address,
+                    icon = R.drawable.ic_location,
+                    bold = false
+                )
+            }
             CustomSpaceHeight(height = 5.dp)
-            CustomTextWithIcon(
-                text = breedName,
-                icon = R.drawable.ic_pet,
-                bold = false
-            )
+            CustomScaleIn(
+                delay = 300
+            ){
+                CustomTextWithIcon(
+                    text = breedName,
+                    icon = R.drawable.ic_pet,
+                    bold = false
+                )
+            }
         }
     }
 }
@@ -140,25 +173,37 @@ fun Info(months: Int, address: String, sex: String, breedName: String) {
 @Composable
 fun About(about: String, showMoreAbout: Boolean, onClickMore: () -> Unit) {
     Column {
-        Text(
-            text = "About",
-            color = MaterialTheme.colors.onPrimary,
-            fontSize = 17.sp,
-            fontWeight = FontWeight.ExtraBold,
-        )
+        CustomSlideUp(
+            delay = 300
+        ) {
+            Text(
+                text = "About",
+                color = MaterialTheme.colors.onPrimary,
+                fontSize = 17.sp,
+                fontWeight = FontWeight.ExtraBold,
+            )
+        }
         CustomSpaceHeight(height = 5.dp)
-        Text(
-            text = about,
-            color = MaterialTheme.colors.onSecondary,
-            fontSize = 15.sp,
-            maxLines = if(!showMoreAbout) 7 else Int.MAX_VALUE,
-            overflow = if(!showMoreAbout) TextOverflow.Ellipsis else TextOverflow.Visible,
-        )
-        Text(
-            text = if(!showMoreAbout)"+More" else "-less",
-            color = MaterialTheme.colors.primary,
-            fontSize = 15.sp,
-            modifier = Modifier.clickable { onClickMore() }
-        )
+        CustomSlideUp(
+            delay = 350
+        ){
+            Text(
+                text = about,
+                color = MaterialTheme.colors.onSecondary,
+                fontSize = 15.sp,
+                maxLines = if (!showMoreAbout) 7 else Int.MAX_VALUE,
+                overflow = if (!showMoreAbout) TextOverflow.Ellipsis else TextOverflow.Visible,
+            )
+        }
+        CustomSlideUp(
+            delay = 350
+        ){
+            Text(
+                text = if (!showMoreAbout) "+More" else "-less",
+                color = MaterialTheme.colors.primary,
+                fontSize = 15.sp,
+                modifier = Modifier.clickable { onClickMore() }
+            )
+        }
     }
 }

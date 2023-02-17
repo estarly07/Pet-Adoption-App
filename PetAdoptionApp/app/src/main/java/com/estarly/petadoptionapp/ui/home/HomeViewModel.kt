@@ -114,7 +114,7 @@ class HomeViewModel @Inject constructor(
 
     fun filter(attribute: String? = null, idCategory: Int? = null) {
         _idSelectTag.value = idCategory ?: _idSelectTag.value
-        _breeds.value = filterBreedsUseCase(attribute,idCategory,breedsSaveInfo ?: listOf())
+        _breeds.value = filterBreedsUseCase(attribute,_idSelectTag.value,breedsSaveInfo ?: listOf())
     }
 
     fun changeSelectTag(id: Int) {

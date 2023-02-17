@@ -25,7 +25,7 @@ fun AppNavigation(
         navController = navigationController,
         startDestination = Route.ScreenHome.route
     ) {
-        composable(Route.ScreenHome.route) { HomeScreen(homeViewModel, navigationController) }
+        composable(Route.ScreenHome.route) { HomeScreen(homeViewModel,breedViewModel, navigationController) }
         composable(
             Route.ScreenBreed.route,
             arguments = listOf(
@@ -38,13 +38,12 @@ fun AppNavigation(
             val idBreed   = backStackEntry.arguments?.getInt(Route.ScreenBreed.argumentIdBreed)!!
             val breedName = backStackEntry.arguments?.getString(Route.ScreenBreed.argumentBreedName)!!
             val image     = backStackEntry.arguments?.getString(Route.ScreenBreed.argumentImage)!!
-            breedViewModel.getPets(idBreed)
             BreedScreen(idBreed =  idBreed, nameBreed = breedName, image = image,breedViewModel,navigationController)
         }
         composable(Route.ScreenPet.route){ backStackEntry ->
             navigationController.previousBackStackEntry?.arguments?.let {
                 val breedName = backStackEntry.arguments?.getString(Route.ScreenPet.argumentBreedName)!!
-                PetScreen(it.getSerializable("pet") as PetModel, breedName, petViewModel)
+                PetScreen(it.getSerializable("pet") as PetModel, breedName, petViewModel,navigationController)
             }
         }
     }
