@@ -4,7 +4,9 @@
     package="com.estarly.petadoptionapp">
 
     <uses-permission android:name="android.permission.INTERNET" />
+
     <application
+        android:name=".di.PetAdoptionApp"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -12,9 +14,13 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:name=".di.PetAdoptionApp"
         android:theme="@style/Theme.PetAdoptionApp"
         tools:targetApi="31">
+        <activity
+            android:name=".ui.breed.BreedActivity"
+            android:exported="false"
+            android:label="@string/title_activity_breed"
+            android:theme="@style/Theme.PetAdoptionApp" />
         <activity
             android:name=".ui.MainActivity"
             android:exported="true"

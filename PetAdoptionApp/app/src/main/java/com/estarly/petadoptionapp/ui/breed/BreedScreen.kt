@@ -1,13 +1,9 @@
 package com.estarly.petadoptionapp.ui.breed
 
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.os.Bundle
 import android.util.Log
-import androidx.activity.compose.BackHandler
-import androidx.compose.animation.*
-import androidx.compose.animation.core.FastOutLinearInEasing
-import androidx.compose.animation.core.MutableTransitionState
-import androidx.compose.animation.core.TweenSpec
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -18,7 +14,7 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -34,27 +30,20 @@ import com.estarly.petadoptionapp.ui.composables.CustomCard
 import com.estarly.petadoptionapp.ui.composables.CustomHeaderWithImageAndInfo
 import com.estarly.petadoptionapp.ui.composables.CustomSpaceHeight
 import com.estarly.petadoptionapp.ui.composables.CustomTextWithIcon
-import com.estarly.petadoptionapp.ui.navigator.Route
+import com.estarly.petadoptionapp.ui.model.toJson
+import com.estarly.petadoptionapp.ui.navigators.Route
 import com.estarly.petadoptionapp.ui.theme.MarginHorizontalScreen
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @OptIn(ExperimentalGlideComposeApi::class, ExperimentalFoundationApi::class)
 @Composable
 fun BreedScreen(
-    idBreed: Int,
     nameBreed: String,
     image: String,
     breedViewModel: BreedViewModel,
     navController: NavController
 ) {
-    LocalLifecycleOwner.current.lifecycle.addObserver(object : LifecycleEventObserver {
-        override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
-            Log.i("EVENT",event.name)
-            if(event.name == "ON_DESTROY"){
-                breedViewModel.clearData()
-            }
-        }
-    })
+    val context = LocalContext.current
     val pets by breedViewModel.pets.observeAsState(initial = listOf())
     val showProgressPets by breedViewModel.showProgressPets.observeAsState(initial = true)
 
@@ -77,7 +66,7 @@ fun BreedScreen(
                             subtitle = "${pets.size} pets",
                             space = 5.dp
                         ){
-                            navController.popBackStack()
+                            (context as Activity).onBackPressed()
                         }
                         CustomSpaceHeight(height = 15.dp)
                     }
@@ -97,11 +86,7 @@ fun BreedScreen(
                                 .height(200.dp)
                                 .animateItemPlacement()
                                 .clickable {
-                                    navController.currentBackStackEntry?.arguments?.putSerializable(
-                                        "pet",
-                                        pet
-                                    )
-                                    navController.navigate(Route.ScreenPet.createRoute(breedName = nameBreed))
+                                    navController.navigate(Route.ScreenPet.createRoute(breedName = nameBreed, pet =  pet.toJson()))
                                 },
                             content = {
                                 Column(

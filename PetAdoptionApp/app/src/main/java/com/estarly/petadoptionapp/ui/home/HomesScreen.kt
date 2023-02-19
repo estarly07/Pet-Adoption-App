@@ -1,11 +1,11 @@
 package com.estarly.petadoptionapp.ui.home
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.util.Log
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -20,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -32,13 +33,14 @@ import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.estarly.petadoptionapp.R
 import com.estarly.petadoptionapp.ui.*
+import com.estarly.petadoptionapp.ui.breed.BreedActivity
 import com.estarly.petadoptionapp.ui.breed.BreedViewModel
 import com.estarly.petadoptionapp.ui.composables.*
 import com.estarly.petadoptionapp.ui.dialog.filter.CustomDialogFilter
 import com.estarly.petadoptionapp.ui.model.BreedModel
 import com.estarly.petadoptionapp.ui.model.PromotionModel
 import com.estarly.petadoptionapp.ui.model.CategoryModel
-import com.estarly.petadoptionapp.ui.navigator.Route
+import com.estarly.petadoptionapp.ui.navigators.Route
 import com.estarly.petadoptionapp.ui.theme.*
 import java.util.*
 
@@ -46,9 +48,8 @@ import java.util.*
 @Composable
 fun HomeScreen(
     homeViewModel: HomeViewModel,
-    breedViewModel: BreedViewModel,
-    navigationController: NavHostController
 ) {
+    val context = LocalContext.current
     val showProgressPromotion: Boolean by homeViewModel.showProgressPromotion.observeAsState(initial = true)
     val showProgressBreeds: Boolean by homeViewModel.showProgressBreeds.observeAsState(initial = true)
     val showProgressTags: Boolean by homeViewModel.showProgressCategories.observeAsState(initial = true)
@@ -85,14 +86,9 @@ fun HomeScreen(
                 CustomSpaceHeight(height = 17.dp)
             }
             Pets(breeds, wait = showProgressBreeds) { breed ->
-                breedViewModel.getPets(breed.idBreed)
-                navigationController.navigate(
-                    Route.ScreenBreed.createRoute(
-                        breed.idBreed,
-                        breed.breedName,
-                        breed.image
-                    )
-                )
+                val intent = Intent(context,BreedActivity::class.java)
+                intent.putExtra("breed",breed)
+                context.startActivity(intent)
             }
             //Dialogs
             CustomDialogFilter(

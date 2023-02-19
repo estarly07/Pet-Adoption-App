@@ -23,6 +23,7 @@ class BreedViewModel @Inject constructor(private val getPetsUseCase : GetPetsUse
     fun getPets(idBreed : Int){
         viewModelScope.launch {
             _showProgressPets.value = true// show progress pet
+            delay(500)// show the progress a little more so that it is not seen and disappears very quickly
             val response = getPetsUseCase(idBreed)//Get all pets by idBreed
             _showProgressPets.value = false// gone progress pet
             when(response){
