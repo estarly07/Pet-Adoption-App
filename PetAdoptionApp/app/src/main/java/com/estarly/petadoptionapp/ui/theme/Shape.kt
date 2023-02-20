@@ -10,3 +10,4 @@ val Shapes = Shapes(
     large = RoundedCornerShape(0.dp)
 )
 val MarginHorizontalScreen = 25.dp
+val CardElevation = 6.dp

@@ -16,7 +16,7 @@ data class PetModel(
     val sex     : String,
     val amount  : Double,
     val adopted : Boolean
-) : Serializable
+)
 fun PetModel.toJson(): String {
     return Gson().toJson(this.copy( address = URLEncoder.encode(address, StandardCharsets.UTF_8.toString()), image = URLEncoder.encode(image, StandardCharsets.UTF_8.toString())) )
 }
