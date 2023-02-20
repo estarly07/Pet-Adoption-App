@@ -7,9 +7,14 @@ import androidx.navigation.compose.composable
 import com.estarly.petadoptionapp.ui.home.HomeScreen
 import com.estarly.petadoptionapp.ui.home.HomeViewModel
 import com.estarly.petadoptionapp.ui.store.StoreScreen
+import com.estarly.petadoptionapp.ui.store.StoreViewModel
 
 @Composable
-fun MainAppNavigation(homeViewModel: HomeViewModel, navController : NavHostController){
+fun MainAppNavigation(
+    homeViewModel: HomeViewModel,
+    storeViewModel: StoreViewModel,
+    navController : NavHostController
+){
     NavHost(
         navController = navController,
         startDestination = MainRoute.HomeScreen.route
@@ -18,7 +23,7 @@ fun MainAppNavigation(homeViewModel: HomeViewModel, navController : NavHostContr
             HomeScreen(homeViewModel = homeViewModel)
         }
         composable(MainRoute.StoreScreen.route){
-            StoreScreen()
+            StoreScreen(storeViewModel)
         }
     }
 }

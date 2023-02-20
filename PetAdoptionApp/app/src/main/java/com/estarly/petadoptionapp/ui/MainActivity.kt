@@ -13,6 +13,7 @@ import com.estarly.petadoptionapp.ui.home.HomeViewModel
 import com.estarly.petadoptionapp.ui.home.navigation.CustomBottomBar
 import com.estarly.petadoptionapp.ui.home.navigation.NavigationViewModel
 import com.estarly.petadoptionapp.ui.navigators.MainAppNavigation
+import com.estarly.petadoptionapp.ui.store.StoreViewModel
 import com.estarly.petadoptionapp.ui.theme.PetAdoptionAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -20,11 +21,13 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     private val homeViewModel: HomeViewModel by viewModels()
     private val navigationViewModel : NavigationViewModel by viewModels()
+    private val storeViewModel : StoreViewModel by viewModels()
 
     @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         homeViewModel.onCreate()
+        storeViewModel.onCreate()
         setContent {
             val idSelectButton by navigationViewModel.idSelectNavigationBar.observeAsState(initial = 0)
             val navController = rememberNavController()
@@ -34,7 +37,7 @@ class MainActivity : ComponentActivity() {
                         navigationViewModel.changeScreen(it,navController)
                     } }
                 ) {
-                    MainAppNavigation(homeViewModel,navController)
+                    MainAppNavigation(homeViewModel,storeViewModel,navController)
                 }
             }
         }

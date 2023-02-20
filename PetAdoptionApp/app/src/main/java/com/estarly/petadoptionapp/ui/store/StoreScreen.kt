@@ -1,7 +1,6 @@
 package com.estarly.petadoptionapp.ui.store
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -9,6 +8,8 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.sharp.Add
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -22,14 +23,16 @@ import com.estarly.petadoptionapp.R
 import com.estarly.petadoptionapp.ui.composables.CustomSpaceHeight
 import com.estarly.petadoptionapp.ui.composables.CustomSpaceWidth
 import com.estarly.petadoptionapp.ui.composables.CustomTextWithIcon
+import com.estarly.petadoptionapp.ui.model.ProductModel
 import com.estarly.petadoptionapp.ui.theme.CardElevation
 import com.estarly.petadoptionapp.ui.theme.MarginHorizontalScreen
 import com.estarly.petadoptionapp.utils.format
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun StoreScreen() {
-    Scaffold() {
+fun StoreScreen(storeViewModel: StoreViewModel) {
+    val listProducts by storeViewModel.listProducts.observeAsState(initial = listOf())
+    Scaffold {
         Box(
             modifier = Modifier.padding()
         ) {
@@ -44,7 +47,7 @@ fun StoreScreen() {
                 this.header {
                     Header()
                 }
-                items(listOf<ProductModel>()) {
+                items(listProducts) {
                     ItemProduct(it)
                 }
             }
@@ -137,7 +140,7 @@ fun ItemProduct(product : ProductModel) {
                             fontWeight = FontWeight.Bold,
                         )
                         Text(
-                            text = idTypeProduct.toString(),
+                            text = nameTypeProduct,
                             fontSize = 15.sp,
                             color = MaterialTheme.colors.onSecondary,
                             fontWeight = FontWeight.Bold,
