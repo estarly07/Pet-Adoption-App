@@ -26,9 +26,9 @@ class StoreViewModel @Inject constructor(
                 is BaseResultUseCase.Success -> {
                     _listProducts.value = response.data
                 }
-                is BaseResultUseCase.Error -> TODO()
-                BaseResultUseCase.NoInternetConnection -> TODO()
-                BaseResultUseCase.NullOrEmptyData -> TODO()
+                is BaseResultUseCase.Error -> {}
+                BaseResultUseCase.NoInternetConnection -> {}
+                BaseResultUseCase.NullOrEmptyData -> {}
             }
         }
     }

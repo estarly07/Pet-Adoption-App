@@ -1,9 +1,6 @@
 package com.estarly.petadoptionapp.di
 
-import com.estarly.petadoptionapp.data.api.clients.BreedClient
-import com.estarly.petadoptionapp.data.api.clients.CategoryClient
-import com.estarly.petadoptionapp.data.api.clients.PetClient
-import com.estarly.petadoptionapp.data.api.clients.PromotionClient
+import com.estarly.petadoptionapp.data.api.clients.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -29,4 +26,8 @@ class ClientsModule {
     @Singleton
     @Provides
     fun providePetClient(retrofit: Retrofit) : PetClient = retrofit.create(PetClient::class.java)
+
+    @Singleton
+    @Provides
+    fun provideProductsClient(retrofit: Retrofit) : ProductsClient = retrofit.create(ProductsClient::class.java)
 }

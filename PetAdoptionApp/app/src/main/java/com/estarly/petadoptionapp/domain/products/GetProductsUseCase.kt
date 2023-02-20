@@ -26,14 +26,14 @@ class GetProductsUseCase @Inject constructor(
                             }
                             BaseResultUseCase.Success(list)
                         }
-                        is BaseResultRepository.Error -> TODO()
-                        BaseResultRepository.NullOrEmptyData -> TODO()
+                        is BaseResultRepository.Error ->  BaseResultUseCase.Error(responseProducts.exception)
+                        BaseResultRepository.NullOrEmptyData -> BaseResultUseCase.NullOrEmptyData
                     }
 
                 }
-                is BaseResultUseCase.Error -> TODO()
-                BaseResultUseCase.NoInternetConnection -> TODO()
-                BaseResultUseCase.NullOrEmptyData -> TODO()
+                is BaseResultUseCase.Error -> BaseResultUseCase.Error(responseTypes.exception)
+                BaseResultUseCase.NoInternetConnection -> BaseResultUseCase.NoInternetConnection
+                BaseResultUseCase.NullOrEmptyData -> BaseResultUseCase.NullOrEmptyData
             }
         }catch (e : Exception){
             BaseResultUseCase.Error(e)
