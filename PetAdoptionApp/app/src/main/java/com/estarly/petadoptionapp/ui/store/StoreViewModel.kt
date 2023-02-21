@@ -18,10 +18,14 @@ class StoreViewModel @Inject constructor(
 ) : ViewModel() {
     private var _listProducts = MutableLiveData<List<ProductModel>>()
     val listProducts : LiveData<List<ProductModel>> = _listProducts
+    private var _showProgressProducts = MutableLiveData<Boolean>()
+    val showProgressProducts : LiveData<Boolean> = _showProgressProducts
 
     fun onCreate() {
         viewModelScope.launch {
+            _showProgressProducts.value = true
             val response = getProductsUseCase()
+            _showProgressProducts.value = false
             when (response) {
                 is BaseResultUseCase.Success -> {
                     _listProducts.value = response.data
