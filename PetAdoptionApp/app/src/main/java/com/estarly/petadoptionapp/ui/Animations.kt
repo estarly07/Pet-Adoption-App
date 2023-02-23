@@ -1,9 +1,9 @@
 package com.estarly.petadoptionapp.ui
 
 import androidx.compose.animation.*
-import androidx.compose.animation.core.MutableTransitionState
-import androidx.compose.animation.core.TweenSpec
-import androidx.compose.animation.core.tween
+import androidx.compose.animation.core.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -137,4 +137,43 @@ fun CustomScaleIn(
             ),
         composable = composable
     )
+}
+
+@OptIn(ExperimentalAnimationApi::class)
+@Composable
+fun CustomAnimateNumberUpOrDown(
+    count : Int,
+    content : @Composable AnimatedVisibilityScope.(targetState: Int) ->Unit
+){
+    AnimatedContent(
+        targetState = count,
+        transitionSpec = {
+            if (targetState > initialState) {
+                slideInVertically { height -> height } + fadeIn() with
+                        slideOutVertically { height -> -height } + fadeOut()
+            } else {
+                slideInVertically { height -> -height } + fadeIn() with
+                        slideOutVertically { height -> height } + fadeOut()
+            }.using(
+                SizeTransform(clip = false)
+            )
+        },
+        content = content
+
+    )
+}
+@Composable
+fun CustomAnimateExpandBounce(
+    content : @Composable BoxScope.() ->Unit
+){
+   Box(
+       modifier = Modifier
+           .animateContentSize(
+               animationSpec = spring(
+                   dampingRatio = Spring.DampingRatioMediumBouncy,
+                   stiffness = Spring.StiffnessLow
+               )
+           ),
+       content = content
+   )
 }

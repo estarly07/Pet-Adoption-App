@@ -45,7 +45,8 @@ fun ProductResponse.toData() : ProductModel = ProductModel(
     price         = this.price,
     cant          = this.cant,
     imageProduct  = this.imageProduct,
-    aboutProduct  = this.imageProduct
+    aboutProduct  = this.aboutProduct,
+    images        = this.images
 )
 fun TypeProductResponse.toData() : TypeProductModel = TypeProductModel(
     id   = this.id,

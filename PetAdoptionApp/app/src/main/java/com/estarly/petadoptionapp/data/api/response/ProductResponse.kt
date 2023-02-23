@@ -9,6 +9,7 @@ data class ProductResponse(
     @SerializedName("price")         val price          : Double,
     @SerializedName("idTypeProduct") val idTypeProduct  : Int,
     @SerializedName("cant")          val cant           : Int,
-    @SerializedName("aboutProduct")  val aboutProduct   : String
+    @SerializedName("aboutProduct")  val aboutProduct   : String,
+    @SerializedName("images")        val images         : List<String>
 )
 

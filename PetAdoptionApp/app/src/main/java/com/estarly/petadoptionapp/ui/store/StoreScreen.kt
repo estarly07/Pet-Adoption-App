@@ -1,6 +1,8 @@
 package com.estarly.petadoptionapp.ui.store
 
 import android.annotation.SuppressLint
+import android.content.Intent
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -15,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
@@ -31,6 +34,7 @@ import com.estarly.petadoptionapp.ui.composables.CustomSpaceHeight
 import com.estarly.petadoptionapp.ui.composables.CustomSpaceWidth
 import com.estarly.petadoptionapp.ui.composables.CustomTextWithIcon
 import com.estarly.petadoptionapp.ui.model.ProductModel
+import com.estarly.petadoptionapp.ui.product.ProductActivity
 import com.estarly.petadoptionapp.ui.theme.CardElevation
 import com.estarly.petadoptionapp.ui.theme.MarginHorizontalScreen
 import com.estarly.petadoptionapp.utils.format
@@ -40,7 +44,7 @@ import com.estarly.petadoptionapp.utils.format
 fun StoreScreen(storeViewModel: StoreViewModel) {
     val listProducts by storeViewModel.listProducts.observeAsState(initial = listOf())
     val wait by storeViewModel.showProgressProducts.observeAsState(initial = true)
-
+    val context = LocalContext.current
     Scaffold {
         Box(
             modifier = Modifier.padding()
@@ -67,7 +71,11 @@ fun StoreScreen(storeViewModel: StoreViewModel) {
                     }
                 }else{
                     items(listProducts) {
-                        ItemProduct(it)
+                        ItemProduct(it){
+                            val intent = Intent(context,ProductActivity::class.java)
+                            intent.putExtra("product",it)
+                            context.startActivity(intent)
+                        }
                     }
                 }
             }
@@ -137,11 +145,14 @@ fun LazyGridScope.header(
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
-fun ItemProduct(product : ProductModel) {
+fun ItemProduct(product : ProductModel,onTap : (ProductModel)->Unit) {
     with(product) {
         Card(
             modifier = Modifier
-                .fillMaxWidth(),
+                .fillMaxWidth()
+                .clickable {
+                  onTap(product)
+                },
             elevation = CardElevation,
             shape = RoundedCornerShape(25.dp),
             backgroundColor = Color.White,

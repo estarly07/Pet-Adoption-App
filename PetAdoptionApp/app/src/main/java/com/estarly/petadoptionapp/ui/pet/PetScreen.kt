@@ -1,7 +1,6 @@
 package com.estarly.petadoptionapp.ui.pet
 
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -21,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.estarly.petadoptionapp.R
+import com.estarly.petadoptionapp.ui.CustomAnimateExpandBounce
 import com.estarly.petadoptionapp.ui.CustomScaleIn
 import com.estarly.petadoptionapp.ui.CustomSlideUp
 import com.estarly.petadoptionapp.ui.composables.*
@@ -188,13 +188,15 @@ fun About(about: String, showMoreAbout: Boolean, onClickMore: () -> Unit) {
         CustomSlideUp(
             delay = 350
         ){
-            Text(
-                text = about,
-                color = MaterialTheme.colors.onSecondary,
-                fontSize = 15.sp,
-                maxLines = if (!showMoreAbout) 7 else Int.MAX_VALUE,
-                overflow = if (!showMoreAbout) TextOverflow.Ellipsis else TextOverflow.Visible,
-            )
+            CustomAnimateExpandBounce {
+                Text(
+                    text = about,
+                    color = MaterialTheme.colors.onSecondary,
+                    fontSize = 15.sp,
+                    maxLines = if (!showMoreAbout) 7 else Int.MAX_VALUE,
+                    overflow = if (!showMoreAbout) TextOverflow.Ellipsis else TextOverflow.Visible,
+                )
+            }
         }
         CustomSlideUp(
             delay = 350
