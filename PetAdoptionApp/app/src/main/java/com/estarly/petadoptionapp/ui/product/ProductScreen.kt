@@ -1,6 +1,7 @@
 package com.estarly.petadoptionapp.ui.product
 
 import android.app.Activity
+import android.content.Intent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -34,6 +35,7 @@ import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.estarly.petadoptionapp.R
 import com.estarly.petadoptionapp.ui.*
+import com.estarly.petadoptionapp.ui.cart.CartActivity
 import com.estarly.petadoptionapp.ui.composables.CustomAddOrDismiss
 import com.estarly.petadoptionapp.ui.composables.CustomButton
 import com.estarly.petadoptionapp.ui.composables.CustomSpaceHeight
@@ -44,7 +46,7 @@ import com.estarly.petadoptionapp.ui.theme.MarginHorizontalScreen
 import com.estarly.petadoptionapp.utils.format
 
 @Composable
-fun ProductScreen(productModel: ProductModel, productViewModel : ProductViewModel,navigationController: NavHostController) {
+fun ProductScreen(productModel: ProductModel, productViewModel : ProductViewModel) {
     val localContext = LocalContext.current
     val cant by productViewModel.cant.observeAsState(initial=1)
     val imageSelect by productViewModel.imageSelect.observeAsState(initial = productModel.imageProduct)
@@ -66,9 +68,6 @@ fun ProductScreen(productModel: ProductModel, productViewModel : ProductViewMode
                     onBack = {
                         (localContext as Activity).onBackPressed()
                     },
-                    onCart = {
-                        navigationController.navigate(ProductNavigation.ScreenCart.route)
-                    }
                 )
                 Images(productModel.images,imageSelect){
                     productViewModel.changeSelectImage(it)
@@ -88,7 +87,9 @@ fun ProductScreen(productModel: ProductModel, productViewModel : ProductViewMode
                     cant = cant
                 )
                 CustomSpaceHeight(height = 20.dp)
-                AddCart()
+                AddCart{
+                    localContext.startActivity(Intent(localContext,CartActivity::class.java))
+                }
                 CustomSpaceHeight(height = 10.dp)
             }
         }
@@ -279,7 +280,7 @@ fun Images(images: List<String>, imageSelect: String, onChangeImage : (String) -
 }
 
 @Composable
-fun Header(nameTypeProduct: String,onBack : () ->Unit, onCart : () -> Unit) {
+fun Header(nameTypeProduct: String,onBack : () ->Unit) {
     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
         CustomSlideRight(
             delay = 100
@@ -299,20 +300,12 @@ fun Header(nameTypeProduct: String,onBack : () ->Unit, onCart : () -> Unit) {
                 fontWeight = FontWeight.ExtraBold,
             )
         }
-        CustomSlideLeft(
-            delay = 200
-        ){
-            Icon(
-                painter = painterResource(id = R.drawable.ic_more),
-                contentDescription = "icon menu",
-                modifier = Modifier.clickable {onCart()}
-            )
-        }
+        Box { }
     }
 }
 
 @Composable
-fun AddCart() {
+fun AddCart( onCart : () -> Unit) {
     CustomSlideUp(delay = 650){
         Row{
             Spacer(modifier = Modifier
@@ -335,7 +328,7 @@ fun AddCart() {
                             .padding(horizontal = 5.dp)
                     )
                 },
-            ) {}
+            ) {onCart()}
         }
     }
 }

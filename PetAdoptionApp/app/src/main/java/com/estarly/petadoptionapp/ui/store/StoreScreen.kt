@@ -29,6 +29,7 @@ import com.estarly.petadoptionapp.R
 import com.estarly.petadoptionapp.ui.CustomFadeIn
 import com.estarly.petadoptionapp.ui.CustomSlideDown
 import com.estarly.petadoptionapp.ui.CustomSlideLeft
+import com.estarly.petadoptionapp.ui.cart.CartActivity
 import com.estarly.petadoptionapp.ui.composables.CustomShimmerRectangleWait
 import com.estarly.petadoptionapp.ui.composables.CustomSpaceHeight
 import com.estarly.petadoptionapp.ui.composables.CustomSpaceWidth
@@ -58,7 +59,9 @@ fun StoreScreen(storeViewModel: StoreViewModel) {
                 verticalArrangement = Arrangement.spacedBy(MarginHorizontalScreen)
             ) {
                 this.header {
-                    Header()
+                    Header(){
+                        context.startActivity(Intent(context,CartActivity::class.java))
+                    }
                 }
                 if(wait){
                     items(5) {
@@ -84,7 +87,7 @@ fun StoreScreen(storeViewModel: StoreViewModel) {
 }
 
 @Composable
-fun Header() {
+fun Header( onCart : () -> Unit) {
     Column {
         CustomSpaceHeight(height = 25.dp)
         Row(
@@ -100,7 +103,8 @@ fun Header() {
                 )
             }
             CustomSlideLeft(delay = 150){
-                Icon(painter = painterResource(id = R.drawable.ic_cart), contentDescription = "")
+                Icon(painter = painterResource(id = R.drawable.ic_cart), contentDescription = "",
+                modifier = Modifier.clickable { onCart() })
             }
         }
         CustomSpaceHeight(height = 20.dp)
