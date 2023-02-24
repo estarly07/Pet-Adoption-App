@@ -42,9 +42,9 @@ internal class GetProductsUseCaseTest {
         )
         coEvery { productsRepository.getProducts() } returns BaseResultRepository.Success(
             listOf(
-                ProductModel(aboutProduct = "", idProduct = 0, cant = 2, idTypeProduct = 0, imageProduct = "", nameProduct = "", price = 15.5 ,),
-                ProductModel(aboutProduct = "", idProduct = 0, cant = 2, idTypeProduct = 1, imageProduct = "", nameProduct = "", price = 15.5 ,),
-                ProductModel(aboutProduct = "", idProduct = 0, cant = 2, idTypeProduct = 1, imageProduct = "", nameProduct = "", price = 15.5 ,),
+                ProductModel(aboutProduct = "", idProduct = 0, cant = 2, idTypeProduct = 0, imageProduct = "", nameProduct = "", price = 15.5 , images = listOf()),
+                ProductModel(aboutProduct = "", idProduct = 0, cant = 2, idTypeProduct = 1, imageProduct = "", nameProduct = "", price = 15.5 , images = listOf()),
+                ProductModel(aboutProduct = "", idProduct = 0, cant = 2, idTypeProduct = 1, imageProduct = "", nameProduct = "", price = 15.5 , images = listOf()),
             )
         )
 

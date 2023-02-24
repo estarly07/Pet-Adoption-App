@@ -29,19 +29,22 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.navigation.NavHostController
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.estarly.petadoptionapp.R
 import com.estarly.petadoptionapp.ui.*
+import com.estarly.petadoptionapp.ui.composables.CustomAddOrDismiss
 import com.estarly.petadoptionapp.ui.composables.CustomButton
 import com.estarly.petadoptionapp.ui.composables.CustomSpaceHeight
 import com.estarly.petadoptionapp.ui.composables.CustomSpaceWidth
 import com.estarly.petadoptionapp.ui.model.ProductModel
+import com.estarly.petadoptionapp.ui.navigators.ProductNavigation
 import com.estarly.petadoptionapp.ui.theme.MarginHorizontalScreen
 import com.estarly.petadoptionapp.utils.format
 
 @Composable
-fun ProductScreen(productModel: ProductModel, productViewModel : ProductViewModel) {
+fun ProductScreen(productModel: ProductModel, productViewModel : ProductViewModel,navigationController: NavHostController) {
     val localContext = LocalContext.current
     val cant by productViewModel.cant.observeAsState(initial=1)
     val imageSelect by productViewModel.imageSelect.observeAsState(initial = productModel.imageProduct)
@@ -59,9 +62,14 @@ fun ProductScreen(productModel: ProductModel, productViewModel : ProductViewMode
                     .verticalScroll(rememberScrollState())
             ) {
                 CustomSpaceHeight(height = 25.dp)
-                Header(nameTypeProduct){
-                    (localContext as Activity).onBackPressed()
-                }
+                Header(nameTypeProduct,
+                    onBack = {
+                        (localContext as Activity).onBackPressed()
+                    },
+                    onCart = {
+                        navigationController.navigate(ProductNavigation.ScreenCart.route)
+                    }
+                )
                 Images(productModel.images,imageSelect){
                     productViewModel.changeSelectImage(it)
                 }
@@ -118,62 +126,11 @@ fun PriceAndAdd(
             }
         }
         CustomSlideUp(delay = 600){
-            AddOrDismiss(
+            CustomAddOrDismiss(
                 cant,
                 onAdd,
                 onSubtract
             )
-        }
-    }
-}
-
-@Composable
-fun AddOrDismiss(cant: Int, onAdd: () -> Unit, onSubtract: () -> Unit) {
-    Card(
-        elevation = 0.dp,
-        backgroundColor = MaterialTheme.colors.secondary,
-        modifier = Modifier.clip(RoundedCornerShape(5.dp))
-    ) {
-        Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(5.dp)) {
-            Box(
-                modifier = Modifier
-                    .clip(RoundedCornerShape(5.dp))
-                    .background(Color.White)
-                    .clickable { onAdd() },
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_add),
-                    contentDescription = "",
-                    tint = MaterialTheme.colors.onPrimary,
-                    modifier = Modifier
-                        .size(30.dp)
-                        .padding(5.dp)
-                )
-            }
-            CustomAnimateNumberUpOrDown(count = cant){
-                Text(
-                    text = "$cant",
-                    color = MaterialTheme.colors.onPrimary,
-                    fontSize = 15.sp,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(horizontal = 15.dp)
-                )
-            }
-            Box(
-                modifier = Modifier
-                    .clip(RoundedCornerShape(5.dp))
-                    .background(Color.White)
-                    .clickable { onSubtract() },
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_substract),
-                    tint = MaterialTheme.colors.onPrimary,
-                    contentDescription = "",
-                    modifier = Modifier
-                        .size(30.dp)
-                        .padding(5.dp)
-                )
-            }
         }
     }
 }
@@ -322,7 +279,7 @@ fun Images(images: List<String>, imageSelect: String, onChangeImage : (String) -
 }
 
 @Composable
-fun Header(nameTypeProduct: String,onBack : () ->Unit) {
+fun Header(nameTypeProduct: String,onBack : () ->Unit, onCart : () -> Unit) {
     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
         CustomSlideRight(
             delay = 100
@@ -347,7 +304,8 @@ fun Header(nameTypeProduct: String,onBack : () ->Unit) {
         ){
             Icon(
                 painter = painterResource(id = R.drawable.ic_more),
-                contentDescription = "icon menu"
+                contentDescription = "icon menu",
+                modifier = Modifier.clickable {onCart()}
             )
         }
     }
