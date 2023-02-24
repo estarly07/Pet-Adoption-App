@@ -2,4 +2,5 @@
     <string name="app_name">Pet Adoption App</string>
     <string name="title_activity_breed">BreedActivity</string>
     <string name="title_activity_product">ProductActivity</string>
+    <string name="title_activity_cart">CartActivity</string>
 </resources>

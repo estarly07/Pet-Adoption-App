@@ -31,6 +31,7 @@ import com.estarly.petadoptionapp.R
 import com.estarly.petadoptionapp.ui.composables.CustomAddOrDismiss
 import com.estarly.petadoptionapp.ui.composables.CustomButton
 import com.estarly.petadoptionapp.ui.composables.CustomSpaceHeight
+import com.estarly.petadoptionapp.ui.dialog.alert.CustomAlertDialog
 import com.estarly.petadoptionapp.ui.model.ProductCartModel
 import com.estarly.petadoptionapp.ui.theme.MarginHorizontalScreen
 import com.estarly.petadoptionapp.utils.format
@@ -40,18 +41,29 @@ fun CartScreen(cartViewModel: CartViewModel) {
     val context = LocalContext.current
     val listProducts by cartViewModel.listProducts.observeAsState(initial = listOf())
     val totalPrice by cartViewModel.totalPrice.observeAsState(initial = 0.0)
+    val showAlertDialog by cartViewModel.showAlertDialog.observeAsState(initial = false)
     Column(
         modifier = Modifier.padding(horizontal = MarginHorizontalScreen)
     ) {
         CustomSpaceHeight(height = 25.dp)
         Header(
             onBack = {(context as Activity).onBackPressed()},
-            onDelete = {}
+            onDelete = { cartViewModel.showDeleteCartAlertDialog(true) }
         )
         CustomSpaceHeight(height = 25.dp)
         Products(modifier = Modifier.weight(1f),listProducts,cartViewModel)
         CustomSpaceHeight(height = 20.dp)
         Footer(totalPrice)
+        //show dialog delete cart
+        CustomAlertDialog(
+            title = "Alert",
+            message = "Do you want to delete the cart?",
+            show = showAlertDialog,
+            onDismiss = {cartViewModel.showDeleteCartAlertDialog(false)},
+            onConfirm = {
+                cartViewModel.deleteCart()
+            }
+        )
     }
 }
 
@@ -204,7 +216,7 @@ fun Header(
             color = MaterialTheme.colors.onPrimary
         )
         Icon(
-            imageVector = Icons.Sharp.Delete,
+            painter = painterResource(id = R.drawable.ic_delete),
             contentDescription = "icon back",
             modifier = Modifier.clickable {onDelete()})
     }

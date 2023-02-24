@@ -17,6 +17,8 @@ import javax.inject.Inject
 class CartViewModel @Inject constructor(
     private val getProductsCartUseCase: GetProductsCartUseCase
 ) : ViewModel() {
+    private val _showAlertDialog = MutableLiveData<Boolean>()
+    val showAlertDialog: LiveData<Boolean> = _showAlertDialog
     private val _totalPrice = MutableLiveData<Double>()
     val totalPrice : LiveData<Double> = _totalPrice
     private val _listProducts = MutableLiveData<List<ProductCartModel>>()
@@ -66,5 +68,11 @@ class CartViewModel @Inject constructor(
             }
             calculatePrice()
         }
+    }
+    fun showDeleteCartAlertDialog(show : Boolean){ _showAlertDialog.value = show }
+    fun deleteCart(){
+        showDeleteCartAlertDialog(false)
+        _listProducts.value= listOf()
+        calculatePrice()
     }
 }
