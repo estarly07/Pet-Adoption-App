@@ -92,7 +92,9 @@ fun AdoptButton(amount: Double) {
                         .padding(horizontal = 5.dp)
                 )
             },
-        ) {}
+            onClick = {},
+            color = MaterialTheme.colors.primary,
+        )
         CustomSpaceWidth(width = 10.dp)
         CustomButton(
             modifier = Modifier
@@ -109,7 +111,9 @@ fun AdoptButton(amount: Double) {
                         .padding(horizontal = 5.dp)
                 )
             },
-        ) {}
+            onClick = {},
+            color = MaterialTheme.colors.primary,
+        )
     }
 }
 

@@ -28,19 +28,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavHostController
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.estarly.petadoptionapp.R
 import com.estarly.petadoptionapp.ui.*
 import com.estarly.petadoptionapp.ui.breed.BreedActivity
-import com.estarly.petadoptionapp.ui.breed.BreedViewModel
 import com.estarly.petadoptionapp.ui.composables.*
 import com.estarly.petadoptionapp.ui.dialog.filter.CustomDialogFilter
 import com.estarly.petadoptionapp.ui.model.BreedModel
 import com.estarly.petadoptionapp.ui.model.PromotionModel
 import com.estarly.petadoptionapp.ui.model.CategoryModel
-import com.estarly.petadoptionapp.ui.navigators.Route
 import com.estarly.petadoptionapp.ui.theme.*
 import java.util.*
 
@@ -384,10 +381,12 @@ fun Search(search: String, onClickFilter: () -> Unit, onTextChanged: (String) ->
                             .align(Alignment.Center)
                             .size(20.dp)
                     )
-                }
-            ) {
-                onClickFilter()
-            }
+                },
+                onClick = {
+                    onClickFilter()
+                },
+                color = MaterialTheme.colors.primary
+            )
         }
     }
 }

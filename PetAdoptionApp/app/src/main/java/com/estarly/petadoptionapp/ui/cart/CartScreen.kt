@@ -11,8 +11,6 @@ import androidx.compose.material.Card
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.sharp.Delete
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -92,9 +90,10 @@ fun Footer(totalPrice: Double) {
             )
         }
         CustomSpaceHeight(height = 20.dp)
-        CustomButton(modifier = Modifier
-            .height(50.dp)
-            .fillMaxWidth(),
+        CustomButton(
+            modifier = Modifier
+                .height(50.dp)
+                .fillMaxWidth(),
             composable = {
                 Text(
                     text = "Proceed to Checkout",
@@ -105,7 +104,10 @@ fun Footer(totalPrice: Double) {
                         .align(Alignment.Center)
                         .padding(horizontal = 5.dp)
                 )
-        }){}
+        },
+            onClick = {},
+            color = MaterialTheme.colors.primary
+        )
     }
 }
 

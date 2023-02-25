@@ -10,7 +10,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.sharp.Check
 import androidx.compose.material.icons.sharp.CheckCircle
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
@@ -30,7 +29,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
-import androidx.navigation.NavHostController
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.estarly.petadoptionapp.R
@@ -41,7 +39,6 @@ import com.estarly.petadoptionapp.ui.composables.CustomButton
 import com.estarly.petadoptionapp.ui.composables.CustomSpaceHeight
 import com.estarly.petadoptionapp.ui.composables.CustomSpaceWidth
 import com.estarly.petadoptionapp.ui.model.ProductModel
-import com.estarly.petadoptionapp.ui.navigators.ProductNavigation
 import com.estarly.petadoptionapp.ui.theme.MarginHorizontalScreen
 import com.estarly.petadoptionapp.utils.format
 
@@ -328,7 +325,9 @@ fun AddCart( onCart : () -> Unit) {
                             .padding(horizontal = 5.dp)
                     )
                 },
-            ) {onCart()}
+                onClick = {onCart()},
+                color = MaterialTheme.colors.primary,
+            )
         }
     }
 }

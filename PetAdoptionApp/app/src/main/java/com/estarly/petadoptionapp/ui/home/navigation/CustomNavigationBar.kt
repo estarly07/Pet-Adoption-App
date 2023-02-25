@@ -43,9 +43,9 @@ fun CustomBottomBar(
                             CustomFadeIn(duration = 500) {
                                 Column {
                                     CustomButton(
-                                        isCircle = true,
                                         modifier = Modifier
                                             .size(50.dp),
+                                        isCircle = true,
                                         composable = {
                                             Icon(
                                                 painter = painterResource(id =  it.first),
