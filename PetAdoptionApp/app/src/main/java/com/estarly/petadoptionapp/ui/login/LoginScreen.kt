@@ -1,18 +1,16 @@
 package com.estarly.petadoptionapp.ui.login
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.sharp.Email
+import androidx.compose.material.icons.sharp.Lock
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -22,7 +20,10 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.estarly.petadoptionapp.R
@@ -30,12 +31,13 @@ import com.estarly.petadoptionapp.ui.composables.CustomButton
 import com.estarly.petadoptionapp.ui.composables.CustomSpaceHeight
 import com.estarly.petadoptionapp.ui.composables.CustomTextField
 import com.estarly.petadoptionapp.ui.theme.MarginHorizontalScreen
+import java.util.*
 
 @Composable
 fun LoginScreen(loginViewModel: LoginViewModel) {
     Column(modifier = Modifier.fillMaxSize()) {
-        Header(modifier = Modifier.weight(1f))
-        Body(modifier = Modifier.weight(1f),loginViewModel)
+        Header(modifier = Modifier.weight(1f),R.drawable.dog)
+        Body(modifier = Modifier.weight(1.2f),loginViewModel)
     }
 }
 
@@ -105,7 +107,7 @@ fun Body(modifier: Modifier,loginViewModel :LoginViewModel) {
                 error = errorPass,
                 leadingIcon = {
                     Icon(
-                        imageVector = Icons.Sharp.Email,
+                        imageVector = Icons.Sharp.Lock,
                         contentDescription = "Icon pass",
                         tint = MaterialTheme.colors.onSecondary
                     )
@@ -136,6 +138,30 @@ fun Body(modifier: Modifier,loginViewModel :LoginViewModel) {
                 loginViewModel.login()
             }
             CustomSpaceHeight(height = 20.dp)
+            Text(
+                modifier= Modifier.align(Alignment.CenterHorizontally).clickable {
+                    loginViewModel.showRegisterScreen()
+                },
+                text = buildAnnotatedString {
+                    withStyle(
+                        style = SpanStyle(
+                            fontSize = 15.sp,
+                            color = Color.White,
+                        )
+                    ) {
+                        append("Don't have an account? ")
+                    }
+                    withStyle(
+                        style = SpanStyle(
+                            fontSize = 15.sp,
+                            color = Color.White,
+                            fontWeight = FontWeight.Bold
+                        )
+                    ) {
+                        append("Sign up")
+                    }
+                })
+            CustomSpaceHeight(height = 20.dp)
             Divider(color = Color.White)
             CustomSpaceHeight(height = 15.dp)
             Row(
@@ -153,15 +179,4 @@ fun Body(modifier: Modifier,loginViewModel :LoginViewModel) {
             }
         }
     }
-}
-
-@Composable
-fun Header(modifier: Modifier) {
-    Image(
-        painter = painterResource(id = R.drawable.dog),
-        contentDescription = "",
-        modifier = modifier.fillMaxWidth(),
-        alignment = Alignment.BottomCenter
-
-    )
 }

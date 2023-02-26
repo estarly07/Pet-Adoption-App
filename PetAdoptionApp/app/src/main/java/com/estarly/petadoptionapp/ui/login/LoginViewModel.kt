@@ -30,10 +30,13 @@ class LoginViewModel @Inject constructor(
     val errorEmptyEmail : LiveData<String> = _errorEmptyEmail
     private val _errorEmptyPass = MutableLiveData<String>()
     val errorEmptyPass : LiveData<String> = _errorEmptyPass
+    private val _showRegisterScreen = MutableLiveData<Boolean>()
+    val showRegisterScreen : LiveData<Boolean> = _showRegisterScreen
 
     init {
         _email.value = ""
         _pass.value = ""
+        _showRegisterScreen.value = false
     }
     fun isLogin(){
         _goToHome.value = setLoginPreferencesUseCase.getIsLogin()
@@ -72,5 +75,21 @@ class LoginViewModel @Inject constructor(
     fun changeTextPass(pass : String){
         _errorEmptyPass.value = ""
         _pass.value = pass
+    }
+
+    fun showRegisterScreen() {
+        _showRegisterScreen.value = true
+    }
+
+    fun showLoginScreen() {
+        _showRegisterScreen.value = false
+    }
+
+    fun onBackPressed(loginActivity: LoginActivity) {
+        if(_showRegisterScreen.value == true){
+            _showRegisterScreen.value = false
+        }else{
+            loginActivity.finish()
+        }
     }
 }

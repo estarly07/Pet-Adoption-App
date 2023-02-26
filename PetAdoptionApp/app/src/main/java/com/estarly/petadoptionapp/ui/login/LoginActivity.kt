@@ -5,6 +5,8 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import com.estarly.petadoptionapp.ui.MainActivity
 import com.estarly.petadoptionapp.ui.theme.PetAdoptionAppTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -25,9 +27,17 @@ class LoginActivity : ComponentActivity() {
             }
         }
         setContent {
+            val showRegisterScreen by loginViewModel.showRegisterScreen.observeAsState(initial = false)
             PetAdoptionAppTheme(darkTheme = false) {
-                LoginScreen(loginViewModel)
+                if(showRegisterScreen)
+                    RegisterScreen(loginViewModel)
+                else
+                    LoginScreen(loginViewModel)
             }
         }
+    }
+
+    override fun onBackPressed() {
+        loginViewModel.onBackPressed(this)
     }
 }
