@@ -1,5 +1,7 @@
 package com.estarly.petadoptionapp.ui.composables
 
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
@@ -7,12 +9,15 @@ import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 
 @Composable
 fun CustomTextField(
@@ -22,25 +27,37 @@ fun CustomTextField(
     leadingIcon : @Composable (()->Unit)?,
     placerHolder : String,
     textColor: Color,
+    showError : Boolean = false,
+    error : String = "",
     backgroundColor: Color
 ) {
-    TextField(
-        value = value,
-        onValueChange = onTextChanged,
-        modifier = modifier
-            .clip(RoundedCornerShape(15.dp)).size(50.dp),
-        leadingIcon = leadingIcon,
-        placeholder = {Text(text = placerHolder, fontWeight = FontWeight.SemiBold)},
-        maxLines = 1,
-        singleLine = true,
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-        colors = TextFieldDefaults.textFieldColors(
-            textColor = textColor,
-            placeholderColor = textColor,
-            backgroundColor = backgroundColor,
-            focusedIndicatorColor = Color.Transparent,
-            unfocusedIndicatorColor = Color.Transparent,
-        )
+    Column{
+        TextField(
+            value = value,
+            onValueChange = onTextChanged,
+            modifier = modifier
+                .clip(RoundedCornerShape(15.dp))
+                .size(50.dp),
+            leadingIcon = leadingIcon,
+            placeholder = { Text(text = placerHolder, fontWeight = FontWeight.SemiBold) },
+            maxLines = 1,
+            singleLine = true,
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+            colors = TextFieldDefaults.textFieldColors(
+                textColor = textColor,
+                placeholderColor = textColor,
+                backgroundColor = backgroundColor,
+                focusedIndicatorColor = Color.Transparent,
+                unfocusedIndicatorColor = Color.Transparent,
+            )
 
-    )
+        )
+        if(showError)
+            Text(
+                text = error,
+                color = Color.Red,
+                modifier = Modifier.align(Alignment.End),
+                fontSize = 15.sp
+            )
+    }
 }

@@ -1,9 +1,12 @@
 package com.estarly.petadoptionapp.di
 
+import android.content.Context
 import com.estarly.petadoptionapp.data.api.clients.*
+import com.estarly.petadoptionapp.data.preferences.Preferences
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 import javax.inject.Singleton
@@ -30,4 +33,8 @@ class ClientsModule {
     @Singleton
     @Provides
     fun provideProductsClient(retrofit: Retrofit) : ProductsClient = retrofit.create(ProductsClient::class.java)
+
+    @Singleton
+    @Provides
+    fun providePreferences(@ApplicationContext appContext: Context) : Preferences = Preferences(context = appContext)
 }

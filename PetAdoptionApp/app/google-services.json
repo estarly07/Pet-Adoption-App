@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "544071206079",
+    "firebase_url": "https://pet-adoption-app-96c45-default-rtdb.firebaseio.com",
+    "project_id": "pet-adoption-app-96c45",
+    "storage_bucket": "pet-adoption-app-96c45.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:544071206079:android:67750538fbb6f9833db20a",
+        "android_client_info": {
+          "package_name": "com.estarly.petadoptionapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "544071206079-3tinddj0sj3e5lfolcmr0s6tdd5s5na4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.estarly.petadoptionapp",
+            "certificate_hash": "6b0dafdc4d4399beda25e5d00295b11e5b29e52e"
+          }
+        },
+        {
+          "client_id": "544071206079-gi4a9c8i6j9r1r7fi9scc1vussk5kdak.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCOSC2Y3hQYT5QJB12fSbJZmaa7vqgF9Bs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "544071206079-gi4a9c8i6j9r1r7fi9scc1vussk5kdak.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -3,8 +3,10 @@ package com.estarly.petadoptionapp.ui.login
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
@@ -42,6 +44,8 @@ fun Body(modifier: Modifier,loginViewModel :LoginViewModel) {
     val email by loginViewModel.email.observeAsState(initial = "")
     val pass by loginViewModel.pass.observeAsState(initial = "")
     val showProgressButton by loginViewModel.showProgressLogin.observeAsState(initial = false)
+    val errorEmail by loginViewModel.errorEmptyEmail.observeAsState(initial = "")
+    val errorPass by loginViewModel.errorEmptyPass.observeAsState(initial = "")
     Box(
         modifier = modifier
             .fillMaxSize()
@@ -56,7 +60,11 @@ fun Body(modifier: Modifier,loginViewModel :LoginViewModel) {
             )
     ) {
         Column(
-            modifier = Modifier.padding(horizontal = MarginHorizontalScreen)
+            modifier = Modifier
+                .padding(horizontal = MarginHorizontalScreen)
+                .verticalScroll(
+                    rememberScrollState()
+                )
         ) {
             CustomSpaceHeight(height = 25.dp)
             Text(
@@ -73,6 +81,8 @@ fun Body(modifier: Modifier,loginViewModel :LoginViewModel) {
             CustomSpaceHeight(height = 25.dp)
             CustomTextField(
                 value = email,
+                showError = errorEmail.isNotEmpty(),
+                error = errorEmail,
                 modifier = Modifier.fillMaxWidth(),
                 onTextChanged = {loginViewModel.changeTextEmail(it) },
                 leadingIcon = {
@@ -91,6 +101,8 @@ fun Body(modifier: Modifier,loginViewModel :LoginViewModel) {
                 value = pass,
                 modifier = Modifier.fillMaxWidth(),
                 onTextChanged = {loginViewModel.changeTextPass(it) },
+                showError = errorPass.isNotEmpty(),
+                error = errorPass,
                 leadingIcon = {
                     Icon(
                         imageVector = Icons.Sharp.Email,
