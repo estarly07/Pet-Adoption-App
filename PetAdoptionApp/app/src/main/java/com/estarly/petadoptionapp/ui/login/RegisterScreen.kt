@@ -11,6 +11,8 @@ import androidx.compose.material.icons.sharp.Email
 import androidx.compose.material.icons.sharp.Lock
 import androidx.compose.material.icons.sharp.Person
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -18,7 +20,6 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.estarly.petadoptionapp.R
@@ -39,12 +40,19 @@ fun RegisterScreen(loginViewModel: LoginViewModel) {
                 .clickable {loginViewModel.showLoginScreen()} )
         CustomSpaceHeight(height = 15.dp)
         Header(modifier = Modifier.weight(1f),R.drawable.dog_register)
-        Body(modifier = Modifier.weight(2f))
+        Body(modifier = Modifier.weight(2f),loginViewModel)
     }
 }
 
 @Composable
-fun Body(modifier: Modifier) {
+private fun Body(modifier: Modifier, loginViewModel: LoginViewModel) {
+    val email by loginViewModel.emailRegister.observeAsState(initial = "")
+    val pass by loginViewModel.passRegister.observeAsState(initial = "")
+    val name by loginViewModel.nameRegister.observeAsState(initial = "")
+    val showProgressButton by loginViewModel.showProgressRegister.observeAsState(initial = false)
+    val errorEmail by loginViewModel.errorEmailRegister.observeAsState(initial = "")
+    val errorPass by loginViewModel.errorPassRegister.observeAsState(initial = "")
+    val errorName by loginViewModel.errorNameRegister.observeAsState(initial = "")
     Box(
         modifier = modifier
             .fillMaxSize()
@@ -72,9 +80,11 @@ fun Body(modifier: Modifier) {
             )
             CustomSpaceHeight(height = 25.dp)
             CustomTextField(
-                value = "Full name",
+                value = name,
                 modifier = Modifier.fillMaxWidth(),
-                onTextChanged = { },
+                onTextChanged = {loginViewModel.changeTextNameRegister(it) },
+                error = errorName,
+                showError = errorName.isNotEmpty(),
                 leadingIcon = {
                     Icon(
                         imageVector = Icons.Sharp.Person,
@@ -84,13 +94,15 @@ fun Body(modifier: Modifier) {
                 },
                 textColor = MaterialTheme.colors.onSecondary,
                 backgroundColor = MaterialTheme.colors.secondary,
-                placerHolder = "Password"
+                placerHolder = "Full name"
             )
             CustomSpaceHeight(height = 15.dp)
             CustomTextField(
-                value = "Email",
+                value = email,
                 modifier = Modifier.fillMaxWidth(),
-                onTextChanged = {},
+                onTextChanged = {loginViewModel.changeTextEmailRegister(it) },
+                error = errorEmail,
+                showError = errorEmail.isNotEmpty(),
                 leadingIcon = {
                     Icon(
                         imageVector = Icons.Sharp.Email,
@@ -100,13 +112,15 @@ fun Body(modifier: Modifier) {
                 },
                 textColor = MaterialTheme.colors.onSecondary,
                 backgroundColor = MaterialTheme.colors.secondary,
-                placerHolder = "Password"
+                placerHolder = "Email"
             )
             CustomSpaceHeight(height = 15.dp)
             CustomTextField(
-                value = "pass",
+                value = pass,
                 modifier = Modifier.fillMaxWidth(),
-                onTextChanged = {},
+                onTextChanged = {loginViewModel.changeTextPassRegister(it) },
+                error = errorPass,
+                showError = errorPass.isNotEmpty(),
                 leadingIcon = {
                     Icon(
                         imageVector = Icons.Sharp.Lock,
@@ -134,9 +148,10 @@ fun Body(modifier: Modifier) {
                             .padding(horizontal = 5.dp)
                     )
                 },
-                wait = false,
+                wait = showProgressButton,
                 color = MaterialTheme.colors.primary.copy(blue = 0.8f)
             ) {
+                loginViewModel.register()
             }
         }
     }

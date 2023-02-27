@@ -31,7 +31,6 @@ import com.estarly.petadoptionapp.ui.composables.CustomButton
 import com.estarly.petadoptionapp.ui.composables.CustomSpaceHeight
 import com.estarly.petadoptionapp.ui.composables.CustomTextField
 import com.estarly.petadoptionapp.ui.theme.MarginHorizontalScreen
-import java.util.*
 
 @Composable
 fun LoginScreen(loginViewModel: LoginViewModel) {
@@ -42,12 +41,12 @@ fun LoginScreen(loginViewModel: LoginViewModel) {
 }
 
 @Composable
-fun Body(modifier: Modifier,loginViewModel :LoginViewModel) {
+private fun Body(modifier: Modifier,loginViewModel :LoginViewModel) {
     val email by loginViewModel.email.observeAsState(initial = "")
     val pass by loginViewModel.pass.observeAsState(initial = "")
     val showProgressButton by loginViewModel.showProgressLogin.observeAsState(initial = false)
-    val errorEmail by loginViewModel.errorEmptyEmail.observeAsState(initial = "")
-    val errorPass by loginViewModel.errorEmptyPass.observeAsState(initial = "")
+    val errorEmail by loginViewModel.errorEmail.observeAsState(initial = "")
+    val errorPass by loginViewModel.errorPass.observeAsState(initial = "")
     Box(
         modifier = modifier
             .fillMaxSize()

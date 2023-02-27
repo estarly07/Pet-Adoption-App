@@ -1,9 +1,9 @@
 package com.estarly.petadoptionapp.data.repositories
 
-import android.util.Log
 import com.estarly.petadoptionapp.base.BaseResultRepository
 import com.estarly.petadoptionapp.data.api.firebase.Firebase
-import kotlinx.coroutines.tasks.await
+import com.estarly.petadoptionapp.data.api.response.UserResponse
+import com.google.firebase.auth.AuthResult
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -19,6 +19,29 @@ class LoginRepository @Inject constructor(
         }catch (e : Exception){
             BaseResultRepository.Error(e)
         }
+    }
+    suspend fun createAccountByEmailAndPass(email:String, pass : String) : BaseResultRepository<AuthResult>{
+        return try {
+            val response = firebase.createByEmailAndPass(email,pass)
+            if(response.user==null){
+                BaseResultRepository.NullOrEmptyData
+            }else
+                BaseResultRepository.Success(response)
+        }catch (e : Exception){
+            BaseResultRepository.Error(e)
+        }
+    }
 
+    suspend fun createUser(uid: String, name: String, email: String) : BaseResultRepository<Boolean> {
+        return try {
+            val user = UserResponse(uid,name,email)
+            val response = firebase.createUser(user)
+            if(response == null){
+                BaseResultRepository.NullOrEmptyData
+            }else
+                BaseResultRepository.Success(true)
+        }catch (e : Exception){
+            BaseResultRepository.Error(e)
+        }
     }
 }
