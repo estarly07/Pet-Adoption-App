@@ -4,7 +4,7 @@ import android.util.Log
 import com.estarly.petadoptionapp.base.BaseResultRepository
 import com.estarly.petadoptionapp.base.BaseResultUseCase
 import com.estarly.petadoptionapp.data.repositories.PromotionRepository
-import com.estarly.petadoptionapp.ui.model.PromotionModel
+import com.estarly.petadoptionapp.domain.model.PromotionModel
 import javax.inject.Inject
 import javax.inject.Singleton
 

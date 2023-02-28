@@ -7,8 +7,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.estarly.petadoptionapp.ui.breed.BreedScreen
 import com.estarly.petadoptionapp.ui.breed.BreedViewModel
-import com.estarly.petadoptionapp.ui.model.BreedModel
-import com.estarly.petadoptionapp.ui.model.toPetModel
+import com.estarly.petadoptionapp.domain.model.BreedModel
+import com.estarly.petadoptionapp.domain.model.toPetModel
 import com.estarly.petadoptionapp.ui.pet.PetScreen
 import com.estarly.petadoptionapp.ui.pet.PetViewModel
 

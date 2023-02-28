@@ -27,7 +27,7 @@ import com.estarly.petadoptionapp.ui.CustomSlideLeft
 import com.estarly.petadoptionapp.ui.CustomSlideRight
 import com.estarly.petadoptionapp.ui.CustomSlideUp
 import com.estarly.petadoptionapp.ui.composables.CustomSpaceHeight
-import com.estarly.petadoptionapp.ui.model.CategoryModel
+import com.estarly.petadoptionapp.domain.model.CategoryModel
 import com.estarly.petadoptionapp.ui.theme.*
 
 @Composable

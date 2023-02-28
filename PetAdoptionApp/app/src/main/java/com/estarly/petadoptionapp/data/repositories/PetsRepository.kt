@@ -3,7 +3,7 @@ package com.estarly.petadoptionapp.data.repositories
 import com.estarly.petadoptionapp.base.BaseResultRepository
 import com.estarly.petadoptionapp.data.api.clients.PetClient
 import com.estarly.petadoptionapp.data.api.response.PetResponse
-import com.estarly.petadoptionapp.ui.model.PetModel
+import com.estarly.petadoptionapp.domain.model.PetModel
 import javax.inject.Inject
 
 class PetsRepository @Inject constructor(private val petClient : PetClient){

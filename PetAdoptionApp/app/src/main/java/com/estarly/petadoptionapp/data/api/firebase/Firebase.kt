@@ -1,10 +1,12 @@
 package com.estarly.petadoptionapp.data.api.firebase
 
+import android.util.Log
 import com.estarly.petadoptionapp.data.api.response.UserResponse
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.tasks.await
@@ -26,8 +28,14 @@ class Firebase @Inject constructor(){
         return response.await()
     }
 
-    suspend fun createUser(user: UserResponse): DocumentReference {
-        val response = dbFirestore.collection("users").add(user.toMap())
+    suspend fun createUser(user: UserResponse): Void {
+        val response = dbFirestore.collection("users").document(user.id).set(user.toMap())
+        return  response.await()
+    }
+
+    suspend fun getUser(uid: String): DocumentSnapshot {
+        Log.i("TAG",uid)
+        val response = dbFirestore.collection("users").document(uid).get()
         return  response.await()
     }
 }

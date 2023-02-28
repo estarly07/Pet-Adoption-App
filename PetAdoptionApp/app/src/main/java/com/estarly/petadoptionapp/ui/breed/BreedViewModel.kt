@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.estarly.petadoptionapp.base.BaseResultUseCase
 import com.estarly.petadoptionapp.domain.pets.GetPetsUseCase
-import com.estarly.petadoptionapp.ui.model.PetModel
+import com.estarly.petadoptionapp.domain.model.PetModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch

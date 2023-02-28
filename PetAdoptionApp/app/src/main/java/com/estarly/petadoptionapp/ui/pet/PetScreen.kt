@@ -24,7 +24,7 @@ import com.estarly.petadoptionapp.ui.CustomAnimateExpandBounce
 import com.estarly.petadoptionapp.ui.CustomScaleIn
 import com.estarly.petadoptionapp.ui.CustomSlideUp
 import com.estarly.petadoptionapp.ui.composables.*
-import com.estarly.petadoptionapp.ui.model.PetModel
+import com.estarly.petadoptionapp.domain.model.PetModel
 import com.estarly.petadoptionapp.ui.theme.MarginHorizontalScreen
 import com.estarly.petadoptionapp.utils.format
 import com.estarly.petadoptionapp.utils.toYear

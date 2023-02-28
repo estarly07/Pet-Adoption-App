@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import com.estarly.petadoptionapp.ui.model.ProductModel
+import com.estarly.petadoptionapp.domain.model.ProductModel
 import com.estarly.petadoptionapp.ui.navigators.ProductNavigation
 import com.estarly.petadoptionapp.ui.theme.PetAdoptionAppTheme
 

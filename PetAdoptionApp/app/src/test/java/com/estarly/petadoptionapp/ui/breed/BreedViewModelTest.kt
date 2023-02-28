@@ -3,7 +3,7 @@ package com.estarly.petadoptionapp.ui.breed
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.estarly.petadoptionapp.base.BaseResultUseCase
 import com.estarly.petadoptionapp.domain.pets.GetPetsUseCase
-import com.estarly.petadoptionapp.ui.model.PetModel
+import com.estarly.petadoptionapp.domain.model.PetModel
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.coVerify

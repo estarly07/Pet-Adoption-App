@@ -2,13 +2,11 @@ package com.estarly.petadoptionapp.domain.products
 
 import com.estarly.petadoptionapp.base.BaseResultRepository
 import com.estarly.petadoptionapp.base.BaseResultUseCase
-import com.estarly.petadoptionapp.data.api.response.ProductResponse
 import com.estarly.petadoptionapp.data.repositories.ProductsRepository
-import com.estarly.petadoptionapp.ui.model.ProductModel
-import com.estarly.petadoptionapp.ui.model.TypeProductModel
+import com.estarly.petadoptionapp.domain.model.ProductModel
+import com.estarly.petadoptionapp.domain.model.TypeProductModel
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
-import io.mockk.every
 import io.mockk.impl.annotations.RelaxedMockK
 import kotlinx.coroutines.runBlocking
 import org.junit.Before

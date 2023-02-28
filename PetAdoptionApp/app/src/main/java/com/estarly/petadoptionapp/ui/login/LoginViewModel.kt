@@ -76,8 +76,7 @@ class LoginViewModel @Inject constructor(
                 return@launch
             }
             _showProgressLogin.value = true
-            val response = loginByEmailAndPassUseCase(email.value!!.trim(),pass.value!!.trim())
-            when(response){
+            when(val response = loginByEmailAndPassUseCase(email.value!!.trim(),pass.value!!.trim())){
                 is BaseResultUseCase.Error -> {
                     response.exception.message?.let { Log.i("TAG", it) }
                 }

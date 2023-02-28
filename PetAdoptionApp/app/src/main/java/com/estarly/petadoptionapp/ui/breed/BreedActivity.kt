@@ -6,7 +6,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.material.Scaffold
-import com.estarly.petadoptionapp.ui.model.BreedModel
+import com.estarly.petadoptionapp.domain.model.BreedModel
 import com.estarly.petadoptionapp.ui.navigators.BreedNavigation
 import com.estarly.petadoptionapp.ui.pet.PetViewModel
 import com.estarly.petadoptionapp.ui.theme.PetAdoptionAppTheme

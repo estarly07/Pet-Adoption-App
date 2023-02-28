@@ -7,8 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.estarly.petadoptionapp.base.BaseResultUseCase
 import com.estarly.petadoptionapp.domain.cart.GetProductsCartUseCase
-import com.estarly.petadoptionapp.ui.model.ProductCartModel
-import com.estarly.petadoptionapp.ui.model.ProductModel
+import com.estarly.petadoptionapp.domain.model.ProductCartModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject

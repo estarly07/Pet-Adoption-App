@@ -7,8 +7,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.sharp.Add
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -20,7 +18,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
@@ -34,7 +31,7 @@ import com.estarly.petadoptionapp.ui.composables.CustomShimmerRectangleWait
 import com.estarly.petadoptionapp.ui.composables.CustomSpaceHeight
 import com.estarly.petadoptionapp.ui.composables.CustomSpaceWidth
 import com.estarly.petadoptionapp.ui.composables.CustomTextWithIcon
-import com.estarly.petadoptionapp.ui.model.ProductModel
+import com.estarly.petadoptionapp.domain.model.ProductModel
 import com.estarly.petadoptionapp.ui.product.ProductActivity
 import com.estarly.petadoptionapp.ui.theme.CardElevation
 import com.estarly.petadoptionapp.ui.theme.MarginHorizontalScreen

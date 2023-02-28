@@ -1,8 +1,8 @@
 package com.estarly.petadoptionapp.domain.cart
 
 import com.estarly.petadoptionapp.base.BaseResultUseCase
-import com.estarly.petadoptionapp.ui.model.ProductCartModel
-import com.estarly.petadoptionapp.ui.model.ProductModel
+import com.estarly.petadoptionapp.domain.model.ProductCartModel
+import com.estarly.petadoptionapp.domain.model.ProductModel
 import javax.inject.Inject
 import javax.inject.Singleton
 

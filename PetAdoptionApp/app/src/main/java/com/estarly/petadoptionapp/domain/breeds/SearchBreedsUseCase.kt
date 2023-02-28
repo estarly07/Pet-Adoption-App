@@ -1,6 +1,6 @@
 package com.estarly.petadoptionapp.domain.breeds
 
-import com.estarly.petadoptionapp.ui.model.BreedModel
+import com.estarly.petadoptionapp.domain.model.BreedModel
 import javax.inject.Inject
 import javax.inject.Singleton
 

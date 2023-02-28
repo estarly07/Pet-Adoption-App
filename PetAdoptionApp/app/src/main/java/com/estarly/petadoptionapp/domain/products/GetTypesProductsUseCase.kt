@@ -3,7 +3,7 @@ package com.estarly.petadoptionapp.domain.products
 import com.estarly.petadoptionapp.base.BaseResultRepository
 import com.estarly.petadoptionapp.base.BaseResultUseCase
 import com.estarly.petadoptionapp.data.repositories.ProductsRepository
-import com.estarly.petadoptionapp.ui.model.TypeProductModel
+import com.estarly.petadoptionapp.domain.model.TypeProductModel
 import javax.inject.Inject
 import javax.inject.Singleton
 

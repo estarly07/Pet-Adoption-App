@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.estarly.petadoptionapp.ui.model.ProductModel
+import com.estarly.petadoptionapp.domain.model.ProductModel
 import com.estarly.petadoptionapp.ui.product.ProductScreen
 import com.estarly.petadoptionapp.ui.product.ProductViewModel
 

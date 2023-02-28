@@ -35,9 +35,9 @@ import com.estarly.petadoptionapp.ui.*
 import com.estarly.petadoptionapp.ui.breed.BreedActivity
 import com.estarly.petadoptionapp.ui.composables.*
 import com.estarly.petadoptionapp.ui.dialog.filter.CustomDialogFilter
-import com.estarly.petadoptionapp.ui.model.BreedModel
-import com.estarly.petadoptionapp.ui.model.PromotionModel
-import com.estarly.petadoptionapp.ui.model.CategoryModel
+import com.estarly.petadoptionapp.domain.model.BreedModel
+import com.estarly.petadoptionapp.domain.model.PromotionModel
+import com.estarly.petadoptionapp.domain.model.CategoryModel
 import com.estarly.petadoptionapp.ui.theme.*
 import java.util.*
 

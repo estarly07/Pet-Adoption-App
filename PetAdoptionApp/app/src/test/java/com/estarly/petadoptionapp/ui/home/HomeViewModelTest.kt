@@ -8,9 +8,8 @@ import com.estarly.petadoptionapp.domain.breeds.GetBreedsUseCase
 import com.estarly.petadoptionapp.domain.breeds.SearchBreedsUseCase
 import com.estarly.petadoptionapp.domain.categories.GetCategoriesUseCase
 import com.estarly.petadoptionapp.domain.promotion.GetPromotionUseCase
-import com.estarly.petadoptionapp.ui.model.BreedModel
-import com.estarly.petadoptionapp.ui.model.CategoryModel
-import com.estarly.petadoptionapp.ui.model.PromotionModel
+import com.estarly.petadoptionapp.domain.model.CategoryModel
+import com.estarly.petadoptionapp.domain.model.PromotionModel
 import io.mockk.*
 import io.mockk.impl.annotations.RelaxedMockK
 import kotlinx.coroutines.Dispatchers

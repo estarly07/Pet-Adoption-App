@@ -4,8 +4,8 @@ import com.estarly.petadoptionapp.base.BaseResultRepository
 import com.estarly.petadoptionapp.data.api.clients.ProductsClient
 import com.estarly.petadoptionapp.data.api.response.ProductResponse
 import com.estarly.petadoptionapp.data.api.response.TypeProductResponse
-import com.estarly.petadoptionapp.ui.model.ProductModel
-import com.estarly.petadoptionapp.ui.model.TypeProductModel
+import com.estarly.petadoptionapp.domain.model.ProductModel
+import com.estarly.petadoptionapp.domain.model.TypeProductModel
 import javax.inject.Inject
 import javax.inject.Singleton
 

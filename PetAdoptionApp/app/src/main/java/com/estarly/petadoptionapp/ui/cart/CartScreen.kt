@@ -30,7 +30,7 @@ import com.estarly.petadoptionapp.ui.composables.CustomAddOrDismiss
 import com.estarly.petadoptionapp.ui.composables.CustomButton
 import com.estarly.petadoptionapp.ui.composables.CustomSpaceHeight
 import com.estarly.petadoptionapp.ui.dialog.alert.CustomAlertDialog
-import com.estarly.petadoptionapp.ui.model.ProductCartModel
+import com.estarly.petadoptionapp.domain.model.ProductCartModel
 import com.estarly.petadoptionapp.ui.theme.MarginHorizontalScreen
 import com.estarly.petadoptionapp.utils.format
 
