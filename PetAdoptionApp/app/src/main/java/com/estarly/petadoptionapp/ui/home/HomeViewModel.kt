@@ -14,6 +14,8 @@ import com.estarly.petadoptionapp.domain.promotion.GetPromotionUseCase
 import com.estarly.petadoptionapp.domain.model.BreedModel
 import com.estarly.petadoptionapp.domain.model.PromotionModel
 import com.estarly.petadoptionapp.domain.model.CategoryModel
+import com.estarly.petadoptionapp.domain.model.UserModel
+import com.estarly.petadoptionapp.domain.user.GetUserUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -25,7 +27,8 @@ class HomeViewModel @Inject constructor(
   private val getBreedsUseCase   : GetBreedsUseCase,
   private val searchBreedsUseCase: SearchBreedsUseCase,
   private val filterBreedsUseCase: FilterBreedsUseCase,
-  private val getCategoriesUseCase: GetCategoriesUseCase
+  private val getCategoriesUseCase: GetCategoriesUseCase,
+  private val getUserUseCase: GetUserUseCase
 ): ViewModel() {
     private val TAG ="HomeViewModel"
 
@@ -50,12 +53,26 @@ class HomeViewModel @Inject constructor(
     val showProgressPromotion : LiveData<Boolean> = _showProgressPromotion
     private  val _promotion = MutableLiveData<PromotionModel?>()
     val promotion : LiveData<PromotionModel?> = _promotion
+    private val _user = MutableLiveData<UserModel>()
+    val user : LiveData<UserModel> = _user
 
     fun onCreate(){
         viewModelScope.launch{
+            getUser()
             getCategories()//Get the categories of each type of breed
             getPromotion()//Get active promotion
             getBreeds()//Get all breeds
+        }
+    }
+
+    private suspend fun getUser() {
+        viewModelScope.launch {
+            when(val response = getUserUseCase()){
+                is BaseResultUseCase.Error -> TODO()
+                BaseResultUseCase.NoInternetConnection -> TODO()
+                BaseResultUseCase.NullOrEmptyData -> TODO()
+                is BaseResultUseCase.Success -> _user.value = response.data
+            }
         }
     }
 

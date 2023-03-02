@@ -38,6 +38,7 @@ import com.estarly.petadoptionapp.ui.dialog.filter.CustomDialogFilter
 import com.estarly.petadoptionapp.domain.model.BreedModel
 import com.estarly.petadoptionapp.domain.model.PromotionModel
 import com.estarly.petadoptionapp.domain.model.CategoryModel
+import com.estarly.petadoptionapp.domain.model.UserModel
 import com.estarly.petadoptionapp.ui.theme.*
 import java.util.*
 
@@ -57,6 +58,7 @@ fun HomeScreen(
     val idSelectTag: Int by homeViewModel.idSelectTag.observeAsState(initial = 0)
     val tags: List<CategoryModel> by homeViewModel.tags.observeAsState(initial = listOf())
     val showDialogFilter: Boolean by homeViewModel.showDialogFilter.observeAsState(initial = false)
+    val user : UserModel? by homeViewModel.user.observeAsState(initial = null)
     Scaffold{
         Column(
             Modifier
@@ -64,7 +66,7 @@ fun HomeScreen(
                 .padding(horizontal = MarginHorizontalScreen)
         ) {
             CustomSpaceHeight(height = 25.dp)
-            Header()
+            Header(user)
             CustomSpaceHeight(height = 25.dp)
             Search(
                 search,
@@ -352,6 +354,7 @@ fun Search(search: String, onClickFilter: () -> Unit, onTextChanged: (String) ->
         ){
             CustomTextField(
                 value = search,
+                modifier = Modifier.fillMaxWidth(),
                 onTextChanged = onTextChanged,
                 leadingIcon = {
                     Icon(
@@ -385,7 +388,6 @@ fun Search(search: String, onClickFilter: () -> Unit, onTextChanged: (String) ->
                 onClick = {
                     onClickFilter()
                 },
-                color = MaterialTheme.colors.primary
             )
         }
     }
@@ -393,14 +395,14 @@ fun Search(search: String, onClickFilter: () -> Unit, onTextChanged: (String) ->
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
-fun Header() {
+fun Header(user: UserModel?) {
     Row {
         Column(modifier = Modifier.weight(1f)) {
             CustomSlideDown(
                 delay = 100
             ){
                 Text(
-                    text = "Hi Bunny!",
+                    text = "Hi ${user?.name ?: ""}!",
                     fontSize = 25.sp,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colors.onPrimary

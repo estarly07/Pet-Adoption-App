@@ -7,7 +7,9 @@ import androidx.activity.viewModels
 import com.estarly.petadoptionapp.domain.model.ProductModel
 import com.estarly.petadoptionapp.ui.navigators.ProductNavigation
 import com.estarly.petadoptionapp.ui.theme.PetAdoptionAppTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class ProductActivity : ComponentActivity() {
     private val productViewModel : ProductViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {

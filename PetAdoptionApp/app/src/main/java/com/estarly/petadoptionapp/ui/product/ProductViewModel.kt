@@ -1,13 +1,23 @@
 package com.estarly.petadoptionapp.ui.product
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.estarly.petadoptionapp.base.BaseResultUseCase
+import com.estarly.petadoptionapp.domain.cart.AddProductCartUseCase
+import com.estarly.petadoptionapp.domain.model.ProductModel
+import com.estarly.petadoptionapp.domain.user.GetUserUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ProductViewModel @Inject constructor(): ViewModel(){
+class ProductViewModel @Inject constructor(
+    private val addProductCartUseCase: AddProductCartUseCase,
+    private val userUseCase: GetUserUseCase
+): ViewModel(){
 
     private val _showMoreAbout = MutableLiveData<Boolean>()
     val showMoreAbout: LiveData<Boolean> = _showMoreAbout
@@ -32,4 +42,24 @@ class ProductViewModel @Inject constructor(): ViewModel(){
         _imageSelect.value = image
     }
     fun showMoreAbout() { _showMoreAbout.value = !_showMoreAbout.value!! }
+
+    fun addProductCart(productModel: ProductModel){
+       viewModelScope.launch {
+           when(val response = userUseCase()){
+               is BaseResultUseCase.Error -> TODO()
+               BaseResultUseCase.NoInternetConnection -> TODO()
+               BaseResultUseCase.NullOrEmptyData -> TODO()
+               is BaseResultUseCase.Success ->{
+                   when(val responseAddCart = addProductCartUseCase(response.data.id,_cant.value!!,productModel)){
+                       is BaseResultUseCase.Error -> Log.i("TAG","PUTO ERROR ${responseAddCart.exception.message}")
+                       BaseResultUseCase.NoInternetConnection -> TODO()
+                       BaseResultUseCase.NullOrEmptyData ->Log.i("TAG","PUTO NULL")
+                       is BaseResultUseCase.Success -> {
+
+                       }
+                   }
+               }
+           }
+       }
+    }
 }

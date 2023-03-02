@@ -85,7 +85,8 @@ fun ProductScreen(productModel: ProductModel, productViewModel : ProductViewMode
                 )
                 CustomSpaceHeight(height = 20.dp)
                 AddCart{
-                    localContext.startActivity(Intent(localContext,CartActivity::class.java))
+                    productViewModel.addProductCart(productModel)
+//                    localContext.startActivity(Intent(localContext,CartActivity::class.java))
                 }
                 CustomSpaceHeight(height = 10.dp)
             }
@@ -326,7 +327,6 @@ fun AddCart( onCart : () -> Unit) {
                     )
                 },
                 onClick = {onCart()},
-                color = MaterialTheme.colors.primary,
             )
         }
     }

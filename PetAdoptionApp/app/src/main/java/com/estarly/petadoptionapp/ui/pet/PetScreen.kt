@@ -93,7 +93,6 @@ fun AdoptButton(amount: Double) {
                 )
             },
             onClick = {},
-            color = MaterialTheme.colors.primary,
         )
         CustomSpaceWidth(width = 10.dp)
         CustomButton(
@@ -112,7 +111,6 @@ fun AdoptButton(amount: Double) {
                 )
             },
             onClick = {},
-            color = MaterialTheme.colors.primary,
         )
     }
 }

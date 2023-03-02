@@ -106,7 +106,6 @@ fun Footer(totalPrice: Double) {
                 )
         },
             onClick = {},
-            color = MaterialTheme.colors.primary
         )
     }
 }
