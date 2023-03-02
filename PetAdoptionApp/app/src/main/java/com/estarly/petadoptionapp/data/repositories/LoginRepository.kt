@@ -43,10 +43,7 @@ class LoginRepository @Inject constructor(
         return try {
             val user = UserResponse(uid,name,email)
             val response = firebase.createUser(user)
-            if(response == null){
-                BaseResultRepository.NullOrEmptyData
-            }else
-                BaseResultRepository.Success(true)
+            BaseResultRepository.Success(response)
         }catch (e : Exception){
             BaseResultRepository.Error(e)
         }
@@ -65,17 +62,9 @@ class LoginRepository @Inject constructor(
         }
     }
 
-    suspend fun insertUser(userModel: UserModel){ userDao.insertUser(userModel.toData()) }
-    suspend fun getUserLocal(uid: String, name: String, email: String) : UserModel{
-        return  userDao.getUser().toData()
-    }
 }
 fun UserEntity.toData() : UserModel =
     UserModel(
-        id, name,email
-    )
-fun UserModel.toData() : UserEntity =
-    UserEntity(
         id, name,email
     )
 fun UserResponse.toData() : UserModel =

@@ -3,6 +3,7 @@ package com.estarly.petadoptionapp.domain.login
 import com.estarly.petadoptionapp.base.BaseResultRepository
 import com.estarly.petadoptionapp.base.BaseResultUseCase
 import com.estarly.petadoptionapp.data.repositories.LoginRepository
+import com.estarly.petadoptionapp.data.repositories.UserRepository
 import com.estarly.petadoptionapp.domain.model.UserModel
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -10,6 +11,7 @@ import javax.inject.Singleton
 @Singleton
 class RegisterUserUseCase @Inject constructor(
     private val loginRepository: LoginRepository,
+    private val userRepository: UserRepository,
     private val preferencesUseCase: SetLoginPreferencesUseCase
 ){
     suspend operator fun invoke(name: String, email:String, pass:String) : BaseResultUseCase<Boolean>{
@@ -22,7 +24,7 @@ class RegisterUserUseCase @Inject constructor(
                         is BaseResultRepository.Error -> BaseResultUseCase.Error(responseCreate.exception)
                         BaseResultRepository.NullOrEmptyData -> BaseResultUseCase.NullOrEmptyData
                         is BaseResultRepository.Success -> {
-                            loginRepository.insertUser(UserModel(response.data.user!!.uid, name,email))
+                            userRepository.insertUser(UserModel(response.data.user!!.uid, name,email))
                             preferencesUseCase.setIsLogin(true)
                             BaseResultUseCase.Success(true)
                         }

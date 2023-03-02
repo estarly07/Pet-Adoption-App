@@ -28,14 +28,27 @@ class Firebase @Inject constructor(){
         return response.await()
     }
 
-    suspend fun createUser(user: UserResponse): Void {
+    suspend fun createUser(user: UserResponse): Boolean {
         val response = dbFirestore.collection("users").document(user.id).set(user.toMap())
-        return  response.await()
+        response.await()
+        return response.isSuccessful
     }
 
     suspend fun getUser(uid: String): DocumentSnapshot {
         Log.i("TAG",uid)
         val response = dbFirestore.collection("users").document(uid).get()
+        return  response.await()
+    }
+
+    suspend fun updateCart(uid: String, data: Map<String, *>): Boolean {
+        Log.i("updateCart", uid)
+        val response = dbFirestore.collection("carts").document(uid).set(data)
+        response.await()
+        return response.isSuccessful
+    }
+
+    suspend fun getCart(uid: String):DocumentSnapshot {
+        val response = dbFirestore.collection("carts").document(uid).get()
         return  response.await()
     }
 }

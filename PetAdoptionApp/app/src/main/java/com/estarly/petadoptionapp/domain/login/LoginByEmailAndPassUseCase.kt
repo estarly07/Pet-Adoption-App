@@ -5,6 +5,7 @@ import com.estarly.petadoptionapp.base.BaseResultUseCase
 import com.estarly.petadoptionapp.data.database.dao.UserDao
 import com.estarly.petadoptionapp.data.preferences.Preferences
 import com.estarly.petadoptionapp.data.repositories.LoginRepository
+import com.estarly.petadoptionapp.data.repositories.UserRepository
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -12,7 +13,8 @@ import javax.inject.Singleton
 class LoginByEmailAndPassUseCase @Inject constructor(
     private val loginRepository: LoginRepository,
     private val setLoginPreferencesUseCase: SetLoginPreferencesUseCase,
-    private val getUserUseCase: GetUserUseCase
+    private val getUserUseCase: GetUserUseCase,
+    private val userRepository: UserRepository
 ) {
     suspend operator fun invoke(email : String, pass : String) : BaseResultUseCase<Boolean> {
         return try {
@@ -24,7 +26,7 @@ class LoginByEmailAndPassUseCase @Inject constructor(
                         BaseResultUseCase.NullOrEmptyData -> TODO()
                         is BaseResultUseCase.Success -> {
                             setLoginPreferencesUseCase.setIsLogin(true)
-                            loginRepository.insertUser(responseUser.data)
+                            userRepository.insertUser(responseUser.data)
                             BaseResultUseCase.Success(true)
                         }
                     }

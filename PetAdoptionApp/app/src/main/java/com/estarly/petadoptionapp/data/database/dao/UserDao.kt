@@ -7,8 +7,8 @@ import com.estarly.petadoptionapp.data.database.entities.UserEntity
 
 @Dao
 interface UserDao {
-    @Query("SELECT * FROM USER")
-    suspend fun getUser() : UserEntity
+    @Query("SELECT * FROM USER LIMIT 1")
+    suspend fun getUser() : UserEntity?
     @Insert
     suspend fun insertUser(userEntity: UserEntity)
 }
