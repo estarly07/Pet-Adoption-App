@@ -38,6 +38,24 @@ class CartRepository @Inject constructor(
             BaseResultRepository.Error(e)
         }
     }
+
+    suspend fun deleteCart(uid: String): BaseResultRepository<Boolean> {
+        return try {
+            val response = firebase.deleteCart(uid)
+            BaseResultRepository.Success(response)
+        }catch (e : Exception){
+            BaseResultRepository.Error(e)
+        }
+    }
+
+    suspend fun increaseProductCart(cart: CartModel): BaseResultRepository<Boolean> {
+        return try {
+            val response = firebase.increaseProductCart(cart.idCart,cart.toData().toJson())
+            BaseResultRepository.Success(response)
+        }catch (e : Exception){
+            BaseResultRepository.Error(e)
+        }
+    }
 }
 
 private fun CartModel.toData(): CartResponse =

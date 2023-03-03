@@ -16,6 +16,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -31,6 +32,7 @@ import com.estarly.petadoptionapp.ui.composables.CustomButton
 import com.estarly.petadoptionapp.ui.composables.CustomSpaceHeight
 import com.estarly.petadoptionapp.ui.dialog.alert.CustomAlertDialog
 import com.estarly.petadoptionapp.domain.model.ProductCartModel
+import com.estarly.petadoptionapp.ui.composables.CustomShimmerRectangleWait
 import com.estarly.petadoptionapp.ui.theme.MarginHorizontalScreen
 import com.estarly.petadoptionapp.utils.format
 
@@ -40,6 +42,8 @@ fun CartScreen(cartViewModel: CartViewModel) {
     val listProducts by cartViewModel.listProducts.observeAsState(initial = listOf())
     val totalPrice by cartViewModel.totalPrice.observeAsState(initial = 0.0)
     val showAlertDialog by cartViewModel.showAlertDialog.observeAsState(initial = false)
+    val showDeleteProductAlertDialog by cartViewModel.showDeleteProductAlertDialog.observeAsState(initial = -1)
+    val showProgress by cartViewModel.showProgress.observeAsState(initial = false)
     Column(
         modifier = Modifier.padding(horizontal = MarginHorizontalScreen)
     ) {
@@ -49,7 +53,7 @@ fun CartScreen(cartViewModel: CartViewModel) {
             onDelete = { cartViewModel.showDeleteCartAlertDialog(true) }
         )
         CustomSpaceHeight(height = 25.dp)
-        Products(modifier = Modifier.weight(1f),listProducts,cartViewModel)
+        Products(modifier = Modifier.weight(1f),listProducts,cartViewModel,showProgress)
         CustomSpaceHeight(height = 20.dp)
         Footer(totalPrice)
         //show dialog delete cart
@@ -60,6 +64,16 @@ fun CartScreen(cartViewModel: CartViewModel) {
             onDismiss = {cartViewModel.showDeleteCartAlertDialog(false)},
             onConfirm = {
                 cartViewModel.deleteCart()
+            }
+        )
+        //show dialog delete product
+        CustomAlertDialog(
+            title = "Alert",
+            message = "Do you want to delete this product?",
+            show = showDeleteProductAlertDialog != -1,
+            onDismiss = {cartViewModel.goneDeleteProductAlertDialog()},
+            onConfirm = {
+                cartViewModel.deleteProduct(showDeleteProductAlertDialog)
             }
         )
     }
@@ -115,21 +129,34 @@ fun Products(
     modifier: Modifier,
     listProducts: List<ProductCartModel>,
     cartViewModel: CartViewModel,
+    showProgress : Boolean
     ) {
     LazyColumn(
         modifier = modifier.fillMaxSize(),
         verticalArrangement = Arrangement.spacedBy(15.dp)
     ) {
-        itemsIndexed(listProducts) {i,product->
-            ItemCart(
-                product,
-                onAdd = {
-                    cartViewModel.addCant(i,product)
-                },
-                onSubtract = {
-                    cartViewModel.addSubtract(i,product)
-                }
-            )
+        if(showProgress){
+            items(5){
+                CustomShimmerRectangleWait(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(10.dp)
+                        .clip(RoundedCornerShape(25.dp))
+                        .size(100.dp)
+                )
+            }
+        }else {
+            itemsIndexed(listProducts) {i,product->
+                ItemCart(
+                    product,
+                    onAdd = {
+                        cartViewModel.addCant(i,product)
+                    },
+                    onSubtract = {
+                        cartViewModel.addSubtract(i,product)
+                    }
+                )
+            }
         }
     }
 }
@@ -161,36 +188,41 @@ fun ItemCart(
                 )
                 Column(
                     verticalArrangement = Arrangement.spacedBy(10.dp),
-                    horizontalAlignment = Alignment.Start
                 ) {
-                    Text(
-                        text = productModel.nameProduct,
-                        color = MaterialTheme.colors.onPrimary,
-                        fontSize = 15.sp,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                        fontWeight = FontWeight.ExtraBold,
-                    )
-                    CustomAddOrDismiss(
-                        product.cant,
-                        { onAdd()},
-                        { onSubtract() }
-                    )
-                }
-                Column(
-                    verticalArrangement = Arrangement.spacedBy(10.dp),
-                    horizontalAlignment = Alignment.End
-                ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_like),
-                        contentDescription = ""
-                    )
-                    Text(
-                        text = "$${productModel.price.format()}",
-                        color = MaterialTheme.colors.primary,
-                        fontSize = 15.sp,
-                        fontWeight = FontWeight.ExtraBold,
-                    )
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = productModel.nameProduct,
+                            color = MaterialTheme.colors.onPrimary,
+                            fontSize = 15.sp,
+                            maxLines = 2,
+                            overflow = TextOverflow.Ellipsis,
+                            fontWeight = FontWeight.ExtraBold,
+                            modifier = Modifier.weight(1f)
+                        )
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_like),
+                            contentDescription = ""
+                        )
+                    }
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Box(modifier = Modifier.weight(1f)){
+                            CustomAddOrDismiss(
+                                product.cant,
+                                { onAdd()},
+                                { onSubtract() }
+                            )
+                        }
+                        Text(
+                            text = "$${productModel.price.format()}",
+                            color = MaterialTheme.colors.primary,
+                            fontSize = 15.sp,
+                            fontWeight = FontWeight.ExtraBold,
+                        )
+                    }
                 }
             }
         }

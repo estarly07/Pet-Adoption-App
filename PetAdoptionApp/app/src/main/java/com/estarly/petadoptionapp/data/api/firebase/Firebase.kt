@@ -51,4 +51,16 @@ class Firebase @Inject constructor(){
         val response = dbFirestore.collection("carts").document(uid).get()
         return  response.await()
     }
+
+    suspend fun deleteCart(uid: String) : Boolean {
+        val response = dbFirestore.collection("carts").document(uid).delete()
+        response.await()
+        return  response.isSuccessful
+    }
+
+    suspend fun increaseProductCart(uid: String,data: Map<String,*>): Boolean {
+        val response = dbFirestore.collection("carts").document(uid).set(data)
+        response.await()
+        return response.isSuccessful
+    }
 }
