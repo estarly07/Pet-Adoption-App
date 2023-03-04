@@ -15,6 +15,7 @@ class ProductActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val product = intent.getSerializableExtra("product") as ProductModel
+        productViewModel.getCantCart(product)
         setContent{
             PetAdoptionAppTheme(darkTheme = false) {
                   ProductNavigation(product,productViewModel)

@@ -1,7 +1,6 @@
 package com.estarly.petadoptionapp.ui.product
 
 import android.app.Activity
-import android.content.Intent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -33,7 +32,6 @@ import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.estarly.petadoptionapp.R
 import com.estarly.petadoptionapp.ui.*
-import com.estarly.petadoptionapp.ui.cart.CartActivity
 import com.estarly.petadoptionapp.ui.composables.CustomAddOrDismiss
 import com.estarly.petadoptionapp.ui.composables.CustomButton
 import com.estarly.petadoptionapp.ui.composables.CustomSpaceHeight
@@ -48,6 +46,8 @@ fun ProductScreen(productModel: ProductModel, productViewModel : ProductViewMode
     val cant by productViewModel.cant.observeAsState(initial=1)
     val imageSelect by productViewModel.imageSelect.observeAsState(initial = productModel.imageProduct)
     val showMoreAbout by productViewModel.showMoreAbout.observeAsState(initial = false)
+    val showWaitCant by productViewModel.showWaitCant.observeAsState(initial = false)
+    val showWaitAddCart by productViewModel.showWaitAddCart.observeAsState(initial = false)
     with(productModel) {
         Column(
             modifier = Modifier.padding(
@@ -75,6 +75,7 @@ fun ProductScreen(productModel: ProductModel, productViewModel : ProductViewMode
                 CustomSpaceHeight(height = 20.dp)
                 PriceAndAdd(
                     amount = price,
+                    wait = showWaitCant,
                     onAdd = {
                         productViewModel.addCant(max = productModel.cant)
                     },
@@ -84,9 +85,8 @@ fun ProductScreen(productModel: ProductModel, productViewModel : ProductViewMode
                     cant = cant
                 )
                 CustomSpaceHeight(height = 20.dp)
-                AddCart{
-                    productViewModel.addProductCart(productModel)
-//                    localContext.startActivity(Intent(localContext,CartActivity::class.java))
+                AddCart(showWaitAddCart){
+                    productViewModel.addProductCart(productModel,localContext)
                 }
                 CustomSpaceHeight(height = 10.dp)
             }
@@ -98,6 +98,7 @@ fun ProductScreen(productModel: ProductModel, productViewModel : ProductViewMode
 fun PriceAndAdd(
     amount: Double,
     cant : Int,
+    wait : Boolean,
     onAdd : () ->Unit,
     onSubtract : () ->Unit,
 ) {
@@ -128,7 +129,8 @@ fun PriceAndAdd(
             CustomAddOrDismiss(
                 cant,
                 onAdd,
-                onSubtract
+                onSubtract,
+                wait = wait,
             )
         }
     }
@@ -303,7 +305,7 @@ fun Header(nameTypeProduct: String,onBack : () ->Unit) {
 }
 
 @Composable
-fun AddCart( onCart : () -> Unit) {
+fun AddCart(showWaitCant: Boolean, onCart: () -> Unit) {
     CustomSlideUp(delay = 650){
         Row{
             Spacer(modifier = Modifier
@@ -311,6 +313,7 @@ fun AddCart( onCart : () -> Unit) {
                 .weight(1f)
                 .background(Color.Red))
             CustomButton(
+                wait = showWaitCant,
                 modifier = Modifier
                     .height(50.dp)
                     .fillMaxWidth()

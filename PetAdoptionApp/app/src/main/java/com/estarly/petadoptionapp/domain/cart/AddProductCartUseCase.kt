@@ -34,10 +34,19 @@ class AddProductCartUseCase @Inject constructor(
                 }
                 is BaseResultUseCase.Success -> {
                     val cart = responseCart.data
-                    cart.list.add(ProductCartModel(
-                        productModel,
-                        cant
-                    ))
+                    val product = cart.list.find { it.productModel.idProduct == productModel.idProduct }
+                    if(product==null) {
+                        cart.list.add(
+                            ProductCartModel(
+                                productModel,
+                                cant
+                            )
+                        )
+                    }else{
+                        cart.list.apply {
+                            this[this.indexOf(product)] = product.copy(cant= cant)
+                        }
+                    }
                     callUpdateCart(uid,cart)
                 }
                 is BaseResultUseCase.Error -> {

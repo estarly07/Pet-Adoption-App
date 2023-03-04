@@ -2,10 +2,7 @@ package com.estarly.petadoptionapp.ui.composables
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Icon
@@ -28,7 +25,17 @@ fun CustomAddOrDismiss(
     cant       : Int,
     onAdd      : () -> Unit,
     onSubtract : ()-> Unit,
+    wait       : Boolean = false
 ){
+    if(wait){
+        CustomShimmerRectangleWait(
+            modifier = Modifier
+                .clip(RoundedCornerShape(5.dp))
+                .width(70.dp)
+                .height(35.dp)
+        )
+        return
+    }
     Card(
         elevation = 0.dp,
         backgroundColor = MaterialTheme.colors.secondary,
