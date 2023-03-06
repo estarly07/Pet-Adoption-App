@@ -27,11 +27,8 @@ import com.estarly.petadoptionapp.ui.CustomFadeIn
 import com.estarly.petadoptionapp.ui.CustomSlideDown
 import com.estarly.petadoptionapp.ui.CustomSlideLeft
 import com.estarly.petadoptionapp.ui.cart.CartActivity
-import com.estarly.petadoptionapp.ui.composables.CustomShimmerRectangleWait
-import com.estarly.petadoptionapp.ui.composables.CustomSpaceHeight
-import com.estarly.petadoptionapp.ui.composables.CustomSpaceWidth
-import com.estarly.petadoptionapp.ui.composables.CustomTextWithIcon
 import com.estarly.petadoptionapp.domain.model.ProductModel
+import com.estarly.petadoptionapp.ui.composables.*
 import com.estarly.petadoptionapp.ui.product.ProductActivity
 import com.estarly.petadoptionapp.ui.theme.CardElevation
 import com.estarly.petadoptionapp.ui.theme.MarginHorizontalScreen
@@ -42,6 +39,7 @@ import com.estarly.petadoptionapp.utils.format
 fun StoreScreen(storeViewModel: StoreViewModel) {
     val listProducts by storeViewModel.listProducts.observeAsState(initial = listOf())
     val wait by storeViewModel.showProgressProducts.observeAsState(initial = true)
+    val cantProductsCart by storeViewModel.cantProductsCart.observeAsState(initial = 0)
     val context = LocalContext.current
     Scaffold {
         Box(
@@ -56,7 +54,7 @@ fun StoreScreen(storeViewModel: StoreViewModel) {
                 verticalArrangement = Arrangement.spacedBy(MarginHorizontalScreen)
             ) {
                 this.header {
-                    Header(){
+                    Header(cantProductsCart = cantProductsCart,){
                         context.startActivity(Intent(context,CartActivity::class.java))
                     }
                 }
@@ -84,7 +82,7 @@ fun StoreScreen(storeViewModel: StoreViewModel) {
 }
 
 @Composable
-fun Header( onCart : () -> Unit) {
+fun Header(cantProductsCart:Int, onCart : () -> Unit,) {
     Column {
         CustomSpaceHeight(height = 25.dp)
         Row(
@@ -100,8 +98,10 @@ fun Header( onCart : () -> Unit) {
                 )
             }
             CustomSlideLeft(delay = 150){
-                Icon(painter = painterResource(id = R.drawable.ic_cart), contentDescription = "",
-                modifier = Modifier.clickable { onCart() })
+                CustomCartCount(
+                    cant=cantProductsCart,
+                    modifier = Modifier.clickable { onCart() }
+                )
             }
         }
         CustomSpaceHeight(height = 20.dp)
@@ -152,7 +152,7 @@ fun ItemProduct(product : ProductModel,onTap : (ProductModel)->Unit) {
             modifier = Modifier
                 .fillMaxWidth()
                 .clickable {
-                  onTap(product)
+                    onTap(product)
                 },
             elevation = CardElevation,
             shape = RoundedCornerShape(25.dp),

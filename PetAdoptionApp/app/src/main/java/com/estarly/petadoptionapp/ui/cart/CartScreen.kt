@@ -32,6 +32,7 @@ import com.estarly.petadoptionapp.ui.composables.CustomButton
 import com.estarly.petadoptionapp.ui.composables.CustomSpaceHeight
 import com.estarly.petadoptionapp.ui.dialog.alert.CustomAlertDialog
 import com.estarly.petadoptionapp.domain.model.ProductCartModel
+import com.estarly.petadoptionapp.ui.*
 import com.estarly.petadoptionapp.ui.composables.CustomShimmerRectangleWait
 import com.estarly.petadoptionapp.ui.theme.MarginHorizontalScreen
 import com.estarly.petadoptionapp.utils.format
@@ -87,40 +88,48 @@ fun Footer(totalPrice: Double) {
         .padding(
             bottom = MarginHorizontalScreen
         ),){
-        Spacer(
-            modifier = Modifier
-                .height(1.dp)
-                .fillMaxWidth()
-                .background(color = MaterialTheme.colors.onSecondary)
-        )
-        CustomSpaceHeight(height = 15.dp)
-        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-            Text(text = "Total", color = MaterialTheme.colors.onSecondary, fontSize = 15.sp)
-            Text(
-                text = "$${totalPrice.format()}",
-                color = MaterialTheme.colors.onPrimary,
-                fontWeight = FontWeight.Bold,
-                fontSize = 15.sp
+        CustomFadeIn(duration = 500, delay = 100){
+            Spacer(
+                modifier = Modifier
+                    .height(1.dp)
+                    .fillMaxWidth()
+                    .background(color = MaterialTheme.colors.onSecondary)
             )
         }
-        CustomSpaceHeight(height = 20.dp)
-        CustomButton(
-            modifier = Modifier
-                .height(50.dp)
-                .fillMaxWidth(),
-            composable = {
+        CustomSpaceHeight(height = 15.dp)
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+            CustomSlideRight(delay = 150){
+                Text(text = "Total", color = MaterialTheme.colors.onSecondary, fontSize = 15.sp)
+            }
+            CustomSlideLeft(delay = 200){
                 Text(
-                    text = "Proceed to Checkout",
-                    color = Color.White,
-                    fontSize = 15.sp,
+                    text = "$${totalPrice.format()}",
+                    color = MaterialTheme.colors.onPrimary,
                     fontWeight = FontWeight.Bold,
-                    modifier = Modifier
-                        .align(Alignment.Center)
-                        .padding(horizontal = 5.dp)
+                    fontSize = 15.sp
                 )
-        },
-            onClick = {},
-        )
+            }
+        }
+        CustomSpaceHeight(height = 20.dp)
+        CustomSlideUp(delay = 250){
+            CustomButton(
+                modifier = Modifier
+                    .height(50.dp)
+                    .fillMaxWidth(),
+                composable = {
+                    Text(
+                        text = "Proceed to Checkout",
+                        color = Color.White,
+                        fontSize = 15.sp,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier
+                            .align(Alignment.Center)
+                            .padding(horizontal = 5.dp)
+                    )
+                },
+                onClick = {},
+            )
+        }
     }
 }
 
@@ -137,13 +146,15 @@ fun Products(
     ) {
         if(showProgress){
             items(5){
-                CustomShimmerRectangleWait(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(10.dp)
-                        .clip(RoundedCornerShape(25.dp))
-                        .size(100.dp)
-                )
+                CustomFadeIn(duration = 500, delay = 200){
+                    CustomShimmerRectangleWait(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(10.dp)
+                            .clip(RoundedCornerShape(25.dp))
+                            .size(100.dp)
+                    )
+                }
             }
         }else {
             itemsIndexed(listProducts) {i,product->
@@ -174,54 +185,56 @@ fun ItemCart(
             backgroundColor = Color.White,
             shape = RoundedCornerShape(25.dp),
         ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(10.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                GlideImage(
-                    model = productModel.imageProduct,
-                    contentDescription = "",
-                    modifier = Modifier.size(100.dp)
-                )
-                Column(
-                    verticalArrangement = Arrangement.spacedBy(10.dp),
+            CustomFadeIn(duration = 500, delay = 200){
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(10.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically
+                    GlideImage(
+                        model = productModel.imageProduct,
+                        contentDescription = "",
+                        modifier = Modifier.size(100.dp)
+                    )
+                    Column(
+                        verticalArrangement = Arrangement.spacedBy(10.dp),
                     ) {
-                        Text(
-                            text = productModel.nameProduct,
-                            color = MaterialTheme.colors.onPrimary,
-                            fontSize = 15.sp,
-                            maxLines = 2,
-                            overflow = TextOverflow.Ellipsis,
-                            fontWeight = FontWeight.ExtraBold,
-                            modifier = Modifier.weight(1f)
-                        )
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_like),
-                            contentDescription = ""
-                        )
-                    }
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Box(modifier = Modifier.weight(1f)){
-                            CustomAddOrDismiss(
-                                product.cant,
-                                { onAdd()},
-                                { onSubtract() }
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                text = productModel.nameProduct,
+                                color = MaterialTheme.colors.onPrimary,
+                                fontSize = 15.sp,
+                                maxLines = 2,
+                                overflow = TextOverflow.Ellipsis,
+                                fontWeight = FontWeight.ExtraBold,
+                                modifier = Modifier.weight(1f)
+                            )
+                            Icon(
+                                painter = painterResource(id = R.drawable.ic_like),
+                                contentDescription = ""
                             )
                         }
-                        Text(
-                            text = "$${productModel.price.format()}",
-                            color = MaterialTheme.colors.primary,
-                            fontSize = 15.sp,
-                            fontWeight = FontWeight.ExtraBold,
-                        )
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Box(modifier = Modifier.weight(1f)) {
+                                CustomAddOrDismiss(
+                                    product.cant,
+                                    { onAdd() },
+                                    { onSubtract() }
+                                )
+                            }
+                            Text(
+                                text = "$${productModel.price.format()}",
+                                color = MaterialTheme.colors.primary,
+                                fontSize = 15.sp,
+                                fontWeight = FontWeight.ExtraBold,
+                            )
+                        }
                     }
                 }
             }
@@ -238,19 +251,31 @@ fun Header(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        Icon(
-            painter = painterResource(id = R.drawable.ic_arrow_left),
-            contentDescription = "icon back",
-            modifier = Modifier.clickable {onBack()})
-        Text(
-            text = "My Order",
-            fontWeight = FontWeight.Bold,
-            fontSize = 22.sp,
-            color = MaterialTheme.colors.onPrimary
-        )
-        Icon(
-            painter = painterResource(id = R.drawable.ic_delete),
-            contentDescription = "icon back",
-            modifier = Modifier.clickable {onDelete()})
+        CustomSlideDown(
+            delay = 100
+        ){
+            Icon(
+                painter = painterResource(id = R.drawable.ic_arrow_left),
+                contentDescription = "icon back",
+                modifier = Modifier.clickable { onBack() })
+        }
+        CustomSlideDown(
+            delay = 150
+        ){
+            Text(
+                text = "My Order",
+                fontWeight = FontWeight.Bold,
+                fontSize = 22.sp,
+                color = MaterialTheme.colors.onPrimary
+            )
+        }
+        CustomSlideDown(
+            delay = 200
+        ){
+            Icon(
+                painter = painterResource(id = R.drawable.ic_delete),
+                contentDescription = "icon back",
+                modifier = Modifier.clickable { onDelete() })
+        }
     }
 }

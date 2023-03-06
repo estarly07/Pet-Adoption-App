@@ -10,6 +10,7 @@ import com.estarly.petadoptionapp.domain.categories.GetCategoriesUseCase
 import com.estarly.petadoptionapp.domain.promotion.GetPromotionUseCase
 import com.estarly.petadoptionapp.domain.model.CategoryModel
 import com.estarly.petadoptionapp.domain.model.PromotionModel
+import com.estarly.petadoptionapp.domain.user.GetUserUseCase
 import io.mockk.*
 import io.mockk.impl.annotations.RelaxedMockK
 import kotlinx.coroutines.Dispatchers
@@ -26,14 +27,11 @@ import org.junit.Test
 internal class HomeViewModelTest{
     @RelaxedMockK
     private lateinit var getPromotionUseCase : GetPromotionUseCase
-    @RelaxedMockK
-    private lateinit var getBreedsUseCase: GetBreedsUseCase
-    @RelaxedMockK
-    private lateinit var searchBreedsUseCase: SearchBreedsUseCase
-    @RelaxedMockK
-    private lateinit var filterBreedsUseCase: FilterBreedsUseCase
-    @RelaxedMockK
-    private lateinit var getCategoriesUseCase: GetCategoriesUseCase
+    @RelaxedMockK private lateinit var getBreedsUseCase: GetBreedsUseCase
+    @RelaxedMockK private lateinit var searchBreedsUseCase: SearchBreedsUseCase
+    @RelaxedMockK private lateinit var filterBreedsUseCase: FilterBreedsUseCase
+    @RelaxedMockK private lateinit var getCategoriesUseCase: GetCategoriesUseCase
+    @RelaxedMockK private lateinit var getUserUseCase: GetUserUseCase
     private lateinit var homeViewModel: HomeViewModel
 
     @get:Rule
@@ -47,7 +45,8 @@ internal class HomeViewModelTest{
             getBreedsUseCase,
             searchBreedsUseCase,
             filterBreedsUseCase,
-            getCategoriesUseCase
+            getCategoriesUseCase,
+            getUserUseCase
         )
         Dispatchers.setMain(Dispatchers.Unconfined)
     }

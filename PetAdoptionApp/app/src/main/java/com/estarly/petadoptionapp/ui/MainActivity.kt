@@ -42,6 +42,11 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+
+    override fun onResume() {
+        super.onResume()
+        storeViewModel.getCantProductsCart()
+    }
 }
 
 
