@@ -1,6 +1,7 @@
 package com.estarly.petadoptionapp.ui.cart
 
 import android.app.Activity
+import android.content.Intent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -34,6 +35,7 @@ import com.estarly.petadoptionapp.ui.dialog.alert.CustomAlertDialog
 import com.estarly.petadoptionapp.domain.model.ProductCartModel
 import com.estarly.petadoptionapp.ui.*
 import com.estarly.petadoptionapp.ui.composables.CustomShimmerRectangleWait
+import com.estarly.petadoptionapp.ui.payment.PaymentActivity
 import com.estarly.petadoptionapp.ui.theme.MarginHorizontalScreen
 import com.estarly.petadoptionapp.utils.format
 
@@ -56,7 +58,9 @@ fun CartScreen(cartViewModel: CartViewModel) {
         CustomSpaceHeight(height = 25.dp)
         Products(modifier = Modifier.weight(1f),listProducts,cartViewModel,showProgress)
         CustomSpaceHeight(height = 20.dp)
-        Footer(totalPrice)
+        Footer(totalPrice){
+            context.startActivity(Intent(context, PaymentActivity::class.java))
+        }
         //show dialog delete cart
         CustomAlertDialog(
             title = "Alert",
@@ -81,7 +85,7 @@ fun CartScreen(cartViewModel: CartViewModel) {
 }
 
 @Composable
-fun Footer(totalPrice: Double) {
+fun Footer(totalPrice: Double, onTapProceedCheckout: ()->Unit) {
     Column( modifier = Modifier
         .fillMaxWidth()
         .height(IntrinsicSize.Max)
@@ -127,7 +131,7 @@ fun Footer(totalPrice: Double) {
                             .padding(horizontal = 5.dp)
                     )
                 },
-                onClick = {},
+                onClick = {onTapProceedCheckout()},
             )
         }
     }

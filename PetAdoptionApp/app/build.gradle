@@ -21,20 +21,20 @@ android {
             useSupportLibrary true
         }
     }
-    signingConfigs {
-        release {
-            keyAlias 'PetAdoption'
-            keyPassword '123456789'
-            storePassword '123456789'
-            storeFile file("C:\\Users\\Usuario\\Documents\\Learning\\Kotlin\\key-pet_adoption.jks")
-        }
-        debug {
-            keyAlias 'PetAdoption'
-            keyPassword '123456789'
-            storePassword '123456789'
-            storeFile file("C:\\Users\\Usuario\\Documents\\Learning\\Kotlin\\key-pet_adoption.jks")
-        }
-    }
+//    signingConfigs {
+//        release {
+//            keyAlias 'PetAdoption'
+//            keyPassword '123456789'
+//            storePassword '123456789'
+//            storeFile file("C:\\Users\\Usuario\\Documents\\Learning\\Kotlin\\key-pet_adoption.jks")
+//        }
+//        debug {
+//            keyAlias 'PetAdoption'
+//            keyPassword '123456789'
+//            storePassword '123456789'
+//            storeFile file("C:\\Users\\Usuario\\Documents\\Learning\\Kotlin\\key-pet_adoption.jks")
+//        }
+//    }
     buildTypes {
         release {
             minifyEnabled false
@@ -64,6 +64,10 @@ android {
 dependencies {
     //ROOM
     implementation "androidx.room:room-ktx:2.4.0"
+    implementation platform('androidx.compose:compose-bom:2022.10.00')
+    implementation 'androidx.compose.ui:ui-graphics'
+    implementation 'androidx.compose.material3:material3'
+    androidTestImplementation platform('androidx.compose:compose-bom:2022.10.00')
     kapt "androidx.room:room-compiler:2.4.0"
     //FIREBASE
     implementation platform('com.google.firebase:firebase-bom:31.2.2')

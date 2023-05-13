@@ -4,4 +4,5 @@
     <string name="title_activity_product">ProductActivity</string>
     <string name="title_activity_cart">CartActivity</string>
     <string name="title_activity_login">LoginActivity</string>
+    <string name="title_activity_payment">PaymentActivity</string>
 </resources>
