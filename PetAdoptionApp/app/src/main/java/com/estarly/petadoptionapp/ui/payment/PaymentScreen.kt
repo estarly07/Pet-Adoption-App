@@ -37,6 +37,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.estarly.petadoptionapp.R
+import com.estarly.petadoptionapp.domain.model.PaymentsTypes
 import com.estarly.petadoptionapp.domain.model.SelectPaymentModel
 import com.estarly.petadoptionapp.ui.CustomSlideDown
 import com.estarly.petadoptionapp.ui.composables.CustomSpaceHeight
@@ -114,7 +115,10 @@ fun SelectPaymentMethod(listPayments: List<SelectPaymentModel>, onCheck : (Selec
                     ) {
                         Column {
                             Text(
-                                text = type,
+                                text =  when(type){
+                                    PaymentsTypes.VISA -> "Visa"
+                                    PaymentsTypes.MASTERCARD -> "Mastercard"
+                                },
                                 fontSize = 17.sp,
                                 fontWeight = FontWeight.ExtraBold,
                             )
@@ -124,10 +128,9 @@ fun SelectPaymentMethod(listPayments: List<SelectPaymentModel>, onCheck : (Selec
                                 Image(
                                     painter = painterResource(id =
                                         when(type){
-                                            "Visa"-> R.drawable.visa
-                                            else  -> R.drawable.mastercard
+                                            PaymentsTypes.VISA -> R.drawable.visa
+                                            PaymentsTypes.MASTERCARD -> R.drawable.mastercard
                                         }
-
                                     ),
                                     modifier = Modifier.size(40.dp),
                                     contentDescription = ""

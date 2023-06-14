@@ -63,4 +63,8 @@ class Firebase @Inject constructor(){
         response.await()
         return response.isSuccessful
     }
+    suspend fun getPayments(uid: String) : DocumentSnapshot{
+        val response = dbFirestore.collection("payments").document(uid).get()
+        return  response.await()
+    }
 }
