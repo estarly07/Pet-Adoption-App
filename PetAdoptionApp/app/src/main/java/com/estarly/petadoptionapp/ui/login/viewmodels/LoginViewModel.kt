@@ -1,14 +1,17 @@
-package com.estarly.petadoptionapp.ui.login
+package com.estarly.petadoptionapp.ui.login.viewmodels
 
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.estarly.petadoptionapp.R
 import com.estarly.petadoptionapp.base.BaseResultUseCase
 import com.estarly.petadoptionapp.domain.login.LoginByEmailAndPassUseCase
 import com.estarly.petadoptionapp.domain.login.RegisterUserUseCase
 import com.estarly.petadoptionapp.domain.login.SetLoginPreferencesUseCase
+import com.estarly.petadoptionapp.ui.login.LoginActivity
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -16,7 +19,7 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val loginByEmailAndPassUseCase: LoginByEmailAndPassUseCase,
-    private val registerUserUseCase: RegisterUserUseCase,
+    private val registerUserUseCase       : RegisterUserUseCase,
     private val setLoginPreferencesUseCase: SetLoginPreferencesUseCase,
 ) : ViewModel(){
     //login screen
@@ -55,65 +58,77 @@ class LoginViewModel @Inject constructor(
 
 
     init {
-        _email.value = ""
-        _pass.value = ""
-        _emailRegister.value =""
-        _passRegister.value =""
-        _nameRegister.value =""
+        _email.value              = ""
+        _pass.value               = ""
+        _emailRegister.value      = ""
+        _passRegister.value       = ""
+        _nameRegister.value       = ""
         _showRegisterScreen.value = false
     }
-    fun isLogin(){
-        _goToHome.value = setLoginPreferencesUseCase.getIsLogin()
-    }
-    fun login(){
+    /**
+     *
+     * Esta función verifica el estado de inicio de sesión del usuario.
+     *
+     * Esta función llama al caso de uso `setLoginPreferencesUseCase.getIsLogin()` para determinar
+     * si el usuario ya ha iniciado sesión. El resultado de esta verificación se asigna a la propiedad
+     * `_goToHome.value`, lo que puede desencadenar la navegación hacia la pantalla de inicio si el
+     * usuario está autenticado.
+     */
+    fun isLogin(){ _goToHome.value = setLoginPreferencesUseCase.getIsLogin() }
+    /**
+     * Esta función inicia el proceso de login del usuario.
+     *
+     * Esta función se encarga de manejar el flujo completo del proceso de login del usuario.
+     * Incluye la validación de las credenciales del usuario, la comunicación con el servidor de autenticación,
+     * el manejo de respuestas y errores, y la actualización del estado de autenticación en la aplicación.
+     */
+    fun login(context:Context){
         viewModelScope.launch {
             if(email.value!!.trim().isEmpty()){
-                _errorEmail.value = "This field is required"
+                _errorEmail.value = context.getString(R.string.this_field_is_required)
                 return@launch
             }
             if(pass.value!!.trim().isEmpty()){
-                _errorPass.value = "This field is required"
+                _errorPass.value = context.getString(R.string.this_field_is_required)
                 return@launch
             }
             _showProgressLogin.value = true
             when(val response = loginByEmailAndPassUseCase(email.value!!.trim(),pass.value!!.trim())){
-                is BaseResultUseCase.Error -> {
-                    response.exception.message?.let { Log.i("TAG", it) }
-                }
-                is BaseResultUseCase.Success -> {
-                    _goToHome.value = response.data
-                }
+                is BaseResultUseCase.Error             -> response.exception.message?.let { Log.i("TAG", it) }
+                is BaseResultUseCase.Success           -> _goToHome.value = response.data
                 BaseResultUseCase.NoInternetConnection -> TODO()
-                BaseResultUseCase.NullOrEmptyData -> TODO()
+                BaseResultUseCase.NullOrEmptyData      -> TODO()
             }
             _showProgressLogin.value = false
         }
-
     }
-    fun register(){
+    /**
+     * Esta función inicia el proceso de registro de un nuevo usuario.
+     *
+     * Esta función es responsable de iniciar el flujo necesario para registrar un nuevo usuario en el sistema.
+     * Puede incluir la recopilación de información del usuario, la validación de datos, y la comunicación
+     * con el servidor para crear una nueva cuenta de usuario.
+     */
+    fun register(context:Context){
         viewModelScope.launch {
             if(emailRegister.value!!.trim().isEmpty()){
-                _errorEmailRegister.value = "This field is required"
+                _errorEmailRegister.value = context.getString(R.string.this_field_is_required)
                 return@launch
             }
             if(passRegister.value!!.trim().isEmpty()){
-                _errorPassRegister.value = "This field is required"
+                _errorPassRegister.value = context.getString(R.string.this_field_is_required)
                 return@launch
             }
             if(nameRegister.value!!.trim().isEmpty()){
-                _errorNameRegister.value = "This field is required"
+                _errorNameRegister.value = context.getString(R.string.this_field_is_required)
                 return@launch
             }
             _showProgressRegister.value = true
             when(val response = registerUserUseCase(nameRegister.value!!.trim(), emailRegister.value!!.trim(),passRegister.value!!.trim())){
-                is BaseResultUseCase.Error -> {
-                    response.exception.message?.let { Log.i("TAG", it) }
-                }
-                is BaseResultUseCase.Success -> {
-                    _goToHome.value = response.data
-                }
+                is BaseResultUseCase.Error             -> response.exception.message?.let { Log.i("TAG", it) }
+                is BaseResultUseCase.Success           -> _goToHome.value = response.data
                 BaseResultUseCase.NoInternetConnection -> TODO()
-                BaseResultUseCase.NullOrEmptyData -> TODO()
+                BaseResultUseCase.NullOrEmptyData      -> TODO()
             }
             _showProgressRegister.value = false
         }
@@ -121,23 +136,23 @@ class LoginViewModel @Inject constructor(
     }
     fun changeTextEmail(email : String){
         _errorEmail.value = ""
-        _email.value = email
+        _email.value      = email
     }
     fun changeTextPass(pass : String){
         _errorPass.value = ""
-        _pass.value = pass
+        _pass.value      = pass
     }
     fun changeTextEmailRegister(email : String){
         _errorEmailRegister.value = ""
-        _emailRegister.value = email
+        _emailRegister.value      = email
     }
     fun changeTextPassRegister(pass : String){
         _errorPassRegister.value = ""
-        _passRegister.value = pass
+        _passRegister.value      = pass
     }
     fun changeTextNameRegister(name : String){
         _errorNameRegister.value = ""
-        _nameRegister.value = name
+        _nameRegister.value      = name
     }
     fun showRegisterScreen() {_showRegisterScreen.value = true }
     fun showLoginScreen() { _showRegisterScreen.value = false}

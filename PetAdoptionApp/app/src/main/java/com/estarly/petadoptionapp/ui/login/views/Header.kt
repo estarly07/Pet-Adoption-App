@@ -1,4 +1,4 @@
-package com.estarly.petadoptionapp.ui.login
+package com.estarly.petadoptionapp.ui.login.views
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
@@ -9,15 +9,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 
 @Composable
-fun Header(
-    modifier: Modifier,
-    @DrawableRes image : Int
-) {
+fun Header(modifier: Modifier,@DrawableRes image : Int) {
     Image(
-        painter = painterResource(id = image),
+        painter            = painterResource(id = image),
         contentDescription = "",
-        modifier = modifier.fillMaxWidth(),
-        alignment = Alignment.BottomCenter
-
+        modifier           = modifier.fillMaxWidth(),
+        alignment          = Alignment.BottomCenter
     )
 }
