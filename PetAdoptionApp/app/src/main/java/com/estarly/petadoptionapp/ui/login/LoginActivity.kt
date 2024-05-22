@@ -7,6 +7,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.estarly.petadoptionapp.ui.MainActivity
 import com.estarly.petadoptionapp.ui.ActivityStructure
 import com.estarly.petadoptionapp.ui.login.screens.LoginScreen
@@ -19,10 +20,27 @@ import dagger.hilt.android.AndroidEntryPoint
 class LoginActivity : ComponentActivity(), ActivityStructure {
     private val loginViewModel : LoginViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
+        initSplash()
         super.onCreate(savedInstanceState)
         initView()
         initObservers()
         getData()
+    }
+    /**
+     *
+     * Configura e inicia el Splash Screen de la aplicación.
+     *
+     * Esta función privada inicializa el Splash Screen de la aplicación usando `installSplashScreen()`.
+     * Utiliza una condición proporcionada por `loginViewModel.isSplashShow.value` para determinar
+     * cuándo mantener el Splash Screen visible. La función `setKeepOnScreenCondition` se emplea para
+     * mantener el Splash Screen visible hasta que la condición se evalúe como falsa, permitiendo
+     * así controlar la duración del Splash Screen según el estado de la aplicación.
+     */
+    private fun initSplash() {
+        val splashScreen = installSplashScreen()
+        splashScreen.setKeepOnScreenCondition{
+            loginViewModel.isSplashShow.value
+        }
     }
     /**
      * Inicializa las vistas de la pantalla.

@@ -62,6 +62,9 @@ android {
 }
 
 dependencies {
+    //SPLASH
+    implementation 'androidx.core:core-splashscreen:1.0.1'
+
     //ROOM
     implementation "androidx.room:room-ktx:2.4.0"
     implementation platform('androidx.compose:compose-bom:2022.10.00')

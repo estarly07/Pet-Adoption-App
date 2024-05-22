@@ -13,6 +13,8 @@ import com.estarly.petadoptionapp.domain.login.RegisterUserUseCase
 import com.estarly.petadoptionapp.domain.login.SetLoginPreferencesUseCase
 import com.estarly.petadoptionapp.ui.login.LoginActivity
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -55,7 +57,8 @@ class LoginViewModel @Inject constructor(
     val goToHome : LiveData<Boolean> = _goToHome
     private val _showRegisterScreen = MutableLiveData<Boolean>()
     val showRegisterScreen : LiveData<Boolean> = _showRegisterScreen
-
+    private val splashShowFlow = MutableStateFlow(true)
+    val isSplashShow = splashShowFlow.asStateFlow()
 
     init {
         _email.value              = ""
@@ -74,7 +77,10 @@ class LoginViewModel @Inject constructor(
      * `_goToHome.value`, lo que puede desencadenar la navegación hacia la pantalla de inicio si el
      * usuario está autenticado.
      */
-    fun isLogin(){ _goToHome.value = setLoginPreferencesUseCase.getIsLogin() }
+    fun isLogin(){
+        _goToHome.value = setLoginPreferencesUseCase.getIsLogin()
+        splashShowFlow.value = false
+    }
     /**
      * Esta función inicia el proceso de login del usuario.
      *
