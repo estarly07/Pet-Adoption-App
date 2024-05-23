@@ -4,27 +4,55 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import com.estarly.petadoptionapp.R
 import com.estarly.petadoptionapp.ui.MainActivity
 import com.estarly.petadoptionapp.ui.ActivityStructure
 import com.estarly.petadoptionapp.ui.login.screens.LoginScreen
 import com.estarly.petadoptionapp.ui.login.screens.RegisterScreen
 import com.estarly.petadoptionapp.ui.login.viewmodels.LoginViewModel
 import com.estarly.petadoptionapp.ui.theme.PetAdoptionAppTheme
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
+import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class LoginActivity : ComponentActivity(), ActivityStructure {
     private val loginViewModel : LoginViewModel by viewModels()
+    private lateinit var auth: FirebaseAuth
+    private val googleSignInOptions by lazy {
+        GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(getString(R.string.default_web_client_id))
+            .requestEmail()
+            .build()
+    }
+    private val googleSignInClient by lazy { GoogleSignIn.getClient(this, googleSignInOptions) }
     override fun onCreate(savedInstanceState: Bundle?) {
         initSplash()
         super.onCreate(savedInstanceState)
         initView()
         initObservers()
         getData()
+    }
+    private val signInLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        try {
+            loginViewModel.closeDialogGoogle()
+            val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
+            if(task.isSuccessful){
+                task.getResult(ApiException::class.java).idToken?.let {idToken ->
+                    loginViewModel.loginByGoogle(idToken)
+                }
+            }
+        }catch(e : ApiException){
+            e.printStackTrace()
+        }
+
     }
     /**
      *
@@ -57,6 +85,7 @@ class LoginActivity : ComponentActivity(), ActivityStructure {
                 else LoginScreen(context = this,loginViewModel)
             }
         }
+        auth = FirebaseAuth.getInstance()
     }
     /**
      *
@@ -89,6 +118,9 @@ class LoginActivity : ComponentActivity(), ActivityStructure {
                     }
 
                 }
+            }
+            showDialogGoogle.observe(this@LoginActivity){
+                if(it){ signInLauncher.launch(googleSignInClient.signInIntent) }
             }
         }
     }

@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.estarly.petadoptionapp.R
 import com.estarly.petadoptionapp.base.BaseResultUseCase
 import com.estarly.petadoptionapp.domain.login.LoginByEmailAndPassUseCase
+import com.estarly.petadoptionapp.domain.login.LoginByGoogleUseCase
 import com.estarly.petadoptionapp.domain.login.RegisterUserUseCase
 import com.estarly.petadoptionapp.domain.login.SetLoginPreferencesUseCase
 import com.estarly.petadoptionapp.ui.login.LoginActivity
@@ -21,6 +22,7 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val loginByEmailAndPassUseCase: LoginByEmailAndPassUseCase,
+    private val loginByGoogleUseCase      : LoginByGoogleUseCase,
     private val registerUserUseCase       : RegisterUserUseCase,
     private val setLoginPreferencesUseCase: SetLoginPreferencesUseCase,
 ) : ViewModel(){
@@ -59,7 +61,8 @@ class LoginViewModel @Inject constructor(
     val showRegisterScreen : LiveData<Boolean> = _showRegisterScreen
     private val splashShowFlow = MutableStateFlow(true)
     val isSplashShow = splashShowFlow.asStateFlow()
-
+    private val _showDialogGoogle = MutableLiveData<Boolean>()
+    val showDialogGoogle : LiveData<Boolean> = _showDialogGoogle
     init {
         _email.value              = ""
         _pass.value               = ""
@@ -168,6 +171,45 @@ class LoginViewModel @Inject constructor(
             _showRegisterScreen.value = false
         }else{
             loginActivity.finish()
+        }
+    }
+    /**
+     *
+     * Esta función activa la visualización del diálogo de Google.
+     *
+     * La función `showDialogGoogle` establece el valor de `_showDialogGoogle` a `true`, lo que
+     * desencadena la visualización del diálogo de Google en la interfaz de usuario.
+     */
+    fun showDialogGoogle() { _showDialogGoogle.value = true }
+    /**
+     *
+     * Cierra el diálogo de Google.
+     *
+     * Esta función se encarga de cerrar el diálogo de Google estableciendo el valor de `_showDialogGoogle`
+     * a `false`. Al llamar a esta función, se actualiza el estado interno que controla la visibilidad del
+     * diálogo, asegurando que el diálogo se cierre correctamente en la interfaz de usuario.
+     */
+    fun closeDialogGoogle(){ _showDialogGoogle.value = false }
+    /**
+     *
+     * @param idToken El token de identificación proporcionado por Google.
+     *
+     * Inicia sesión con Google utilizando el token de identificación.
+     *
+     * Esta función inicia el proceso de inicio de sesión utilizando las credenciales de Google.
+     * Recibe un token de identificación (`idToken`) proporcionado por los servicios de autenticación de Google.
+     * La función se encarga de validar este token y establecer una sesión autenticada para el usuario en la aplicación.
+     */
+    fun loginByGoogle(idToken: String) {
+        viewModelScope.launch {
+            _showProgressLogin.value = true
+            when(val response = loginByGoogleUseCase(idToken = idToken)){
+                is BaseResultUseCase.Error             -> response.exception.message?.let { Log.i("TAG", it) }
+                is BaseResultUseCase.Success           -> _goToHome.value = response.data
+                BaseResultUseCase.NoInternetConnection -> TODO()
+                BaseResultUseCase.NullOrEmptyData      -> TODO()
+            }
+            _showProgressLogin.value = false
         }
     }
 }

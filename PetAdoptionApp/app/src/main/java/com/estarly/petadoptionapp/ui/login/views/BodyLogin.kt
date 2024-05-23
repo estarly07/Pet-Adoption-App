@@ -40,7 +40,7 @@ import com.estarly.petadoptionapp.ui.login.viewmodels.LoginViewModel
 import com.estarly.petadoptionapp.ui.theme.MarginHorizontalScreen
 
 @Composable
-fun BodyLogin(context: Context, modifier: Modifier, loginViewModel : LoginViewModel) {
+fun BodyLogin(context: Context, modifier: Modifier, loginViewModel : LoginViewModel,) {
     val email                by loginViewModel.email.observeAsState(initial = "")
     val pass                 by loginViewModel.pass.observeAsState(initial = "")
     val showProgressButton by loginViewModel.showProgressLogin.observeAsState(initial = false)
@@ -148,7 +148,7 @@ fun BodyLogin(context: Context, modifier: Modifier, loginViewModel : LoginViewMo
             CustomSpaceHeight(height = 20.dp)
             Divider(color = Color.White)
             CustomSpaceHeight(height = 15.dp)
-            SocialIcons()
+            SocialIcons { loginViewModel.showDialogGoogle() }
         }
     }
 }

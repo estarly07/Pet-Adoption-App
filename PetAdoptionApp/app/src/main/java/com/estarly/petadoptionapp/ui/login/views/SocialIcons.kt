@@ -2,6 +2,7 @@ package com.estarly.petadoptionapp.ui.login.views
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -16,7 +17,7 @@ import androidx.compose.ui.unit.dp
 import com.estarly.petadoptionapp.R
 
 @Composable
-fun SocialIcons(){
+fun SocialIcons(onTapGoogle :()->Unit){
     Row(
         modifier              = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.Center
@@ -28,6 +29,7 @@ fun SocialIcons(){
                 .size(40.dp)
                 .clip(CircleShape)
                 .background(Color.White)
+                .clickable { onTapGoogle() }
         )
     }
 }

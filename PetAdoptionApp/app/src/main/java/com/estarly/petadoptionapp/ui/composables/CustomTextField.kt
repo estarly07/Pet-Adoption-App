@@ -1,7 +1,8 @@
 package com.estarly.petadoptionapp.ui.composables
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
@@ -15,49 +16,50 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
 fun CustomTextField(
-    value : String,
-    onTextChanged : (String) -> Unit,
-    modifier: Modifier = Modifier,
-    leadingIcon : @Composable (()->Unit)?,
-    placerHolder : String,
-    textColor: Color,
-    showError : Boolean = false,
-    error : String = "",
+    value          : String,
+    onTextChanged  : (String) -> Unit,
+    modifier       : Modifier = Modifier,
+    leadingIcon    : @Composable (()->Unit)?,
+    placerHolder   : String,
+    textColor      : Color,
+    showError      : Boolean = false,
+    error          : String = "",
     backgroundColor: Color
 ) {
     Column{
         TextField(
-            value = value,
+            value         = value,
             onValueChange = onTextChanged,
-            modifier = modifier
+            modifier      = modifier
                 .clip(RoundedCornerShape(15.dp))
                 .size(50.dp),
-            leadingIcon = leadingIcon,
-            placeholder = { Text(text = placerHolder, fontWeight = FontWeight.SemiBold) },
-            maxLines = 1,
-            singleLine = true,
+            leadingIcon     = leadingIcon,
+            placeholder     = { Text(text = placerHolder, fontWeight = FontWeight.SemiBold) },
+            maxLines        = 1,
+            singleLine      = true,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
             colors = TextFieldDefaults.textFieldColors(
-                textColor = textColor,
-                placeholderColor = textColor,
-                backgroundColor = backgroundColor,
-                focusedIndicatorColor = Color.Transparent,
+                textColor               = textColor,
+                placeholderColor        = textColor,
+                backgroundColor         = backgroundColor,
+                focusedIndicatorColor   = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent,
             )
 
         )
         if(showError)
-            Text(
-                text = error,
-                color = Color.Red,
-                modifier = Modifier.align(Alignment.End),
-                fontSize = 15.sp
-            )
+            Box(modifier = Modifier.align(Alignment.End).padding(top = 5.dp)){
+                Text(
+                    text       = error,
+                    color      = Color.Red,
+                    fontSize   = 15.sp,
+                    fontWeight = FontWeight.SemiBold
+                )
+            }
     }
 }

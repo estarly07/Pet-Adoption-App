@@ -2,10 +2,9 @@ package com.estarly.petadoptionapp.data.api.firebase
 
 import android.util.Log
 import com.estarly.petadoptionapp.data.api.response.UserResponse
-import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -22,7 +21,23 @@ class Firebase @Inject constructor(){
         val response =auth.signInWithEmailAndPassword(email,pass)
        return response.await()
     }
-
+    /**
+     *
+     * Autentica al usuario con Google utilizando un token de identificación.
+     *
+     * Esta función utiliza el token de identificación de Google proporcionado para autenticar al
+     * usuario con el servicio de autenticación de Firebase. Internamente, llama a
+     * `signInWithCredential` con las credenciales generadas a partir del token de identificación y
+     * espera la respuesta de la operación. El resultado de la autenticación se devuelve como un objeto
+     * `AuthResult`, que contiene información sobre el usuario autenticado y el estado de la autenticación.
+     *
+     * @param idToken El token de identificación de Google utilizado para la autenticación.
+     * @return Un objeto `AuthResult` que contiene el resultado de la autenticación.
+     */
+    suspend fun loginByGoogle(idToken : String) : AuthResult{
+        val response =auth.signInWithCredential(GoogleAuthProvider.getCredential(idToken, null))
+        return response.await()
+    }
     suspend fun createByEmailAndPass(email:String,pass:String) : AuthResult{
         val response =auth.createUserWithEmailAndPassword(email,pass)
         return response.await()
