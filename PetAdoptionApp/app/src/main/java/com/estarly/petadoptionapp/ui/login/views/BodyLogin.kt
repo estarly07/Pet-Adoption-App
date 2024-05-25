@@ -32,12 +32,13 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import com.estarly.petadoptionapp.R
 import com.estarly.petadoptionapp.ui.composables.CustomButton
 import com.estarly.petadoptionapp.ui.composables.CustomSpaceHeight
 import com.estarly.petadoptionapp.ui.composables.CustomTextField
 import com.estarly.petadoptionapp.ui.login.viewmodels.LoginViewModel
 import com.estarly.petadoptionapp.ui.theme.MarginHorizontalScreen
+import com.estarly.petadoptionapp.utils.fontDimensionResource
 
 @Composable
 fun BodyLogin(context: Context, modifier: Modifier, loginViewModel : LoginViewModel,) {
@@ -65,8 +66,8 @@ fun BodyLogin(context: Context, modifier: Modifier, loginViewModel : LoginViewMo
                 .verticalScroll(rememberScrollState())
         ) {
             CustomSpaceHeight(height = 25.dp)
-            Text(text = "Welcome!!", fontSize = 25.sp, color = Color.White,fontWeight = FontWeight.Bold)
-            Text(text = "Sign to continue", fontSize = 15.sp, color = Color.White,)
+            Text(text = "Welcome!!", fontSize = fontDimensionResource(id = R.dimen.titleScreen), color = Color.White,fontWeight = FontWeight.Bold)
+            Text(text = "Sign to continue", fontSize = fontDimensionResource(id = R.dimen.subtitle), color = Color.White,)
             CustomSpaceHeight(height = 25.dp)
             CustomTextField(
                 value         = email,
@@ -115,7 +116,7 @@ fun BodyLogin(context: Context, modifier: Modifier, loginViewModel : LoginViewMo
                     Text(
                         text       = "Login",
                         color      = Color.White,
-                        fontSize   = 15.sp,
+                        fontSize   = fontDimensionResource(id = R.dimen.subtitle),
                         fontWeight = FontWeight.Bold,
                         modifier   = Modifier
                             .align(Alignment.Center)
@@ -132,16 +133,12 @@ fun BodyLogin(context: Context, modifier: Modifier, loginViewModel : LoginViewMo
                     .clickable { loginViewModel.showRegisterScreen() },
                 text     = buildAnnotatedString {
                     withStyle(
-                        style = SpanStyle(fontSize = 15.sp, color = Color.White,)
+                        style = SpanStyle(fontSize = fontDimensionResource(id = R.dimen.normal), color = Color.White,)
                     ) {
                         append("Don't have an account? ")
                     }
                     withStyle(
-                        style = SpanStyle(
-                            fontSize = 15.sp,
-                            color = Color.White,
-                            fontWeight = FontWeight.Bold
-                        )
+                        style = SpanStyle(fontSize = fontDimensionResource(id = R.dimen.subtitle), color = Color.White, fontWeight = FontWeight.Bold)
                     ) {
                         append("Sign up")
                     }

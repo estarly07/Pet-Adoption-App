@@ -1,0 +1,8 @@
+<resources>
+    <!-- TEXT-->
+    <dimen name="titleScreen" >28sp</dimen>
+    <dimen name="title" >20sp</dimen>
+    <dimen name="subtitle">16sp</dimen>
+    <dimen name="normal">14sp</dimen>
+
+</resources>

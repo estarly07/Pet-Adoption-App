@@ -28,12 +28,13 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import com.estarly.petadoptionapp.R
 import com.estarly.petadoptionapp.ui.composables.CustomButton
 import com.estarly.petadoptionapp.ui.composables.CustomSpaceHeight
 import com.estarly.petadoptionapp.ui.composables.CustomTextField
 import com.estarly.petadoptionapp.ui.login.viewmodels.LoginViewModel
 import com.estarly.petadoptionapp.ui.theme.MarginHorizontalScreen
+import com.estarly.petadoptionapp.utils.fontDimensionResource
 
 @Composable
 fun BodyRegister(context: Context, modifier: Modifier, loginViewModel: LoginViewModel) {
@@ -56,7 +57,7 @@ fun BodyRegister(context: Context, modifier: Modifier, loginViewModel: LoginView
                 .padding(horizontal = MarginHorizontalScreen)
         ) {
             CustomSpaceHeight(height = 35.dp)
-            Text(text = "Create Account", fontSize = 25.sp, color = Color.White, fontWeight = FontWeight.Bold)
+            Text(text = "Create Account", fontSize = fontDimensionResource(id = R.dimen.titleScreen), color = Color.White, fontWeight = FontWeight.Bold)
             CustomSpaceHeight(height = 25.dp)
             CustomTextField(
                 value         = name,
@@ -109,7 +110,7 @@ fun BodyRegister(context: Context, modifier: Modifier, loginViewModel: LoginView
                     Text(
                         text       = "Register",
                         color      = Color.White,
-                        fontSize   = 15.sp,
+                        fontSize   = fontDimensionResource(id = R.dimen.subtitle),
                         fontWeight = FontWeight.Bold,
                         modifier   = Modifier
                             .align(Alignment.Center)

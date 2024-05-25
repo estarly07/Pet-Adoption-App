@@ -58,7 +58,7 @@ fun CustomTextField(
             onValueChange = onTextChanged,
             modifier      = modifier
                 .clip(RoundedCornerShape(15.dp))
-                .size(50.dp),
+                .size(55.dp),
             leadingIcon     = leadingIcon,
             placeholder     = { Text(text = placerHolder, fontWeight = FontWeight.SemiBold) },
             visualTransformation = if (passwordVisible || !isPassword)  VisualTransformation.None else PasswordVisualTransformation(),
