@@ -6,5 +6,14 @@
     <string name="title_activity_login">LoginActivity</string>
     <!--TEXTS-->
     <string name="this_field_is_required">Este campo es obligatorio</string>
+    <string name="welcome">Bienvenido!!</string>
+    <string name="sign_to_continue">Inicia sesión para continuar.</string>
+    <string name="email">Correo electrónico</string>
+    <string name="password">Contraseña</string>
+    <string name="login">Ingresar</string>
+    <string name="do_not_have_an_account">¿No tienes una cuenta?</string>
+    <string name="sign_up">Registrarse</string>
+    <string name="create_account">Crear una cuenta</string>
+    <string name="full_name">Nombre completo</string>
 
 </resources>

@@ -66,8 +66,8 @@ fun BodyLogin(context: Context, modifier: Modifier, loginViewModel : LoginViewMo
                 .verticalScroll(rememberScrollState())
         ) {
             CustomSpaceHeight(height = 25.dp)
-            Text(text = "Welcome!!", fontSize = fontDimensionResource(id = R.dimen.titleScreen), color = Color.White,fontWeight = FontWeight.Bold)
-            Text(text = "Sign to continue", fontSize = fontDimensionResource(id = R.dimen.subtitle), color = Color.White,)
+            Text(text = context.getString(R.string.welcome), fontSize = fontDimensionResource(id = R.dimen.titleScreen), color = Color.White,fontWeight = FontWeight.Bold)
+            Text(text = context.getString(R.string.sign_to_continue), fontSize = fontDimensionResource(id = R.dimen.subtitle), color = Color.White,)
             CustomSpaceHeight(height = 25.dp)
             CustomTextField(
                 value         = email,
@@ -84,7 +84,7 @@ fun BodyLogin(context: Context, modifier: Modifier, loginViewModel : LoginViewMo
                 },
                 textColor       = MaterialTheme.colors.onSecondary,
                 backgroundColor = MaterialTheme.colors.secondary,
-                placerHolder    = "Email"
+                placerHolder    = context.getString(R.string.email)
             )
             CustomSpaceHeight(height = 10.dp)
             CustomTextField(
@@ -103,7 +103,7 @@ fun BodyLogin(context: Context, modifier: Modifier, loginViewModel : LoginViewMo
                 },
                 textColor       = MaterialTheme.colors.onSecondary,
                 backgroundColor = MaterialTheme.colors.secondary,
-                placerHolder    = "Password"
+                placerHolder    = context.getString(R.string.password)
             )
             CustomSpaceHeight(height = 20.dp)
             CustomButton(
@@ -114,7 +114,7 @@ fun BodyLogin(context: Context, modifier: Modifier, loginViewModel : LoginViewMo
                 color      = MaterialTheme.colors.primary.copy(blue = 0.8f),
                 composable = {
                     Text(
-                        text       = "Login",
+                        text       = context.getString(R.string.login),
                         color      = Color.White,
                         fontSize   = fontDimensionResource(id = R.dimen.subtitle),
                         fontWeight = FontWeight.Bold,
@@ -135,12 +135,13 @@ fun BodyLogin(context: Context, modifier: Modifier, loginViewModel : LoginViewMo
                     withStyle(
                         style = SpanStyle(fontSize = fontDimensionResource(id = R.dimen.normal), color = Color.White,)
                     ) {
-                        append("Don't have an account? ")
+                        append(context.getString(R.string.do_not_have_an_account))
+                        append(" ")
                     }
                     withStyle(
                         style = SpanStyle(fontSize = fontDimensionResource(id = R.dimen.subtitle), color = Color.White, fontWeight = FontWeight.Bold)
                     ) {
-                        append("Sign up")
+                        append(context.getString(R.string.sign_up))
                     }
                 })
             CustomSpaceHeight(height = 20.dp)

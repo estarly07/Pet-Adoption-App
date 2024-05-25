@@ -57,7 +57,7 @@ fun BodyRegister(context: Context, modifier: Modifier, loginViewModel: LoginView
                 .padding(horizontal = MarginHorizontalScreen)
         ) {
             CustomSpaceHeight(height = 35.dp)
-            Text(text = "Create Account", fontSize = fontDimensionResource(id = R.dimen.titleScreen), color = Color.White, fontWeight = FontWeight.Bold)
+            Text(text = context.getString(R.string.create_account), fontSize = fontDimensionResource(id = R.dimen.titleScreen), color = Color.White, fontWeight = FontWeight.Bold)
             CustomSpaceHeight(height = 25.dp)
             CustomTextField(
                 value         = name,
@@ -70,7 +70,7 @@ fun BodyRegister(context: Context, modifier: Modifier, loginViewModel: LoginView
                 },
                 textColor       = MaterialTheme.colors.onSecondary,
                 backgroundColor = MaterialTheme.colors.secondary,
-                placerHolder    = "Full name"
+                placerHolder    = context.getString(R.string.full_name)
             )
             CustomSpaceHeight(height = 15.dp)
             CustomTextField(
@@ -84,7 +84,7 @@ fun BodyRegister(context: Context, modifier: Modifier, loginViewModel: LoginView
                 },
                 textColor       = MaterialTheme.colors.onSecondary,
                 backgroundColor = MaterialTheme.colors.secondary,
-                placerHolder    = "Email"
+                placerHolder    = context.getString(R.string.email)
             )
             CustomSpaceHeight(height = 15.dp)
             CustomTextField(
@@ -99,7 +99,7 @@ fun BodyRegister(context: Context, modifier: Modifier, loginViewModel: LoginView
                 },
                 textColor       = MaterialTheme.colors.onSecondary,
                 backgroundColor = MaterialTheme.colors.secondary,
-                placerHolder    = "Password"
+                placerHolder    = context.getString(R.string.password)
             )
             CustomSpaceHeight(height = 35.dp)
             CustomButton(
@@ -108,7 +108,7 @@ fun BodyRegister(context: Context, modifier: Modifier, loginViewModel: LoginView
                     .fillMaxWidth(),
                 composable = {
                     Text(
-                        text       = "Register",
+                        text       = context.getString(R.string.sign_up),
                         color      = Color.White,
                         fontSize   = fontDimensionResource(id = R.dimen.subtitle),
                         fontWeight = FontWeight.Bold,
