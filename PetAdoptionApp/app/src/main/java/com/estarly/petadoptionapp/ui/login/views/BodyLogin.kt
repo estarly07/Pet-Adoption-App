@@ -92,6 +92,7 @@ fun BodyLogin(context: Context, modifier: Modifier, loginViewModel : LoginViewMo
                 onTextChanged = {loginViewModel.changeTextPass(it) },
                 showError     = errorPass.isNotEmpty(),
                 error         = errorPass,
+                isPassword    = true,
                 leadingIcon   = {
                     Icon(
                         imageVector        = Icons.Sharp.Lock,

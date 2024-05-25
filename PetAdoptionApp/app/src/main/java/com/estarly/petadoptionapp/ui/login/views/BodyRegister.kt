@@ -92,6 +92,7 @@ fun BodyRegister(context: Context, modifier: Modifier, loginViewModel: LoginView
                 onTextChanged = {loginViewModel.changeTextPassRegister(it) },
                 error         = errorPass,
                 showError     = errorPass.isNotEmpty(),
+                isPassword    = true,
                 leadingIcon   = {
                     Icon(imageVector = Icons.Sharp.Lock, contentDescription = "Icon pass", tint = MaterialTheme.colors.onSecondary)
                 },
