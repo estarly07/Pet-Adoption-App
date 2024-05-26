@@ -1,5 +1,6 @@
 package com.estarly.petadoptionapp.ui.home.navigation
 
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.BottomNavigation
@@ -12,62 +13,55 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.estarly.petadoptionapp.ui.CustomFadeIn
+import com.estarly.petadoptionapp.ui.CustomScaleIn
 import com.estarly.petadoptionapp.ui.composables.CustomButton
 import com.estarly.petadoptionapp.ui.composables.CustomSpaceHeight
 
 @Composable
-fun CustomBottomBar(
-    idBottomSelect : Int,
-    listBottomNavigationBar : List<Pair<Int,Int>>,
-    onSelect:(Int)->Unit
-) {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(Color.White)
-            .padding(horizontal = 35.dp)
-    ){
+fun CustomBottomBar(idBottomSelect : Int, listBottomNavigationBar : List<Pair<Int,Int>>, onSelect:(Int)->Unit) {
+    Box(modifier = Modifier.fillMaxWidth().background(Color.White).padding(horizontal = 35.dp)){
         BottomNavigation(
-            modifier = Modifier.height(70.dp),
+            modifier        = Modifier.height(70.dp),
             backgroundColor = Color.White,
-            elevation = 0.dp,
+            elevation       = 0.dp,
         ) {
-            listBottomNavigationBar.forEachIndexed { index, it ->
+            listBottomNavigationBar.forEachIndexed { _, it ->
                 BottomNavigationItem(
-                    selected = idBottomSelect == it.second,
                     selectedContentColor = Color.White,
-                    onClick = { onSelect(it.second) },
-                    icon = {
-                        if (idBottomSelect == it.second) {
-                            CustomFadeIn(duration = 500) {
-                                Column {
-                                    CustomButton(
-                                        modifier = Modifier
-                                            .size(50.dp),
-                                        isCircle = true,
-                                        composable = {
-                                            Icon(
-                                                painter = painterResource(id =  it.first),
-                                                contentDescription = "",
-                                                tint = Color.White,
-                                                modifier = Modifier.align(Alignment.Center)
-                                            )
-                                        }
-                                    ) {}
-                                    CustomSpaceHeight(height = 20.dp)
-                                }
-                            }
-                        } else {
-                            Icon(
-                                painter = painterResource(id =  it.first),
-                                contentDescription = "",
-                                tint = MaterialTheme.colors.onSecondary,
-                            )
-                        }
-                    },
+                    selected = idBottomSelect == it.second,
+                    onClick  = { onSelect(it.second) },
+                    icon     = { IconNavigationBar(idBottomSelect, idBottom = it.second, drawable = it.first) },
                 )
             }
         }
+    }
+}
+
+@Composable
+private fun IconNavigationBar(idBottomSelect: Int, idBottom: Int, @DrawableRes drawable :Int) {
+    if (idBottomSelect == idBottom) {
+        CustomScaleIn(duration = 150) {
+            Column {
+                CustomButton(
+                    modifier   = Modifier.size(50.dp),
+                    isCircle   = true,
+                    composable = {
+                        Icon(
+                            painter  = painterResource(id =  drawable),
+                            tint     = Color.White,
+                            modifier = Modifier.align(Alignment.Center),
+                            contentDescription = "IconNavigationBar",
+                        )
+                    }
+                ) {}
+                CustomSpaceHeight(height = 20.dp)
+            }
+        }
+    } else {
+        Icon(
+            painter = painterResource(id =  drawable),
+            tint    = MaterialTheme.colors.onSecondary,
+            contentDescription = "IconNavigationBar",
+        )
     }
 }

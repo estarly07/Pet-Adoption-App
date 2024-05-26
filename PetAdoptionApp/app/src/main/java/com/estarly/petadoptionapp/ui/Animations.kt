@@ -121,23 +121,31 @@ fun CustomSlideRight(
         composable = composable
     )
 }
+/**
+ *
+ * @param delay El retraso antes de que comience la animación, en milisegundos (por defecto es 0).
+ * @param duration La duración de la animación, en milisegundos (por defecto es 500).
+ * @param modifier El modificador a aplicar al composable.
+ * @param composable El contenido composable que se va a animar.
+ *
+ * Esta función anima un composable con efectos de desvanecimiento y escala.
+ *
+ * Esta función proporciona una animación personalizada para un composable. La animación combina una transición de desvanecimiento
+ * (fade-in) y una de escala (scale-in). El `delay` especifica el tiempo de espera antes de iniciar la
+ * animación, y `duration` define cuánto tiempo debe durar la animación.
+ */
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun CustomScaleIn(
-    delay : Int = 0,
-    modifier: Modifier = Modifier,
+    delay      : Int = 0,
+    duration   : Int = 500,
+    modifier   : Modifier = Modifier,
     composable : @Composable AnimatedVisibilityScope.() -> Unit
 ){
     CustomAnimatedVisibility(
-        modifier = modifier,
-        enterTransition =
-            fadeIn (
-                tween(500,delay)
-            )+
-            scaleIn (
-                animationSpec = tween(500,delay)
-            ),
-        composable = composable
+        modifier        = modifier,
+        enterTransition = fadeIn(tween(duration,delay)) + scaleIn(animationSpec = tween(duration,delay)),
+        composable      = composable
     )
 }
 
