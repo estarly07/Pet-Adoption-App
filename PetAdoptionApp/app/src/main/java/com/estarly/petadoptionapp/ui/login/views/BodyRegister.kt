@@ -29,6 +29,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.estarly.petadoptionapp.R
+import com.estarly.petadoptionapp.ui.CustomFadeIn
 import com.estarly.petadoptionapp.ui.composables.CustomButton
 import com.estarly.petadoptionapp.ui.composables.CustomSpaceHeight
 import com.estarly.petadoptionapp.ui.composables.CustomTextField
@@ -45,6 +46,7 @@ fun BodyRegister(context: Context, modifier: Modifier, loginViewModel: LoginView
     val errorEmail           by loginViewModel.errorEmailRegister.observeAsState(initial = "")
     val errorPass            by loginViewModel.errorPassRegister.observeAsState(initial = "")
     val errorName            by loginViewModel.errorNameRegister.observeAsState(initial = "")
+    val durationAnimations = 500
     Box(
         modifier = modifier
             .fillMaxSize()
@@ -57,70 +59,80 @@ fun BodyRegister(context: Context, modifier: Modifier, loginViewModel: LoginView
                 .padding(horizontal = MarginHorizontalScreen)
         ) {
             CustomSpaceHeight(height = 35.dp)
-            Text(text = context.getString(R.string.create_account), fontSize = fontDimensionResource(id = R.dimen.titleScreen), color = Color.White, fontWeight = FontWeight.Bold)
+            CustomFadeIn(delay = 250, duration = durationAnimations){
+                Text(text = context.getString(R.string.create_account), fontSize = fontDimensionResource(id = R.dimen.titleScreen), color = Color.White, fontWeight = FontWeight.Bold)
+            }
             CustomSpaceHeight(height = 25.dp)
-            CustomTextField(
-                value         = name,
-                modifier      = Modifier.fillMaxWidth(),
-                onTextChanged = {loginViewModel.changeTextNameRegister(it) },
-                error         = errorName,
-                showError     = errorName.isNotEmpty(),
-                leadingIcon   = {
-                    Icon(imageVector = Icons.Sharp.Person, contentDescription = "Icon name",tint = MaterialTheme.colors.onSecondary)
-                },
-                textColor       = MaterialTheme.colors.onSecondary,
-                backgroundColor = MaterialTheme.colors.secondary,
-                placerHolder    = context.getString(R.string.full_name)
-            )
+            CustomFadeIn(delay = 150, duration = durationAnimations){
+                CustomTextField(
+                    value         = name,
+                    modifier      = Modifier.fillMaxWidth(),
+                    onTextChanged = {loginViewModel.changeTextNameRegister(it) },
+                    error         = errorName,
+                    showError     = errorName.isNotEmpty(),
+                    leadingIcon   = {
+                        Icon(imageVector = Icons.Sharp.Person, contentDescription = "Icon name",tint = MaterialTheme.colors.onSecondary)
+                    },
+                    textColor       = MaterialTheme.colors.onSecondary,
+                    backgroundColor = MaterialTheme.colors.secondary,
+                    placerHolder    = context.getString(R.string.full_name)
+                )
+            }
             CustomSpaceHeight(height = 15.dp)
-            CustomTextField(
-                value         = email,
-                modifier      = Modifier.fillMaxWidth(),
-                onTextChanged = {loginViewModel.changeTextEmailRegister(it) },
-                error         = errorEmail,
-                showError     = errorEmail.isNotEmpty(),
-                leadingIcon   = {
-                    Icon(imageVector = Icons.Sharp.Email, contentDescription = "Icon email",tint = MaterialTheme.colors.onSecondary)
-                },
-                textColor       = MaterialTheme.colors.onSecondary,
-                backgroundColor = MaterialTheme.colors.secondary,
-                placerHolder    = context.getString(R.string.email)
-            )
+            CustomFadeIn(delay = 250, duration = durationAnimations){
+                CustomTextField(
+                    value         = email,
+                    modifier      = Modifier.fillMaxWidth(),
+                    onTextChanged = {loginViewModel.changeTextEmailRegister(it) },
+                    error         = errorEmail,
+                    showError     = errorEmail.isNotEmpty(),
+                    leadingIcon   = {
+                        Icon(imageVector = Icons.Sharp.Email, contentDescription = "Icon email",tint = MaterialTheme.colors.onSecondary)
+                    },
+                    textColor       = MaterialTheme.colors.onSecondary,
+                    backgroundColor = MaterialTheme.colors.secondary,
+                    placerHolder    = context.getString(R.string.email)
+                )
+            }
             CustomSpaceHeight(height = 15.dp)
-            CustomTextField(
-                value         = pass,
-                modifier      = Modifier.fillMaxWidth(),
-                onTextChanged = {loginViewModel.changeTextPassRegister(it) },
-                error         = errorPass,
-                showError     = errorPass.isNotEmpty(),
-                isPassword    = true,
-                leadingIcon   = {
-                    Icon(imageVector = Icons.Sharp.Lock, contentDescription = "Icon pass", tint = MaterialTheme.colors.onSecondary)
-                },
-                textColor       = MaterialTheme.colors.onSecondary,
-                backgroundColor = MaterialTheme.colors.secondary,
-                placerHolder    = context.getString(R.string.password)
-            )
+            CustomFadeIn(delay = 350, duration = durationAnimations){
+                CustomTextField(
+                    value         = pass,
+                    modifier      = Modifier.fillMaxWidth(),
+                    onTextChanged = {loginViewModel.changeTextPassRegister(it) },
+                    error         = errorPass,
+                    showError     = errorPass.isNotEmpty(),
+                    isPassword    = true,
+                    leadingIcon   = {
+                        Icon(imageVector = Icons.Sharp.Lock, contentDescription = "Icon pass", tint = MaterialTheme.colors.onSecondary)
+                    },
+                    textColor       = MaterialTheme.colors.onSecondary,
+                    backgroundColor = MaterialTheme.colors.secondary,
+                    placerHolder    = context.getString(R.string.password)
+                )
+            }
             CustomSpaceHeight(height = 35.dp)
-            CustomButton(
-                modifier = Modifier
-                    .height(50.dp)
-                    .fillMaxWidth(),
-                composable = {
-                    Text(
-                        text       = context.getString(R.string.sign_up),
-                        color      = Color.White,
-                        fontSize   = fontDimensionResource(id = R.dimen.subtitle),
-                        fontWeight = FontWeight.Bold,
-                        modifier   = Modifier
-                            .align(Alignment.Center)
-                            .padding(horizontal = 5.dp)
-                    )
-                },
-                wait  = showProgressButton,
-                color = MaterialTheme.colors.primary.copy(blue = 0.8f)
-            ) {
-                loginViewModel.register(context = context)
+            CustomFadeIn(delay = 450, duration = durationAnimations){
+                CustomButton(
+                    modifier = Modifier
+                        .height(50.dp)
+                        .fillMaxWidth(),
+                    composable = {
+                        Text(
+                            text       = context.getString(R.string.sign_up),
+                            color      = Color.White,
+                            fontSize   = fontDimensionResource(id = R.dimen.subtitle),
+                            fontWeight = FontWeight.Bold,
+                            modifier   = Modifier
+                                .align(Alignment.Center)
+                                .padding(horizontal = 5.dp)
+                        )
+                    },
+                    wait  = showProgressButton,
+                    color = MaterialTheme.colors.primary.copy(blue = 0.8f)
+                ) {
+                    loginViewModel.register(context = context)
+                }
             }
         }
     }

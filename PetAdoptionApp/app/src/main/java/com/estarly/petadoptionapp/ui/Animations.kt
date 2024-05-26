@@ -8,7 +8,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 private fun CustomAnimatedVisibility(
     modifier: Modifier = Modifier,
@@ -27,39 +26,42 @@ private fun CustomAnimatedVisibility(
         content = composable
     )
 }
-@OptIn(ExperimentalAnimationApi::class)
+/**
+ *
+ * Anima un composable con una transición de desvanecimiento (fade-in) con una duración y un retraso especificados.
+ *
+ * Esta función composable aplica una animación de desvanecimiento (fade-in) a un composable.
+ * La animación tiene una duración y un retraso especificados
+ *
+ * @param delay El retraso en milisegundos antes de comenzar la animación de desvanecimiento (por defecto es 0).
+ * @param duration La duración de la animación de desvanecimiento en milisegundos.
+ * @param modifier Un modificador para el composable (por defecto es `Modifier`).
+ * @param composable El composable que se va a animar.
+ */
 @Composable
-fun CustomFadeIn(
-    delay : Int = 0,
-    duration : Int,
-    modifier: Modifier = Modifier,
-    composable : @Composable AnimatedVisibilityScope.() -> Unit
-){
-  CustomAnimatedVisibility(
-      modifier = modifier,
-      enterTransition = fadeIn (
-          tween(duration,delay)
-      ),
-      composable = composable
-  )
+fun CustomFadeIn(delay : Int = 0,duration : Int, modifier: Modifier = Modifier, composable : @Composable AnimatedVisibilityScope.() -> Unit){
+  CustomAnimatedVisibility(modifier = modifier, enterTransition = fadeIn(tween(duration,delay)),composable = composable)
 }
+/**
+ *
+ * Anima un composable con una transición de deslizamiento hacia arriba y desvanecimiento.
+ *
+ * Esta función `CustomSlideUp` proporciona una animación personalizada para un composable.
+ * La animación incluye una transición que combina un desvanecimiento (`fadeIn`) y un
+ * deslizamiento vertical hacia arriba (`slideInVertically`). Puedes especificar un retraso
+ * en milisegundos antes de que la animación comience usando el parámetro `delay`.
+ *
+ * @param delay El retraso antes de que la animación comience, en milisegundos (por defecto es 0).
+ * @param modifier El modificador para aplicar al composable (por defecto es Modifier).
+ * @param composable El contenido del composable que será animado.
+ *
+ */
 @Composable
-fun CustomSlideUp(
-    delay : Int = 0,
-    modifier: Modifier = Modifier,
-    composable : @Composable AnimatedVisibilityScope.() -> Unit
-){
+fun CustomSlideUp(delay : Int = 0, modifier: Modifier = Modifier, composable : @Composable AnimatedVisibilityScope.() -> Unit){
     CustomAnimatedVisibility(
-        modifier = modifier,
-        enterTransition =
-            fadeIn (
-                tween(500,delay)
-            )+
-            slideInVertically (
-                initialOffsetY = { 100 },
-                animationSpec= tween(500,delay)
-            ),
-        composable = composable
+        modifier        = modifier,
+        enterTransition = fadeIn (tween(500,delay)) + slideInVertically (initialOffsetY = { 100 }, animationSpec= tween(500,delay)),
+        composable      = composable
     )
 }
 @Composable
