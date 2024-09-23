@@ -1,4 +1,4 @@
-package com.estarly.petadoptionapp.ui.home
+package com.estarly.petadoptionapp.ui.home.viewmodels
 
 import android.util.Log
 import androidx.lifecycle.LiveData

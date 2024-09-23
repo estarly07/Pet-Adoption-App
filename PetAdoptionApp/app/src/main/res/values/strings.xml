@@ -15,5 +15,8 @@
     <string name="sign_up">Registrarse</string>
     <string name="create_account">Crear una cuenta</string>
     <string name="full_name">Nombre completo</string>
+    <string name="greeting">Hola  %1$s!</string>
+    <string name="are_you_looking_for_pets">¿Estás buscando mascotas?</string>
+    <string name="search">Buscar...</string>
 
 </resources>

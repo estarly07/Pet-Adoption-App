@@ -1,4 +1,4 @@
-package com.estarly.petadoptionapp.ui.home.navigation
+package com.estarly.petadoptionapp.ui.navigators.navigation_main
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.background

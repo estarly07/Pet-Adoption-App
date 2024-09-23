@@ -11,6 +11,7 @@ import com.estarly.petadoptionapp.domain.promotion.GetPromotionUseCase
 import com.estarly.petadoptionapp.domain.model.CategoryModel
 import com.estarly.petadoptionapp.domain.model.PromotionModel
 import com.estarly.petadoptionapp.domain.user.GetUserUseCase
+import com.estarly.petadoptionapp.ui.home.viewmodels.HomeViewModel
 import io.mockk.*
 import io.mockk.impl.annotations.RelaxedMockK
 import kotlinx.coroutines.Dispatchers

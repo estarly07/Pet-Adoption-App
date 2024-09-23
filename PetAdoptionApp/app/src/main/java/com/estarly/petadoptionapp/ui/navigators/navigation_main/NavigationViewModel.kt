@@ -1,4 +1,4 @@
-package com.estarly.petadoptionapp.ui.home.navigation
+package com.estarly.petadoptionapp.ui.navigators.navigation_main
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -20,6 +20,17 @@ class NavigationViewModel @Inject constructor() : ViewModel(){
         Pair(R.drawable.ic_favorite ,2),
         Pair(R.drawable.ic_user     ,3),
     )
+    /**
+     *
+     * @param idNavigationBar El ID del botón de la barra de navegación que el usuario tocó.
+     * @param navController El controlador de navegación utilizado para cambiar las pantallas.
+     *
+     * Cambia la pantalla según el botón de navegación seleccionado.
+     *
+     * Esta función cambia la pantalla visible en la aplicación según el botón de navegación que el usuario
+     * toque. El ID del botón de la barra de navegación se pasa como parámetro `idNavigationBar`, y la función
+     * utiliza un `NavHostController` para manejar la navegación entre las diferentes pantallas de la aplicación.
+     */
     fun changeScreen(idNavigationBar: Int, navController: NavHostController){
         _idSelectNavigationBar.value = idNavigationBar
         when(idNavigationBar){
@@ -28,7 +39,6 @@ class NavigationViewModel @Inject constructor() : ViewModel(){
             2 -> navController.navigate(MainRoute.HomeScreen.route)
             3 -> navController.navigate(MainRoute.HomeScreen.route)
         }
-
     }
 
 }
